@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "PollApp"
+    }
+  },
+  "defaultProject": "PollApp",
+  "cli": {
+    "analytics": "1993254f-d124-4db2-894b-49f0b7bc3935"
+  }
 }
