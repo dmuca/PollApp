@@ -1,21 +1,15 @@
-import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
-import {PollMainPageComponent} from './poll-main-page/poll-main-page.component';
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { UserListComponent} from './view/user-list/user-list.component';
+import { UserFormComponent} from './view/user-form/user-form.component';
 
-
-const routes: Routes = [{
-  path: '',
-  component: PollMainPageComponent,
-}, {
-  path: 'PollApp',
-  component: PollMainPageComponent,
-},
+const routes: Routes = [
+  { path: 'users', component: UserListComponent },
+  { path: 'adduser', component: UserFormComponent }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-  declarations: []
+  exports: [RouterModule]
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule { }

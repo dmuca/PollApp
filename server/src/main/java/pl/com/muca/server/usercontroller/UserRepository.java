@@ -1,4 +1,4 @@
-package pl.com.muca.server;
+package pl.com.muca.server.usercontroller;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
