@@ -18,7 +18,8 @@ public class ServerApplication {
   @Bean
   CommandLineRunner init(UserRepository userRepository) {
     return args -> {
-      Stream.of("Damian", "Julie", "Jeniffer", "Tomek", "Rachel").map(User::from)
+      Stream.of("Damian", "Julie", "Jeniffer", "Tomek", "Rachel")
+          .map(User::from)
           .forEach(userRepository::save);
     };
   }
