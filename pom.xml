@@ -14,7 +14,7 @@
     <relativePath/>
   </parent>
   <modules>
-    <module>server</module>
     <module>web</module>
+<!--    <module>server</module>-->
   </modules>
 </project>

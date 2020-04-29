@@ -1,11 +1,11 @@
 package pl.com.muca.server.usercontroller;
 
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 public class User {
@@ -30,10 +30,29 @@ public class User {
   }
 
   public static User from(String name) {
-    return User.from(name, name.toLowerCase() + "@gmail.com");
+    return User.from(name, name.toLowerCase() + "@muca.com.pl");
   }
 
   public static User from(String name, String email) {
     return new User(name, email);
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) {
+      return true;
+    }
+    if (object == null || getClass() != object.getClass()) {
+      return false;
+    }
+    User user = (User) object;
+    return id == user.id &&
+        Objects.equals(name, user.name) &&
+        Objects.equals(email, user.email);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, name, email);
   }
 }
