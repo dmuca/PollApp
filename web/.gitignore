@@ -4,9 +4,9 @@
 /dist
 /tmp
 /out-tsc
+target
 # Only exists if Bazel was run
 /bazel-out
-target
 
 # dependencies
 /node_modules
