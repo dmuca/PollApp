@@ -6,7 +6,7 @@ Do zapewnienia anonimowości aplikacja wykorzystuje techniki kryptograficzne.
 
 ### Kompilacja oraz uruchomienie aplikacji
 ```bash
-mvn clean install
+mvn clean package
 java -jar server/target/server-1.0.1-RELEASE.war
 ```
 
