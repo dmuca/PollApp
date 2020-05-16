@@ -10,7 +10,7 @@ mvn clean install
 java -jar server/target/server-1.0.1-RELEASE.war
 ```
 
-następnie otworzyć https://localhost:4848
+następnie otworzyć stronę https://localhost:8080
 
 ### Twórcy
 - Damian Muca
