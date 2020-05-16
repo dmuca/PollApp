@@ -1,4 +1,4 @@
-#PollApp
+# PollApp
 
 PollApp umozliwia tworzenie oraz przeprowadzanie ankiet w sposób pozwalający na
 zachowanie pełnej anonimowość użytkowników.
