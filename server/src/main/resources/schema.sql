@@ -1,8 +1,8 @@
 CREATE TABLE appuser (
-  user_hash int PRIMARY KEY,
+  user_id_hash int PRIMARY KEY,
   name varchar(50) NOT NULL,
   last_name varchar(50) NOT NULL,
-  password_hash varchar(100) UNIQUE NOT NULL,
+  password_hash varchar(100) NOT NULL,
   email varchar(100) UNIQUE NOT NULL
 );
 
@@ -15,21 +15,23 @@ CREATE TABLE poll (
 CREATE TABLE question (
   question_id SERIAL PRIMARY KEY,
   poll_id int NOT NULL,
-  question varchar(200) NOT NULL
+  content varchar(200) NOT NULL
 );
 
 CREATE TABLE answer (
   answer_id SERIAL PRIMARY KEY,
   question_id int NOT NULL,
-  subquestion varchar(300) NOT NULL
+  content varchar(300) NOT NULL
 );
 
 CREATE TABLE useranswer (
-  user_answer_id SERIAL PRIMARY KEY,
-  user_id int NOT NULL,
-  answer_chosen int NOT NULL
+  user_id int,
+  question_id int,
+  answer_chosen int,
+  PRIMARY KEY (user_id, question_id)
 );
 
-ALTER TABLE Question ADD FOREIGN KEY (poll_id) REFERENCES Poll (poll_id);
-ALTER TABLE Answer ADD FOREIGN KEY (question_id) REFERENCES Question (question_id);
-ALTER TABLE UserAnswer ADD FOREIGN KEY (answer_chosen) REFERENCES Answer (answer_id);
+ALTER TABLE question ADD FOREIGN KEY (poll_id) REFERENCES poll (poll_id);
+ALTER TABLE answer ADD FOREIGN KEY (question_id) REFERENCES question (question_id);
+ALTER TABLE useranswer ADD FOREIGN KEY (question_id) REFERENCES question (question_id);
+ALTER TABLE useranswer ADD FOREIGN KEY (answer_chosen) REFERENCES answer (answer_id);
