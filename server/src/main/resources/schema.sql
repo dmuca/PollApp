@@ -1,4 +1,4 @@
-CREATE TABLE AppUser (
+CREATE TABLE appuser (
   user_hash int PRIMARY KEY,
   name varchar(50) NOT NULL,
   last_name varchar(50) NOT NULL,
@@ -6,25 +6,25 @@ CREATE TABLE AppUser (
   email varchar(100) UNIQUE NOT NULL
 );
 
-CREATE TABLE Poll (
+CREATE TABLE poll (
   poll_id SERIAL PRIMARY KEY,
   owner_user_id int NOT NULL,
   name varchar(200) NOT NULL
 );
 
-CREATE TABLE Question (
+CREATE TABLE question (
   question_id SERIAL PRIMARY KEY,
   poll_id int NOT NULL,
   question varchar(200) NOT NULL
 );
 
-CREATE TABLE Answer (
+CREATE TABLE answer (
   answer_id SERIAL PRIMARY KEY,
   question_id int NOT NULL,
   subquestion varchar(300) NOT NULL
 );
 
-CREATE TABLE UserAnswer (
+CREATE TABLE useranswer (
   user_answer_id SERIAL PRIMARY KEY,
   user_id int NOT NULL,
   answer_chosen int NOT NULL
