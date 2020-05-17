@@ -5,7 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import pl.com.muca.server.usercontroller.User;
+import pl.com.muca.server.entity.User;
 import pl.com.muca.server.usercontroller.UserRepository;
 
 @SpringBootApplication
@@ -17,10 +17,11 @@ public class ServerApplication {
 
   @Bean
   CommandLineRunner init(UserRepository userRepository) {
-    return args -> {
-      Stream.of("Damian", "Julie", "Jeniffer", "Tomek", "Rachel")
-          .map(User::from)
-          .forEach(userRepository::save);
-    };
+    User damian = new User();
+    damian.setName("Katarzyna");
+    damian.setLastName("Maleńczuk");
+    damian.setEmail("KM@gmail.com");
+    damian.setUserIdHash(123);
+    return args -> Stream.of(damian).forEach(userRepository::save);
   }
 }
