@@ -8,6 +8,7 @@ import pl.com.muca.server.entity.User;
 
 @Component
 public class UserServiceImpl implements UserService {
+
   @Resource
   UserDao userDao;
 
