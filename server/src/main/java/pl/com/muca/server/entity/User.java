@@ -1,39 +1,12 @@
 package pl.com.muca.server.entity;
 
-import java.util.Objects;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-@Entity
 public class User {
 
-  //  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Id
   private int userIdHash;
   private String name;
   private String lastName;
+  private String passwordHash;
   private String email;
-
-  public User() {}
-
-  @Override
-  public boolean equals(Object object) {
-    if (this == object) {
-      return true;
-    }
-    if (object == null || getClass() != object.getClass()) {
-      return false;
-    }
-    User user = (User) object;
-    return userIdHash == user.userIdHash &&
-        Objects.equals(name, user.name) &&
-        Objects.equals(email, user.email);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(userIdHash, name, email);
-  }
 
   public long getUserIdHash() {
     return userIdHash;
@@ -59,11 +32,32 @@ public class User {
     this.lastName = lastName;
   }
 
+  public String getPasswordHash() {
+    return passwordHash;
+  }
+
+  public void setPasswordHash(String passwordHash) {
+    this.passwordHash = passwordHash;
+  }
+
   public String getEmail() {
     return email;
   }
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  @Override
+  public String toString() {
+    return String.format(
+        "{"
+            + "userIdHash=%d, "
+            + "name='%s', "
+            + "lastName='%s', "
+            + "passwordHash='%s', "
+            + "email='%s'"
+            + "}",
+        userIdHash, name, lastName, passwordHash, email);
   }
 }
