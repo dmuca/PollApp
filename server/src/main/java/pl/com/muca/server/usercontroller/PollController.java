@@ -15,6 +15,7 @@ import pl.com.muca.server.service.PollService;
 @RestController
 @RequestMapping("/pollApp")
 public class PollController {
+
   @Resource
   PollService pollService;
 
