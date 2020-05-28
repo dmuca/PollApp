@@ -2,6 +2,7 @@ package pl.com.muca.server.usercontroller;
 
 import java.util.List;
 import javax.annotation.Resource;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.service.PollService;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/pollApp")
 public class PollController {
 
