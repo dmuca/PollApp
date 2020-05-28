@@ -4,11 +4,11 @@ import {UserService} from '../../model/user.service';
 import {User} from '../../model/user';
 
 @Component({
-  selector: 'app-user-form',
-  templateUrl: './user-form.component.html',
-  styleUrls: ['./user-form.component.scss']
+  selector: 'app-user-register',
+  templateUrl: './user-register.component.html',
+  styleUrls: ['./user-register.component.scss']
 })
-export class UserFormComponent {
+export class UserRegisterComponent {
 
   user: User;
 
