@@ -5,7 +5,7 @@ import { UserRegisterComponent} from './view/user-register/user-register.compone
 
 const routes: Routes = [
   { path: 'users', component: UserListComponent },
-  { path: 'adduser', component: UserRegisterComponent }
+  { path: 'registerUser', component: UserRegisterComponent },
 ];
 
 @NgModule({
