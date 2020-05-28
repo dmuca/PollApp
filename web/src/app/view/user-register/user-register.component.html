@@ -10,7 +10,8 @@
                placeholder="Enter name"
                required #name="ngModel">
       </div>
-      <div [hidden]="!name.pristine" class="alert alert-danger">Name is
+      <div [hidden]='name.pristine || name.value !== ""'
+           class="alert alert-danger">Name is
         required
       </div>
 
@@ -23,7 +24,8 @@
                placeholder="Enter last name"
                required #lastName="ngModel">
       </div>
-      <div [hidden]="!lastName.pristine" class="alert alert-danger">Last name is
+      <div [hidden]='lastName.pristine || lastName.value !== ""'
+           class="alert alert-danger">Last name is
         required
       </div>
 
@@ -35,7 +37,8 @@
                name="email"
                placeholder="Enter email address"
                required #email="ngModel">
-        <div [hidden]="!email.pristine" class="alert alert-danger">Email is
+        <div [hidden]='email.pristine || email.value !== ""'
+             class="alert alert-danger">Email is
           required
         </div>
       </div>
@@ -48,7 +51,8 @@
                name="password"
                placeholder="Enter password"
                required #passwordHash="ngModel">
-        <div [hidden]="!passwordHash.pristine" class="alert alert-danger">
+        <div [hidden]='passwordHash.pristine || passwordHash.value !== ""'
+             class="alert alert-danger">
           Password is required
         </div>
         <!-- TODO (Damian Muca): 5/28/20 add second password input and proper validation. -->
