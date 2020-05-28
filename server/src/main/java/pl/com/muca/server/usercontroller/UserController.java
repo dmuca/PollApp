@@ -14,7 +14,7 @@ import pl.com.muca.server.entity.User;
 import pl.com.muca.server.service.UserService;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/pollApp")
 public class UserController {
 
