@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { UserService} from '../../model/user.service';
-import { User} from '../../model/user';
+import {Component} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {UserService} from '../../model/user.service';
+import {User} from '../../model/user';
 
 @Component({
   selector: 'app-user-form',
@@ -20,7 +20,12 @@ export class UserFormComponent {
   }
 
   onSubmit() {
-    this.userService.save(this.user).subscribe(result => this.gotoUserList());
+    console.log('submit');
+    this.userService.save(this.user).subscribe(result => {
+      console.log('result');
+      console.log(result);
+      this.gotoUserList();
+    });
   }
 
   gotoUserList() {

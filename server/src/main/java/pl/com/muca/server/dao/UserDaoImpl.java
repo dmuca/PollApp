@@ -39,7 +39,8 @@ public class UserDaoImpl implements UserDao {
 
     KeyHolder holder = new GeneratedKeyHolder();
     SqlParameterSource param = new MapSqlParameterSource()
-        .addValue("user_id_hash", user.getUserIdHash())
+        // TODO (Damian Muca): 5/28/20 handle hash generating.
+        .addValue("user_id_hash", user.getEmail().hashCode())
         .addValue("name", user.getName())
         .addValue("last_name", user.getLastName())
         .addValue("password_hash", user.getPasswordHash())
