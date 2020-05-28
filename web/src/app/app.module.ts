@@ -8,13 +8,15 @@ import { UserRegisterComponent } from './view/user-register/user-register.compon
 import {FormsModule} from '@angular/forms';
 import {UserService} from './model/user.service';
 import {HttpClientModule} from '@angular/common/http';
+import { UserLogInComponent } from './view/user-log-in/user-log-in.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PollMainPageComponent,
     UserListComponent,
-    UserRegisterComponent
+    UserRegisterComponent,
+    UserLogInComponent
   ],
   imports: [
     BrowserModule,
