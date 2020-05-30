@@ -1,4 +1,4 @@
-import {Component, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {User} from '../../model/user';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserService} from '../../model/user.service';
@@ -29,9 +29,8 @@ export class LoginComponent implements OnInit {
     this.userService.login(this.user).subscribe(loggedUser => {
       if (loggedUser) {
         sessionStorage.setItem('token', btoa(`${this.user.email}:${this.user.passwordHash}`));
-        sessionStorage.setItem('userName', loggedUser.name);
         // TODO remove.
-        console.log(sessionStorage.getItem('userName'));
+        console.log(`Welcome back ${loggedUser.name}`);
         // TODO (Damian Muca): 5/30/20 create component, navigate to pollslList
         this.router.navigate(['/users']);
       } else {

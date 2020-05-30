@@ -43,11 +43,11 @@ public class UserDaoImpl implements UserDao {
     KeyHolder holder = new GeneratedKeyHolder();
     SqlParameterSource param = new MapSqlParameterSource()
         // TODO (Damian Muca): 5/28/20 handle hash generating.
-        .addValue("user_id_hash", user.getEmail().hashCode())
-        .addValue("name", user.getName())
-        .addValue("last_name", user.getLastName())
+        .addValue("user_id_hash", user.getEmail().trim().hashCode())
+        .addValue("name", user.getName().trim())
+        .addValue("last_name", user.getLastName().trim())
         .addValue("password_hash", user.getPasswordHash())
-        .addValue("email", user.getEmail());
+        .addValue("email", user.getEmail().trim());
     template.update(sql, param, holder);
   }
 
@@ -56,10 +56,10 @@ public class UserDaoImpl implements UserDao {
     KeyHolder holder = new GeneratedKeyHolder();
     SqlParameterSource param = new MapSqlParameterSource()
         .addValue("user_id_hash", user.getUserIdHash())
-        .addValue("name", user.getName())
-        .addValue("last_name", user.getLastName())
+        .addValue("name", user.getName().trim())
+        .addValue("last_name", user.getLastName().trim())
         .addValue("password_hash", user.getPasswordHash())
-        .addValue("email", user.getEmail());
+        .addValue("email", user.getEmail().trim());
     template.update(UPDATE_SQL, param, holder);
   }
 
@@ -67,10 +67,10 @@ public class UserDaoImpl implements UserDao {
   public void executeUpdateUser(User user) {
     Map<String, Object> map = new HashMap<>();
     map.put("user_id_hash", user.getUserIdHash());
-    map.put("name", user.getName());
-    map.put("last_name", user.getLastName());
+    map.put("name", user.getName().trim());
+    map.put("last_name", user.getLastName().trim());
     map.put("password_hash", user.getPasswordHash());
-    map.put("email", user.getEmail());
+    map.put("email", user.getEmail().trim());
 
     template.execute(UPDATE_SQL, map,
         (PreparedStatementCallback<Object>) PreparedStatement::executeUpdate);
