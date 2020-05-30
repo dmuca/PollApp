@@ -38,11 +38,11 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public boolean login(User userCredentials) {
+  public User login(User userCredentials) {
     // TODO (Damian Muca): 5/30/20 add find method.
     return userDao.findAll().stream()
-        .anyMatch(
-            u -> u.getEmail().equals(userCredentials.getEmail()) && u.getPasswordHash()
-                .equals(userCredentials.getPasswordHash()));
+        .filter(u -> u.getEmail().equals(userCredentials.getEmail().trim()))
+        .filter(u -> u.getPasswordHash().equals(userCredentials.getPasswordHash()))
+        .findAny().orElse(null);
   }
 }

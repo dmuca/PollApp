@@ -17,7 +17,8 @@ import pl.com.muca.server.entity.User;
 import pl.com.muca.server.service.UserService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 @RequestMapping("/pollApp")
 public class UserController {
 
@@ -57,19 +58,19 @@ public class UserController {
   }
 
   @PostMapping(value = "/login")
-  public boolean login(@RequestBody User user) {
+  public User login(@RequestBody User user) {
     logAction(user.toString());
     return userService.login(user);
   }
 
-  @GetMapping(value = "/user")
-  public Principal user(HttpServletRequest request) {
-    logAction(request.toString());
-    String authToken = request.getHeader("Authorization")
-        .substring("Basic".length()).trim();
-    return () -> new String(Base64.getDecoder()
-        .decode(authToken)).split(":")[0];
-  }
+//  @GetMapping(value = "/user")
+//  public Principal user(HttpServletRequest request) {
+//    logAction(request.toString());
+//    String authToken = request.getHeader("Authorization")
+//        .substring("Basic".length()).trim();
+//    return () -> new String(Base64.getDecoder()
+//        .decode(authToken)).split(":")[0];
+//  }
 
   // TODO (Damian Muca): 5/18/20 log4j to log all action invoked on REST API.
   private void logAction() {

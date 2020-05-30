@@ -43,7 +43,7 @@ public class PollDaoImpl implements PollDao {
     SqlParameterSource param = new MapSqlParameterSource()
         .addValue("poll_id", poll.getPollId())
         .addValue("owner_user_id", poll.getOwnerUserId())
-        .addValue("name", poll.getName());
+        .addValue("name", poll.getName().trim());
     template.update(sql, param, holder);
   }
 
@@ -53,7 +53,7 @@ public class PollDaoImpl implements PollDao {
     SqlParameterSource param = new MapSqlParameterSource()
         .addValue("poll_id", poll.getPollId())
         .addValue("owner_user_id", poll.getOwnerUserId())
-        .addValue("name", poll.getName());
+        .addValue("name", poll.getName().trim());
     template.update(UPDATE_SQL, param, holder);
   }
 
@@ -62,7 +62,7 @@ public class PollDaoImpl implements PollDao {
     Map<String, Object> map = new HashMap<>();
     map.put("poll_id", poll.getPollId());
     map.put("owner_user_id", poll.getOwnerUserId());
-    map.put("name", poll.getName());
+    map.put("name", poll.getName().trim());
 
     template.execute(UPDATE_SQL, map,
         (PreparedStatementCallback<Object>) PreparedStatement::executeUpdate);

@@ -15,5 +15,5 @@ public interface UserService {
 
   void deleteUser(User user);
 
-  boolean login(User user);
+  User login(User user);
 }
