@@ -36,4 +36,13 @@ public class UserServiceImpl implements UserService {
   public void deleteUser(User user) {
     userDao.deleteUser(user);
   }
+
+  @Override
+  public boolean login(User userCredentials) {
+    // TODO (Damian Muca): 5/30/20 add find method.
+    return userDao.findAll().stream()
+        .anyMatch(
+            u -> u.getEmail().equals(userCredentials.getEmail()) && u.getPasswordHash()
+                .equals(userCredentials.getPasswordHash()));
+  }
 }

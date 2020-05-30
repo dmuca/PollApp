@@ -5,10 +5,10 @@ import {User} from '../../model/user';
 
 @Component({
   selector: 'app-user-register',
-  templateUrl: './user-register.component.html',
-  styleUrls: ['./user-register.component.scss']
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss']
 })
-export class UserRegisterComponent {
+export class RegisterComponent {
 
   user: User;
 

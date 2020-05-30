@@ -1,8 +1,8 @@
 package pl.com.muca.server.dao;
 
+import com.google.common.collect.ImmutableList;
 import java.sql.PreparedStatement;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -29,8 +29,9 @@ public class PollDaoImpl implements PollDao {
   }
 
   @Override
-  public List<Poll> findAll() {
-    return template.query("SELECT * FROM poll", new PollRowMapper());
+  public ImmutableList<Poll> findAll() {
+    return ImmutableList
+        .copyOf(template.query("SELECT * FROM poll", new PollRowMapper()));
   }
 
   @Override
