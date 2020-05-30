@@ -6,16 +6,16 @@
         <div class="card-body">
           <h2 class="card-title text-center text-white py-3">{{ title }}</h2>
           <ul class="text-center list-inline py-3">
-            <li class="list-inline-item" [hidden]="loggedUser !== undefined">
+            <li class="list-inline-item" [hidden]="loggedUser !== null">
               <a routerLink="/users" class="btn btn-info">Lista użytkowników</a>
             </li>
-            <li class="list-inline-item"[hidden]="loggedUser !== undefined">
+            <li class="list-inline-item"[hidden]="loggedUser !== null">
               <a routerLink="/register" class="btn btn-info">Rejestracja</a>
             </li>
-            <li class="list-inline-item"[hidden]="loggedUser !== undefined">
+            <li class="list-inline-item"[hidden]="loggedUser !== null">
               <a routerLink="/login" class="btn btn-info">Logowanie</a>
             </li>
-            <li class="list-inline-item"[hidden]="loggedUser === undefined">
+            <li class="list-inline-item"[hidden]="loggedUser === null">
               <a (click)="logout()" class="btn btn-info">Wyloguj</a>
             </li>
           </ul>
