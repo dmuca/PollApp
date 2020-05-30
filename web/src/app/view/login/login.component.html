@@ -11,8 +11,7 @@
                required #email="ngModel">
       </div>
       <div [hidden]='email.pristine || email.value !== ""'
-           class="alert alert-danger">Email is
-        required.
+           class="alert alert-danger">Email jest wymagany.
       </div>
 
       <div class="form-group">
@@ -25,8 +24,10 @@
                required #password="ngModel">
       </div>
       <div [hidden]='password.pristine || password.value !== ""'
-           class="alert alert-danger">Password is
-        required.
+           class="alert alert-danger">Hasło jest wymagane.
+      </div>
+      <div [hidden]='!displayInvalidLoginMessage' class="alert alert-danger">
+        Błędne dane logowania, spróbuj jeszcze raz.
       </div>
       <button type="submit" [disabled]="!userForm.form.dirty"
               class="btn btn-info">Log In

@@ -13,10 +13,10 @@ export class LoginComponent implements OnInit {
 
   user: User;
   isPasswordValid = true;
+  displayInvalidLoginMessage = false;
 
-  // constructor(private route: ActivatedRoute,
-  //             private router: Router,
-  constructor(private userService: UserService) {
+  constructor(private route: ActivatedRoute,
+              private router: Router, private userService: UserService) {
     this.user = new User();
   }
 
@@ -25,16 +25,16 @@ export class LoginComponent implements OnInit {
   }
 
   logIn(user: User) {
+    this.displayInvalidLoginMessage = false;
     // TODO (Damian Muca): 5/30/20 move to service ??
-    this.userService.login(this.user).subscribe(x => console.log(x));
-    // .subscribe(isValid => {
-    //   if (isValid) {
-    //     sessionStorage.setItem('token', btoa(this.user.email + ':' + this.user.passwordHash));
-    //     // TODO (Damian Muca): 5/30/20 create component, navigate to pollslList
-    //     this.router.navigate(['/users']);
-    //   } else {
-    //     alert('Nieprawidłowe dane, spróbuj ponownie.');
-    //   }
-    // });
+    this.userService.login(this.user).subscribe(isValid => {
+      if (isValid) {
+        sessionStorage.setItem('token', btoa(`${this.user.email}:${this.user.passwordHash}`));
+        // TODO (Damian Muca): 5/30/20 create component, navigate to pollslList
+        this.router.navigate(['/users']);
+      } else {
+        this.displayInvalidLoginMessage = true;
+      }
+    });
   }
 }
