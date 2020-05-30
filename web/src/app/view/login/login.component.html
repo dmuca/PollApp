@@ -26,7 +26,7 @@
       <div [hidden]='password.pristine || password.value !== ""'
            class="alert alert-danger">Hasło jest wymagane.
       </div>
-      <div [hidden]='!displayInvalidLoginMessage' class="alert alert-danger">
+      <div [hidden]='isInvaligLoginWarrningHidden' class="alert alert-danger">
         Błędne dane logowania, spróbuj jeszcze raz.
       </div>
       <button type="submit" [disabled]="!userForm.form.dirty"
