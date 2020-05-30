@@ -1,7 +1,10 @@
 package pl.com.muca.server.usercontroller;
 
+import java.security.Principal;
+import java.util.Base64;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,11 +24,13 @@ public class UserController {
   @Resource
   UserService userService;
 
+  // TODO (Damian Muca): 5/30/20 change API endpoint name to listUsers.
   @GetMapping(value = "/usersList")
   public List<User> getUsers() {
     return userService.findAll();
   }
 
+  // TODO (Damian Muca): 5/30/20 change API endpoint name to registerUser.
   @PostMapping(value = "/createUser")
   public void createUser(@RequestBody User user) {
     logAction(user);
@@ -48,6 +53,20 @@ public class UserController {
   public void deleteUser(@RequestBody User user) {
     logAction(user);
     userService.deleteUser(user);
+  }
+
+  @GetMapping(value = "/login")
+  public boolean login(@RequestBody User user) {
+    return user.getEmail().equals("email") && user.getPasswordHash()
+        .equals("password");
+  }
+
+  @GetMapping(value = "/user")
+  public Principal user(HttpServletRequest request) {
+    String authToken = request.getHeader("Authorization")
+        .substring("Basic".length()).trim();
+    return () ->  new String(Base64.getDecoder()
+        .decode(authToken)).split(":")[0];
   }
 
   // TODO (Damian Muca): 5/18/20 Use log4j to log all action invoked on REST
