@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {User} from '../../model/user';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserService} from '../../model/user.service';
@@ -14,6 +14,9 @@ export class LoginComponent implements OnInit {
   isPasswordValid = true;
   displayInvalidLoginMessage = false;
 
+  @Output()
+  setLoggedUser: EventEmitter<User> = new EventEmitter<User>();
+
   constructor(private route: ActivatedRoute,
               private router: Router, private userService: UserService) {
     this.user = new User();
@@ -26,13 +29,11 @@ export class LoginComponent implements OnInit {
   logIn(user: User) {
     this.displayInvalidLoginMessage = false;
     // TODO (Damian Muca): 5/30/20 move to service ??
-    this.userService.login(this.user).subscribe(loggedUser => {
+    this.userService.login(this.user);
+    this.userService.getUser().subscribe(loggedUser => {
       if (loggedUser) {
         sessionStorage.setItem('token', btoa(`${this.user.email}:${this.user.passwordHash}`));
-        // TODO remove.
-        console.log(`Welcome back ${loggedUser.name}`);
-        // TODO (Damian Muca): 5/30/20 create component, navigate to pollslList
-        this.router.navigate(['/users']);
+        this.router.navigate(['/polls']);
       } else {
         this.displayInvalidLoginMessage = true;
       }
