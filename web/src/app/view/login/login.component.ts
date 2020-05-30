@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {User} from '../../model/user';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserService} from '../../model/user.service';
-import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-log-in',
