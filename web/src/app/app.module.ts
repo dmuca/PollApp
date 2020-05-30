@@ -9,6 +9,7 @@ import {FormsModule} from '@angular/forms';
 import {UserService} from './model/user.service';
 import {HttpClientModule} from '@angular/common/http';
 import { LoginComponent } from './view/login/login.component';
+import { PollsComponent } from './view/polls/polls.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { LoginComponent } from './view/login/login.component';
     UserListComponent,
     RegisterComponent,
     LoginComponent,
+    PollsComponent,
   ],
   imports: [
     BrowserModule,
