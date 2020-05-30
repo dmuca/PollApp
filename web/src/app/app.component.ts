@@ -9,6 +9,6 @@ export class AppComponent {
   title: string;
 
   constructor() {
-    this.title = 'Poll App - anonymous polls.';
+    this.title = 'PollApp - anonimowe ankiety';
   }
 }
