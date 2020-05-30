@@ -20,7 +20,6 @@ export class RegisterComponent {
   }
 
   onSubmit() {
-    console.log('submit');
     this.userService.save(this.user).subscribe(result => {
       console.log('result');
       console.log(result);
