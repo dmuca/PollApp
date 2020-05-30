@@ -13,9 +13,6 @@ export class LoginComponent implements OnInit {
   user: User;
   isInvaligLoginWarrningHidden = true;
 
-  @Output()
-  setLoggedUser: EventEmitter<User> = new EventEmitter<User>();
-
   constructor(private route: ActivatedRoute,
               private router: Router, private userService: UserService) {
     this.user = new User();

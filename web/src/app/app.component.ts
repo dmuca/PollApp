@@ -9,7 +9,7 @@ import {UserService} from './model/user.service';
 })
 export class AppComponent {
   title: string;
-  loggedUser: User = undefined;
+  loggedUser: User = null;
 
   constructor(private userService: UserService) {
     this.title = 'PollApp - anonimowe ankiety';
@@ -17,7 +17,7 @@ export class AppComponent {
       if (user){
         this.title = `Witaj ${user.name}, dobrze Cię znów widzieć!`;
       }
-      else{
+      else if (this.loggedUser){
         this.title = `Zostałeś wylogowany, do zobaczenia ponownie!`;
       }
       this.loggedUser = user;
@@ -25,6 +25,6 @@ export class AppComponent {
   }
 
   logout() {
-    this.userService.getUser().next(undefined);
+    this.userService.getUser().next(null);
   }
 }
