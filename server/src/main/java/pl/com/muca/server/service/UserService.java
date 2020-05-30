@@ -14,4 +14,6 @@ public interface UserService {
   void executeUpdateUser(User user);
 
   void deleteUser(User user);
+
+  boolean login(User user);
 }

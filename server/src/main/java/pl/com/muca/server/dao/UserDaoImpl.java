@@ -1,8 +1,8 @@
 package pl.com.muca.server.dao;
 
+import com.google.common.collect.ImmutableList;
 import java.sql.PreparedStatement;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -16,9 +16,11 @@ import pl.com.muca.server.mapper.UserRowMapper;
 
 @Repository
 public class UserDaoImpl implements UserDao {
-  private static final String UPDATE_SQL = "UPDATE appuser SET name=:name, last_name=:last_name, "
-      + "password_hash=:password_hash, email=:email "
-      + "WHERE user_id_hash=:user_id_hash";
+
+  private static final String UPDATE_SQL =
+      "UPDATE appuser SET name=:name, last_name=:last_name, "
+          + "password_hash=:password_hash, email=:email "
+          + "WHERE user_id_hash=:user_id_hash";
 
   private final NamedParameterJdbcTemplate template;
 
@@ -27,8 +29,9 @@ public class UserDaoImpl implements UserDao {
   }
 
   @Override
-  public List<User> findAll() {
-    return template.query("SELECT * FROM appuser", new UserRowMapper());
+  public ImmutableList<User> findAll() {
+    return ImmutableList
+        .copyOf(template.query("SELECT * FROM appuser", new UserRowMapper()));
   }
 
   @Override

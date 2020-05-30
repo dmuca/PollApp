@@ -1,11 +1,11 @@
 package pl.com.muca.server.dao;
 
-import java.util.List;
+import com.google.common.collect.ImmutableList;
 import pl.com.muca.server.entity.User;
 
 public interface UserDao {
 
-  List<User> findAll();
+  ImmutableList<User> findAll();
 
   void insertUser(User user);
 
