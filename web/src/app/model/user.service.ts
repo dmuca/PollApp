@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {User} from './user';
 import {Observable} from 'rxjs/Observable';
-import {map} from 'rxjs/operators';
 
 @Injectable()
 export class UserService {
@@ -21,7 +20,7 @@ export class UserService {
     return this.http.post<User>(`${this.usersUrl}createUser`, user);
   }
 
-  public login(user: User): Observable<boolean> {
-    return this.http.post<boolean>(`${this.usersUrl}login`, user);
+  public login(user: User): Observable<User> {
+    return this.http.post<User>(`${this.usersUrl}login`, user);
   }
 }
