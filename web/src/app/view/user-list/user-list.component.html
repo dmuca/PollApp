@@ -8,6 +8,7 @@
         <th scope="col">Last Name</th>
         <th scope="col">Password</th>
         <th scope="col">Email</th>
+        <th scope="col">Delete user</th>
       </tr>
       </thead>
       <tbody>
@@ -17,6 +18,13 @@
         <td>{{ user.lastName }}</td>
         <td>{{ user.passwordHash }}</td>
         <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
+        <td class="delete-button">
+          <button mat-icon-button color="warn"
+                  aria-label="Example icon button with a heart icon"
+                  (click)="deleteUser(user)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
       </tr>
       </tbody>
     </table>

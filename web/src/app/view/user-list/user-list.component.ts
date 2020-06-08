@@ -14,8 +14,16 @@ export class UserListComponent implements OnInit {
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
+    this.refreshUsersList();
+  }
+
+  private refreshUsersList() {
     this.userService.findAll().subscribe(data => {
       this.users = data;
     });
+  }
+
+  deleteUser(user: User) {
+    this.userService.delete(user);
   }
 }
