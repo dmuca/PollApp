@@ -15,3 +15,7 @@ następnie otworzyć stronę https://localhost:8080
 ### Twórcy
 - Damian Muca
 - Tomasz Widomski
+
+
+
+ sudo ng serve --host 192.168.0.4 --disableHostCheck true
