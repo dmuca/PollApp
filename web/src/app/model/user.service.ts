@@ -11,7 +11,7 @@ export class UserService {
   private user$: Subject<User> = new Subject();
 
   constructor(private http: HttpClient) {
-    this.usersUrl = 'http://localhost:8080/pollApp/';
+    this.usersUrl = 'http://93.180.178.64:2000/pollApp/';
   }
 
   getUser(): Subject<User> {
