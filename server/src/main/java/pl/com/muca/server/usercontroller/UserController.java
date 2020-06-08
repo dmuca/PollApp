@@ -1,10 +1,7 @@
 package pl.com.muca.server.usercontroller;
 
-import java.security.Principal;
-import java.util.Base64;
 import java.util.List;
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,13 +14,12 @@ import pl.com.muca.server.entity.User;
 import pl.com.muca.server.service.UserService;
 
 @RestController
-//@CrossOrigin(origins = "http://localhost:4200")
+// @CrossOrigin(origins = "http://localhost:4200")
 @CrossOrigin
 @RequestMapping("/pollApp")
 public class UserController {
 
-  @Resource
-  UserService userService;
+  @Resource UserService userService;
 
   // TODO (Damian Muca): 5/30/20 change API endpoint name to listUsers.
   @GetMapping(value = "/usersList")
@@ -52,6 +48,7 @@ public class UserController {
   }
 
   @DeleteMapping(value = "/deleteUser")
+  // TODO  tu ogarnąć, nie dochodzi delete request ... : /q
   public void deleteUser(@RequestBody User user) {
     logAction(user.toString());
     userService.deleteUser(user);
@@ -63,25 +60,23 @@ public class UserController {
     return userService.login(user);
   }
 
-//  @GetMapping(value = "/user")
-//  public Principal user(HttpServletRequest request) {
-//    logAction(request.toString());
-//    String authToken = request.getHeader("Authorization")
-//        .substring("Basic".length()).trim();
-//    return () -> new String(Base64.getDecoder()
-//        .decode(authToken)).split(":")[0];
-//  }
+  //  @GetMapping(value = "/user")
+  //  public Principal user(HttpServletRequest request) {
+  //    logAction(request.toString());
+  //    String authToken = request.getHeader("Authorization")
+  //        .substring("Basic".length()).trim();
+  //    return () -> new String(Base64.getDecoder()
+  //        .decode(authToken)).split(":")[0];
+  //  }
 
   // TODO (Damian Muca): 5/18/20 log4j to log all action invoked on REST API.
   private void logAction() {
-    String methodName = Thread.currentThread().getStackTrace()[2]
-        .getMethodName();
+    String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
     logAction("", methodName);
   }
 
   private void logAction(String info) {
-    String methodName = Thread.currentThread().getStackTrace()[2]
-        .getMethodName();
+    String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
     logAction(info, methodName);
   }
 
