@@ -27,4 +27,8 @@ export class AppComponent {
   logout() {
     this.userService.loggedInUser$.next(null);
   }
+
+  isUserLoggedIn(){
+    return this.loggedUser !== null;
+  }
 }
