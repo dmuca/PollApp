@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {Poll} from "./poll";
-import {User} from "./user";
-import {Subject} from "rxjs";
-import {HttpClient} from "@angular/common/http";
+import {Poll} from './poll';
+import {Subject} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {PollState} from "./PollState";
 
 @Injectable({
   providedIn: 'root'
@@ -20,15 +20,15 @@ export class PollService {
     const fakePolls: Poll[] = [{
       pollId: 1,
       name: 'Ankieta 1',
-      status: 'Wypełniona',
+      status: PollState.Filled,
     }, {
       pollId: 1,
       name: 'Ankieta 2',
-      status: 'Nowa',
+      status: PollState.New,
     }];
     this.pollsList$.next(fakePolls);
     this.http.get<Poll[]>(`${this.url}listPolls`).subscribe((polls) => {
-      this.pollsList$.next(polls);
+      this.pollsList$.next(polls.concat(fakePolls));
     });
   }
 }

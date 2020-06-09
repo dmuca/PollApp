@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import pl.com.muca.server.entity.Poll;
+import pl.com.muca.server.entity.PollState;
 
 public class PollRowMapper implements RowMapper<Poll> {
 
@@ -13,6 +14,7 @@ public class PollRowMapper implements RowMapper<Poll> {
     poll.setPollId(resultSet.getInt("poll_id"));
     poll.setOwnerUserId(resultSet.getInt("owner_user_id"));
     poll.setName(resultSet.getString("name"));
+    poll.setState(PollState.New);
     return poll;
   }
 }

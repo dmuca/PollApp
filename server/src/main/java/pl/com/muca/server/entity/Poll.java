@@ -5,6 +5,7 @@ public class Poll {
   private int pollId;
   private int ownerUserId;
   private String name;
+  private PollState state;
 
   public int getPollId() {
     return pollId;
@@ -16,6 +17,10 @@ public class Poll {
 
   public int getOwnerUserId() {
     return ownerUserId;
+  }
+
+  public void setState(PollState state) {
+    this.state = state;
   }
 
   public void setOwnerUserId(int ownerUserId) {
@@ -32,7 +37,7 @@ public class Poll {
 
   @Override
   public String toString() {
-    return String.format("Poll{pollId=%d, ownerUserId=%d, name='%s'}", pollId,
-        ownerUserId, name);
+    return String.format("Poll{pollId=%d, ownerUserId=%d, name='%s', status='%s'}", pollId,
+        ownerUserId, name, state);
   }
 }
