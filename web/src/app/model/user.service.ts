@@ -7,19 +7,19 @@ import {Subject} from 'rxjs';
 @Injectable()
 export class UserService {
 
+  public usersList$: Subject<User[]> = new Subject<User[]>();
+  public loggedInUser$: Subject<User> = new Subject();
+
   private usersUrl: string;
-  private user$: Subject<User> = new Subject();
 
   constructor(private http: HttpClient) {
     this.usersUrl = 'http://93.180.178.64:2000/pollApp/';
   }
 
-  getUser(): Subject<User> {
-    return this.user$;
-  }
-
-  public findAll(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.usersUrl}usersList`);
+  public refreshUsersList() {
+    this.http.get<User[]>(`${this.usersUrl}usersList`).subscribe((usersList) => {
+      this.usersList$.next(usersList);
+    });
   }
 
   public save(user: User): Observable<User> {
@@ -28,7 +28,7 @@ export class UserService {
 
   public login(user: User) {
     return this.http.post<User>(`${this.usersUrl}login`, user).subscribe((loggedUser: User) => {
-      this.user$.next(loggedUser);
+      this.loggedInUser$.next(loggedUser);
     });
   }
 
@@ -41,9 +41,8 @@ export class UserService {
       body: user
     };
     console.log('delete request...');
-    return this.http.delete<User>(`${this.usersUrl}deleteUser`, httpOptions).subscribe((response) =>
-    {
-      // TODO update users list.
+    return this.http.delete<User>(`${this.usersUrl}deleteUser`, httpOptions).subscribe((response) => {
+      this.refreshUsersList();
     });
   }
 }
