@@ -4,12 +4,14 @@ import { UserListComponent} from './view/user-list/user-list.component';
 import { RegisterComponent} from './view/register/register.component';
 import {LoginComponent} from './view/login/login.component';
 import {PollsComponent} from './view/polls/polls.component';
+import {CreatePollComponent} from './view/create-poll/create-poll.component';
 
 const routes: Routes = [
   { path: 'users', component: UserListComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'polls', component: PollsComponent },
+  { path: 'createPoll', component: CreatePollComponent },
 ];
 
 @NgModule({
