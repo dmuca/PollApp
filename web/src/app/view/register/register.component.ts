@@ -21,8 +21,6 @@ export class RegisterComponent {
 
   onSubmit() {
     this.userService.save(this.user).subscribe(result => {
-      console.log('result');
-      console.log(result);
       this.gotoUserList();
     });
   }

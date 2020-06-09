@@ -40,7 +40,6 @@ export class UserService {
       headers: header,
       body: user
     };
-    console.log('delete request...');
     return this.http.delete<User>(`${this.usersUrl}deleteUser`, httpOptions).subscribe((response) => {
       this.refreshUsersList();
     });
