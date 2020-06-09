@@ -56,6 +56,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
 import { CreatePollComponent } from './view/create-poll/create-poll.component';
+import { MyPollsComponent } from './view/my-polls/my-polls.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { CreatePollComponent } from './view/create-poll/create-poll.component';
     LoginComponent,
     PollsComponent,
     CreatePollComponent,
+    MyPollsComponent,
   ],
   imports: [
     BrowserModule,

@@ -19,6 +19,9 @@
           <!-- TODO(Damian) 10.06.2020 change to [hidden]="!isUserLoggedIn()" -->
           <ul class="text-center list-inline py-3" [hidden]="isUserLoggedIn()">
             <li class="list-inline-item">
+              <a routerLink="/myPolls" class="btn btn-info">Moje ankiety</a>
+            </li>
+            <li class="list-inline-item">
               <a routerLink="/polls" class="btn btn-info">Lista ankiet</a>
             </li>
             <li class="list-inline-item">
