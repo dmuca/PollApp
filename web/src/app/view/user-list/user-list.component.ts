@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {User} from '../../model/user';
 import {UserService} from '../../model/user.service';
 
@@ -8,14 +8,19 @@ import {UserService} from '../../model/user.service';
   styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent implements OnInit {
-
   users: User[];
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {
+    this.userService.usersList$.subscribe((users: User[]) => {
+      this.users = users;
+    });
+  }
 
   ngOnInit(): void {
-    this.userService.findAll().subscribe(data => {
-      this.users = data;
-    });
+    this.userService.refreshUsersList();
+  }
+
+  deleteUser(user: User) {
+    this.userService.delete(user);
   }
 }
