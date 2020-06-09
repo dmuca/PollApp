@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User} from './user';
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs';
@@ -7,19 +7,19 @@ import {Subject} from 'rxjs';
 @Injectable()
 export class UserService {
 
+  public usersList$: Subject<User[]> = new Subject<User[]>();
+  public loggedInUser$: Subject<User> = new Subject();
+
   private usersUrl: string;
-  private user$: Subject<User> = new Subject();
 
   constructor(private http: HttpClient) {
-    this.usersUrl = 'http://localhost:8080/pollApp/';
+    this.usersUrl = 'http://93.180.178.64:2000/pollApp/';
   }
 
-  getUser(): Subject<User> {
-    return this.user$;
-  }
-
-  public findAll(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.usersUrl}usersList`);
+  public refreshUsersList() {
+    this.http.get<User[]>(`${this.usersUrl}usersList`).subscribe((usersList) => {
+      this.usersList$.next(usersList);
+    });
   }
 
   public save(user: User): Observable<User> {
@@ -28,7 +28,21 @@ export class UserService {
 
   public login(user: User) {
     return this.http.post<User>(`${this.usersUrl}login`, user).subscribe((loggedUser: User) => {
-      this.user$.next(loggedUser);
+      this.loggedInUser$.next(loggedUser);
+    });
+  }
+
+  public delete(user: User) {
+    const header: HttpHeaders = new HttpHeaders()
+    .append('Content-Type', 'application/json; charset=UTF-8')
+    .append('Authorization', 'Bearer ' + sessionStorage.getItem('accessToken'));
+    const httpOptions = {
+      headers: header,
+      body: user
+    };
+    console.log('delete request...');
+    return this.http.delete<User>(`${this.usersUrl}deleteUser`, httpOptions).subscribe((response) => {
+      this.refreshUsersList();
     });
   }
 }
