@@ -14,9 +14,11 @@ export class PollService {
 
   public listPolls() {
     const fakePolls: Poll[] = [{
+      pollId: 1,
       name: 'Ankieta 1',
       status: 'Wypełniona',
     }, {
+      pollId: 1,
       name: 'Ankieta 2',
       status: 'Nowa',
     }];
