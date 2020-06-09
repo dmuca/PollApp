@@ -17,13 +17,13 @@ export class UserService {
   }
 
   public refreshUsersList() {
-    this.http.get<User[]>(`${this.usersUrl}usersList`).subscribe((usersList) => {
+    this.http.get<User[]>(`${this.usersUrl}listUsers`).subscribe((usersList) => {
       this.usersList$.next(usersList);
     });
   }
 
   public save(user: User): Observable<User> {
-    return this.http.post<User>(`${this.usersUrl}createUser`, user);
+    return this.http.post<User>(`${this.usersUrl}registerUser`, user);
   }
 
   public login(user: User) {

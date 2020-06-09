@@ -21,16 +21,14 @@ public class UserController {
 
   @Resource UserService userService;
 
-  // TODO (Damian Muca): 5/30/20 change API endpoint name to listUsers.
-  @GetMapping(value = "/usersList")
+  @GetMapping(value = "/listUsers")
   public List<User> getUsers() {
     logAction();
     return userService.findAll();
   }
 
-  // TODO (Damian Muca): 5/30/20 change API endpoint name to registerUser.
-  @PostMapping(value = "/createUser")
-  public void createUser(@RequestBody User user) {
+  @PostMapping(value = "/registerUser")
+  public void registerUser(@RequestBody User user) {
     logAction(user.toString());
     userService.insertUser(user);
   }
