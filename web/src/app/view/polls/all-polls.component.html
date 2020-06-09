@@ -3,21 +3,18 @@
     <table class="table table-bordered table-striped">
       <thead class="thead-dark">
       <tr>
-        <th scope="col">Id</th>
         <th scope="col">Ankieta</th>
-        <th scope="col">Status</th>
         <th scope="col">Akcja</th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let poll of this.polls">
-        <td>{{poll.pollId}}</td>
         <td><p class="poll-name text-center text-black py-1">{{ poll.name }}</p></td>
-        <td>{{poll.status}}</td>
         <td>
-          <button class="fill-button" mat-raised-button color="primary" (click)="fillPoll(poll)">
+          <button *ngIf="isPollNew(poll) else alreadyFilled" class="fill-button" mat-raised-button color="primary" (click)="fillPoll(poll)">
             Wypełnij
           </button>
+          <ng-template #alreadyFilled><p class="poll-filled-info">Wypełniona</p></ng-template>
         </td>
       </tr>
       </tbody>

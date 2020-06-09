@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Poll} from './poll';
 import {Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import {PollState} from "./PollState";
+import {PollState} from "./poll.state";
 
 @Injectable({
   providedIn: 'root'
@@ -18,16 +18,17 @@ export class PollService {
 
   public listAllPolls() {
     const fakePolls: Poll[] = [{
-      pollId: 1,
+      pollId: 5,
       name: 'Ankieta 1',
-      status: PollState.Filled,
+      state: PollState.Filled,
     }, {
-      pollId: 1,
+      pollId: 6,
       name: 'Ankieta 2',
-      status: PollState.New,
+      state: PollState.New,
     }];
     this.pollsList$.next(fakePolls);
     this.http.get<Poll[]>(`${this.url}listPolls`).subscribe((polls) => {
+      console.log(...polls);
       this.pollsList$.next(polls.concat(fakePolls));
     });
   }

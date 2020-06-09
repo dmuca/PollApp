@@ -19,10 +19,6 @@ public class Poll {
     return ownerUserId;
   }
 
-  public void setState(PollState state) {
-    this.state = state;
-  }
-
   public void setOwnerUserId(int ownerUserId) {
     this.ownerUserId = ownerUserId;
   }
@@ -33,6 +29,14 @@ public class Poll {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public void setState(PollState state) {
+    this.state = state;
+  }
+
+  public PollState getState() {
+    return state;
   }
 
   @Override
