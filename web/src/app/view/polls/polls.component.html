@@ -1,1 +1,20 @@
-<p>polls works!</p>
+<div class="card my-5">
+  <div class="card-body">
+    <table class="table table-bordered table-striped">
+      <thead class="thead-dark">
+      <tr>
+        <th scope="col">Ankieta</th>
+        <th scope="col">Status</th>
+        <th scope="col">Akcja</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let poll of this.polls">
+        <td>{{ poll.name }}</td>
+        <td>{{poll.status}}</td>
+        <td>Akcja</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
