@@ -17,7 +17,7 @@ export class AllPollsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.pollService.listPolls();
+    this.pollService.listAllPolls();
   }
 
 }
