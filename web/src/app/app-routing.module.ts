@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { UserListComponent} from './view/user-list/user-list.component';
 import { RegisterComponent} from './view/register/register.component';
 import {LoginComponent} from './view/login/login.component';
-import {PollsComponent} from './view/polls/polls.component';
+import {AllPollsComponent} from './view/polls/all-polls.component';
 import {CreatePollComponent} from './view/create-poll/create-poll.component';
 import {MyPollsComponent} from './view/my-polls/my-polls.component';
 
@@ -11,9 +11,9 @@ const routes: Routes = [
   { path: 'users', component: UserListComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'polls', component: PollsComponent },
-  { path: 'createPoll', component: CreatePollComponent },
   { path: 'myPolls', component: MyPollsComponent },
+  { path: 'allPolls', component: AllPollsComponent },
+  { path: 'createPoll', component: CreatePollComponent },
 ];
 
 @NgModule({

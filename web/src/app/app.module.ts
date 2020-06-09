@@ -9,7 +9,7 @@ import {FormsModule} from '@angular/forms';
 import {UserService} from './model/user.service';
 import {HttpClientModule} from '@angular/common/http';
 import {LoginComponent} from './view/login/login.component';
-import {PollsComponent} from './view/polls/polls.component';
+import {AllPollsComponent} from './view/polls/all-polls.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
@@ -65,7 +65,7 @@ import { MyPollsComponent } from './view/my-polls/my-polls.component';
     UserListComponent,
     RegisterComponent,
     LoginComponent,
-    PollsComponent,
+    AllPollsComponent,
     CreatePollComponent,
     MyPollsComponent,
   ],

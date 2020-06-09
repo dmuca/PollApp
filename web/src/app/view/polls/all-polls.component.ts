@@ -4,10 +4,10 @@ import {PollService} from '../../model/poll.service';
 
 @Component({
   selector: 'app-polls',
-  templateUrl: './polls.component.html',
-  styleUrls: ['./polls.component.scss']
+  templateUrl: './all-polls.component.html',
+  styleUrls: ['./all-polls.component.scss']
 })
-export class PollsComponent implements OnInit {
+export class AllPollsComponent implements OnInit {
   polls: Poll[];
 
   constructor(private pollService: PollService) {
