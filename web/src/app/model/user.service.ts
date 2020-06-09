@@ -38,9 +38,12 @@ export class UserService {
     .append('Authorization', 'Bearer ' + sessionStorage.getItem('accessToken'));
     const httpOptions = {
       headers: header,
-      body: { User: user }
+      body: user
     };
     console.log('delete request...');
-    return this.http.delete<User>(`${this.usersUrl}deleteUser`, httpOptions);
+    return this.http.delete<User>(`${this.usersUrl}deleteUser`, httpOptions).subscribe((response) =>
+    {
+      // TODO update users list.
+    });
   }
 }
