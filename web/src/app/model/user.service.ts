@@ -10,24 +10,24 @@ export class UserService {
   public usersList$: Subject<User[]> = new Subject<User[]>();
   public loggedInUser$: Subject<User> = new Subject();
 
-  private usersUrl: string;
+  private url: string;
 
   constructor(private http: HttpClient) {
-    this.usersUrl = 'http://93.180.178.64:2000/pollApp/';
+    this.url = 'http://93.180.178.64:2000/pollApp/';
   }
 
   public refreshUsersList() {
-    this.http.get<User[]>(`${this.usersUrl}listUsers`).subscribe((usersList) => {
+    this.http.get<User[]>(`${this.url}listUsers`).subscribe((usersList) => {
       this.usersList$.next(usersList);
     });
   }
 
   public save(user: User): Observable<User> {
-    return this.http.post<User>(`${this.usersUrl}registerUser`, user);
+    return this.http.post<User>(`${this.url}registerUser`, user);
   }
 
   public login(user: User) {
-    return this.http.post<User>(`${this.usersUrl}login`, user).subscribe((loggedUser: User) => {
+    return this.http.post<User>(`${this.url}login`, user).subscribe((loggedUser: User) => {
       this.loggedInUser$.next(loggedUser);
     });
   }
@@ -40,7 +40,7 @@ export class UserService {
       headers: header,
       body: user
     };
-    return this.http.delete<User>(`${this.usersUrl}deleteUser`, httpOptions).subscribe((response) => {
+    return this.http.delete<User>(`${this.url}deleteUser`, httpOptions).subscribe((response) => {
       this.refreshUsersList();
     });
   }

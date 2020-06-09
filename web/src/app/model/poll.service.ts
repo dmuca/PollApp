@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Poll} from "./poll";
 import {User} from "./user";
 import {Subject} from "rxjs";
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -9,10 +10,13 @@ import {Subject} from "rxjs";
 export class PollService {
   public pollsList$: Subject<Poll[]> = new Subject<Poll[]>();
 
-  constructor() {
+  private url: string;
+
+  constructor(private http: HttpClient) {
+    this.url = 'http://93.180.178.64:2000/pollApp/';
   }
 
-  public listPolls() {
+  public listAllPolls() {
     const fakePolls: Poll[] = [{
       pollId: 1,
       name: 'Ankieta 1',
@@ -23,5 +27,8 @@ export class PollService {
       status: 'Nowa',
     }];
     this.pollsList$.next(fakePolls);
+    this.http.get<Poll[]>(`${this.url}listPolls`).subscribe((polls) => {
+      this.pollsList$.next(polls);
+    });
   }
 }
