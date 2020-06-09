@@ -13,7 +13,7 @@ export class AppComponent {
 
   constructor(private userService: UserService) {
     this.title = 'PollApp - anonimowe ankiety';
-    this.userService.getUser().subscribe(user => {
+    this.userService.loggedInUser$.subscribe(user => {
       if (user){
         this.title = `Witaj ${user.name}, dobrze Cię znów widzieć!`;
       }
@@ -25,6 +25,6 @@ export class AppComponent {
   }
 
   logout() {
-    this.userService.getUser().next(null);
+    this.userService.loggedInUser$.next(null);
   }
 }

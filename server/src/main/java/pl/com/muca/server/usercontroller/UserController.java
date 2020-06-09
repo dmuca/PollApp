@@ -48,7 +48,6 @@ public class UserController {
   }
 
   @DeleteMapping(value = "/deleteUser")
-  // TODO  tu ogarnąć, nie dochodzi delete request ... : /q
   public void deleteUser(@RequestBody User user) {
     logAction(user.toString());
     userService.deleteUser(user);

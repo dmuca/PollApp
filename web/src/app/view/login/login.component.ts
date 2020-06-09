@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
               private router: Router, private userService: UserService) {
     this.user = new User();
 
-    this.userService.getUser().subscribe(loggedUser => {
+    this.userService.loggedInUser$.subscribe(loggedUser => {
       if (loggedUser) {
         sessionStorage.setItem('token', btoa(`${this.user.email}:${this.user.passwordHash}`));
         this.router.navigate(['/polls']);
