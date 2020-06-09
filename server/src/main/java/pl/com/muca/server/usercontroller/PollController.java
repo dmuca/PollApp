@@ -22,7 +22,7 @@ public class PollController {
   @Resource
   PollService pollService;
 
-  @GetMapping(value = "/pollsList")
+  @GetMapping(value = "/listPolls")
   public List<Poll> getPolls() {
     return pollService.findAll();
   }

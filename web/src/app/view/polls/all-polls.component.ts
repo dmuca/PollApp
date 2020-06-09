@@ -20,4 +20,7 @@ export class AllPollsComponent implements OnInit {
     this.pollService.listAllPolls();
   }
 
+  fillPoll(poll: Poll) {
+    console.log(`Fill poll: ${poll}`);
+  }
 }
