@@ -1,7 +1,7 @@
-import {PollState} from './PollState';
+import {PollState} from './poll.state';
 
 export class Poll{
   pollId: number;
   name: string;
-  status: PollState;
+  state: PollState;
 }

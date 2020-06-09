@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Poll} from '../../model/poll';
 import {PollService} from '../../model/poll.service';
+import {PollState} from '../../model/poll.state';
 
 @Component({
   selector: 'app-polls',
@@ -22,5 +23,9 @@ export class AllPollsComponent implements OnInit {
 
   fillPoll(poll: Poll) {
     console.log(`Fill poll: ${poll}`);
+  }
+
+  isPollNew(poll: Poll): boolean {
+    return poll.state === PollState.New;
   }
 }

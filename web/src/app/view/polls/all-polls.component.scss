@@ -6,11 +6,14 @@ td{
   text-align: center;
 }
 
-button.fill-button{
-  padding: 0;
-}
-
 p.poll-name{
   font-family: "Andale Mono";
   font-size: x-large;
+}
+
+p.poll-filled-info{
+  padding: 12px 0 0 0;
+  font-family: "Andale Mono";
+  font-weight: bold;
+  color: #089800;
 }
