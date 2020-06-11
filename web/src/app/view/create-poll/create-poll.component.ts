@@ -35,12 +35,15 @@ export class CreatePollComponent implements OnInit {
   }
 
   onSubmit() {
-    this.submitted = true;
-    this.alertService.clear();
-    if (this.pollForm.invalid) {
-      return;
-    }
-    this.loading = true;
+    // this.submitted = true;
+    // this.alertService.clear();
+    // if (this.pollForm.invalid) {
+    //   return;
+    // }
+    // this.loading = true;
+
+    // this.alertService.error('sample error');
+    console.log(this.questions);
   }
 
   get getFormControls() {
@@ -50,5 +53,9 @@ export class CreatePollComponent implements OnInit {
   addQuestion() {
     const newQuestion: Question = new Question();
     this.questions = this.questions.concat(newQuestion);
+  }
+
+  onQuestionChanged(question: Question) {
+    console.log(question);
   }
 }
