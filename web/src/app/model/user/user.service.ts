@@ -28,6 +28,7 @@ export class UserService {
     return this.http.post<User>(`${this.url}registerUser`, user);
   }
 
+  // TODO (Damian Muca): 6/11/20 Delete login method (it's in the authentication service).
   public login(user: User) {
     return this.http.post<User>(`${this.url}login`, user).subscribe((loggedUser: User) => {
       this.loggedInUser$.next(loggedUser);
