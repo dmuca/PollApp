@@ -44,9 +44,9 @@ public class UserDaoImpl implements UserDao {
     SqlParameterSource param = new MapSqlParameterSource()
         // TODO (Damian Muca): 5/28/20 handle hash generating.
         .addValue("user_id_hash", user.getEmail().trim().hashCode())
-        .addValue("name", user.getName().trim())
+        .addValue("name", user.getFirstName().trim())
         .addValue("last_name", user.getLastName().trim())
-        .addValue("password_hash", user.getPasswordHash())
+        .addValue("password_hash", user.getPassword())
         .addValue("email", user.getEmail().trim());
     template.update(sql, param, holder);
   }
@@ -55,10 +55,10 @@ public class UserDaoImpl implements UserDao {
   public void updateUser(User user) {
     KeyHolder holder = new GeneratedKeyHolder();
     SqlParameterSource param = new MapSqlParameterSource()
-        .addValue("user_id_hash", user.getUserIdHash())
-        .addValue("name", user.getName().trim())
+        .addValue("user_id_hash", user.getId())
+        .addValue("name", user.getFirstName().trim())
         .addValue("last_name", user.getLastName().trim())
-        .addValue("password_hash", user.getPasswordHash())
+        .addValue("password_hash", user.getPassword())
         .addValue("email", user.getEmail().trim());
     template.update(UPDATE_SQL, param, holder);
   }
@@ -66,10 +66,10 @@ public class UserDaoImpl implements UserDao {
   @Override
   public void executeUpdateUser(User user) {
     Map<String, Object> map = new HashMap<>();
-    map.put("user_id_hash", user.getUserIdHash());
-    map.put("name", user.getName().trim());
+    map.put("user_id_hash", user.getId());
+    map.put("name", user.getFirstName().trim());
     map.put("last_name", user.getLastName().trim());
-    map.put("password_hash", user.getPasswordHash());
+    map.put("password_hash", user.getPassword());
     map.put("email", user.getEmail().trim());
 
     template.execute(UPDATE_SQL, map,
@@ -80,7 +80,7 @@ public class UserDaoImpl implements UserDao {
   public void deleteUser(User user) {
     final String sql = "DELETE FROM appuser WHERE user_id_hash=:user_id_hash";
     final Map<String, Object> map = new HashMap<>();
-    map.put("user_id_hash", user.getUserIdHash());
+    map.put("user_id_hash", user.getId());
     template.execute(sql, map,
         (PreparedStatementCallback<Object>) PreparedStatement::executeUpdate);
   }

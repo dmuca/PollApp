@@ -4,26 +4,26 @@ import java.util.Objects;
 
 public class User {
 
-  private int userIdHash;
-  private String name;
+  private int id;
+  private String firstName;
   private String lastName;
-  private String passwordHash;
+  private String password;
   private String email;
 
-  public long getUserIdHash() {
-    return userIdHash;
+  public long getId() {
+    return id;
   }
 
-  public void setUserIdHash(int userIdHash) {
-    this.userIdHash = userIdHash;
+  public void setId(int id) {
+    this.id = id;
   }
 
-  public String getName() {
-    return name;
+  public String getFirstName() {
+    return firstName;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
   }
 
   public String getLastName() {
@@ -34,12 +34,12 @@ public class User {
     this.lastName = lastName;
   }
 
-  public String getPasswordHash() {
-    return passwordHash;
+  public String getPassword() {
+    return password;
   }
 
-  public void setPasswordHash(String passwordHash) {
-    this.passwordHash = passwordHash;
+  public void setPassword(String password) {
+    this.password = password;
   }
 
   public String getEmail() {
@@ -54,13 +54,13 @@ public class User {
   public String toString() {
     return String.format(
         "{"
-            + "userIdHash=%d, "
-            + "name='%s', "
+            + "id=%d, "
+            + "firstName='%s', "
             + "lastName='%s', "
-            + "passwordHash='%s', "
+            + "password='%s', "
             + "email='%s'"
             + "}",
-        userIdHash, name, lastName, passwordHash, email);
+        id, firstName, lastName, password, email);
   }
 
   @Override

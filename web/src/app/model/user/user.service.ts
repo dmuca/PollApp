@@ -18,6 +18,8 @@ export class UserService {
 
   public refreshUsersList() {
     this.http.get<User[]>(`${this.url}listUsers`).subscribe((usersList) => {
+      console.log('listUsers');
+      console.log(usersList);
       this.usersList$.next(usersList);
     });
   }
