@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.com.muca.server.entity.Poll;
@@ -23,7 +24,9 @@ public class PollController {
   PollService pollService;
 
   @GetMapping(value = "/listPolls")
-  public List<Poll> getPolls() {
+  public List<Poll> getPolls(@RequestHeader("Authorization") String token) {
+    System.out.println("TOKEN");
+    System.out.println(token);
     return pollService.findAll();
   }
 
