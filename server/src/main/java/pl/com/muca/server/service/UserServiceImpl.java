@@ -59,6 +59,7 @@ public class UserServiceImpl implements UserService {
       userDao.createSession(user);
       String sessionToken = userDao.getLastSessionToken(user);
       user.setToken(sessionToken);
+      user.setPassword("not-visible");
       return user;
     }
   }
