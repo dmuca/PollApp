@@ -4,7 +4,7 @@
     <div class="form-group">
       <label for="pollName"><b>Nazwa ankiety</b></label>
       <input type="text" formControlName="pollName" class="form-control"
-             placeholder="Nazwa ankiety"
+             placeholder="Nazwa ankiety" [(ngModel)]="poll.name"
              [ngClass]="{ 'is-invalid': submitted && getFormControls.pollName.errors }"/>
       <div *ngIf="submitted && getFormControls.pollName.errors"
            class="invalid-feedback">
@@ -15,7 +15,7 @@
     </div>
     <hr/>
 
-    <div *ngFor="let question of questions; let i = index"
+    <div *ngFor="let question of poll.questions; let i = index"
          [attr.data-index]="i">
       <div class="form-group">
         <label><b>Pytanie nr. {{i + 1}}</b></label>

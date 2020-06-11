@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Question} from '../../../model/poll/question';
+import {Answer} from '../../../model/poll/answer';
 
 @Component({
   selector: 'app-insert-question',
@@ -17,7 +18,9 @@ export class InsertQuestionComponent implements OnInit {
   }
 
   addAnswer() {
-    const newAnswer = String('Hello geeksforgeeks');
+    const newAnswer: Answer = {
+      content: '',
+    };
     this.question.answers = this.question.answers.concat(newAnswer);
   }
 }
