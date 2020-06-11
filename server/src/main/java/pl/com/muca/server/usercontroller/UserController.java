@@ -2,6 +2,7 @@ package pl.com.muca.server.usercontroller;
 
 import java.util.List;
 import javax.annotation.Resource;
+import javax.security.auth.login.LoginException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,7 +52,7 @@ public class UserController {
   }
 
   @PostMapping(value = "/login")
-  public User login(@RequestBody User user) {
+  public User login(@RequestBody User user) throws LoginException {
     logAction(user.toString());
     return userService.login(user);
   }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import javax.annotation.Resource;
+import javax.security.auth.login.LoginException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public User login(User userCredentials) {
+  public User login(User userCredentials) throws LoginException {
     // TODO (Damian Muca): 5/30/20 add find method.
     Optional<User> optionalUser = userDao.findAll().stream()
         .filter(u -> u.getEmail().equals(userCredentials.getEmail().trim()))
@@ -52,7 +53,7 @@ public class UserServiceImpl implements UserService {
         .findAny();
 
     if (optionalUser.isEmpty()){
-      return null;
+      throw new LoginException("Incorrect username or password.");
     }
     else{
       User user = optionalUser.get();

@@ -12,8 +12,8 @@ public class PollServiceImpl implements PollService {
   PollDao pollDao;
 
   @Override
-  public List<Poll> findAll() {
-    return pollDao.findAll();
+  public List<Poll> findAll(String token) {
+    return pollDao.findAll(token);
   }
 
   @Override
