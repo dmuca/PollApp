@@ -4,6 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 import {User} from '../../model/user/user';
 import {first} from 'rxjs/operators';
 import {AlertService} from '../../model/alert/alert.service';
+import {Question} from '../../model/poll/question';
 
 @Component({
   selector: 'app-create-poll',
@@ -15,6 +16,10 @@ export class CreatePollComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl: string;
+  questions: Question [] = [{
+    title: 'xdd',
+    answers: ['nie', 'tak', 'może']
+  }];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,5 +45,10 @@ export class CreatePollComponent implements OnInit {
 
   get getFormControls() {
     return this.pollForm.controls;
+  }
+
+  addQuestion() {
+    const newQuestion: Question = new Question();
+    this.questions = this.questions.concat(newQuestion);
   }
 }
