@@ -31,7 +31,14 @@ CREATE TABLE useranswer (
   PRIMARY KEY (user_id, question_id)
 );
 
+CREATE TABLE session (
+  user_id SERIAL PRIMARY KEY,
+  access_token UUID DEFAULT uuid_generate_v4() NOT NULL UNIQUE,
+  granted TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT current_timestamp
+);
+
 ALTER TABLE question ADD FOREIGN KEY (poll_id) REFERENCES poll (poll_id);
 ALTER TABLE answer ADD FOREIGN KEY (question_id) REFERENCES question (question_id);
 ALTER TABLE useranswer ADD FOREIGN KEY (question_id) REFERENCES question (question_id);
 ALTER TABLE useranswer ADD FOREIGN KEY (answer_chosen) REFERENCES answer (answer_id);
+ALTER TABLE session ADD FOREIGN KEY (user_id) REFERENCES appuser (user_id_hash);
