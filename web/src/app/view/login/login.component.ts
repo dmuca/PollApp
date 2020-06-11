@@ -1,8 +1,8 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {User} from '../../model/user';
+import {User} from '../../model/user/user';
 import {ActivatedRoute, Router} from '@angular/router';
-import {UserService} from '../../model/user.service';
-import {AlertService} from '../../model/alert.service';
+import {UserService} from '../../model/user/user.service';
+import {AlertService} from '../../model/alert/alert.service';
 
 @Component({
   selector: 'app-user-log-in',

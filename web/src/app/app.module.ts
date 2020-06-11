@@ -6,7 +6,7 @@ import {PollMainPageComponent} from './view/poll-main-page/poll-main-page.compon
 import {UserListComponent} from './view/user-list/user-list.component';
 import {RegisterComponent} from './view/register/register.component';
 import {FormsModule} from '@angular/forms';
-import {UserService} from './model/user.service';
+import {UserService} from './model/user/user.service';
 import {HttpClientModule} from '@angular/common/http';
 import {LoginComponent} from './view/login/login.component';
 import {AllPollsComponent} from './view/polls/all-polls.component';
