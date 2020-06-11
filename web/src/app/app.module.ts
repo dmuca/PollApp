@@ -59,7 +59,6 @@ import {CreatePollComponent} from './view/create-poll/create-poll.component';
 import {MyPollsComponent} from './view/my-polls/my-polls.component';
 import {AlertComponent} from './view/alert/alert.component';
 import {ErrorInterceptor} from './model/interceptors/error.interceptor';
-// import {fakeBackendProvider} from './model/interceptors/fake-backend';
 import {JwtInterceptor} from './model/interceptors/jwt.interceptor';
 
 @NgModule({
@@ -179,7 +178,7 @@ import {JwtInterceptor} from './model/interceptors/jwt.interceptor';
     // fakeBackendProvider,
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
-    ],
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
