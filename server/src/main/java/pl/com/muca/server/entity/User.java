@@ -4,19 +4,19 @@ import java.util.Objects;
 
 public class User {
 
-  private int id;
+  private int idHash;
   private String firstName;
   private String lastName;
   private String password;
   private String email;
   private String token;
 
-  public long getId() {
-    return id;
+  public long getIdHash() {
+    return idHash;
   }
 
-  public void setId(int id) {
-    this.id = id;
+  public void setIdHash(int idHash) {
+    this.idHash = idHash;
   }
 
   public String getFirstName() {
@@ -70,7 +70,7 @@ public class User {
             + "email='%s', "
             + "token='%s'"
             + "}",
-        id, firstName, lastName, password, email, token);
+        idHash, firstName, lastName, password, email, token);
   }
 
   @Override
