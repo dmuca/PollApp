@@ -9,6 +9,7 @@ import {REST_API_URL} from '../../../common';
 })
 export class PollService {
   public pollsList$: Subject<Poll[]> = new Subject<Poll[]>();
+  public myPollsList$: Subject<Poll[]> = new Subject<Poll[]>();
 
   constructor(private http: HttpClient) {
   }
@@ -16,6 +17,12 @@ export class PollService {
   public listAllPolls() {
     this.http.get<Poll[]>(`${REST_API_URL}listPolls`).subscribe((polls) => {
       this.pollsList$.next(polls);
+    });
+  }
+
+  public listMyPolls() {
+    this.http.get<Poll[]>(`${REST_API_URL}listMyPolls`).subscribe((polls) => {
+      this.myPollsList$.next(polls);
     });
   }
 }
