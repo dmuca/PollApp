@@ -17,8 +17,6 @@ let users = JSON.parse(localStorage.getItem('users')) || [];
 export class FakeBackendInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const {url, method, headers, body} = request;
-
-    // wrap in delayed observable to simulate server api call
     return of(null)
     .pipe(mergeMap(handleRoute))
     .pipe(materialize())
@@ -36,12 +34,9 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         case url.match(/\/users\/\d+$/) && method === 'DELETE':
           return deleteUser();
         default:
-          // pass through any requests not handled above
           return next.handle(request);
       }
     }
-
-    // route functions
 
     function authenticate() {
       const {username, password} = body;
@@ -88,8 +83,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       localStorage.setItem('users', JSON.stringify(users));
       return ok();
     }
-
-    // helper functions
 
     // tslint:disable-next-line:no-shadowed-variable
     function ok(body?) {
