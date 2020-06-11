@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     // TODO (Damian Muca): 5/30/20 add find method.
     return userDao.findAll().stream()
         .filter(u -> u.getEmail().equals(userCredentials.getEmail().trim()))
-        .filter(u -> u.getPasswordHash().equals(userCredentials.getPasswordHash()))
+        .filter(u -> u.getPassword().equals(userCredentials.getPassword()))
         .findAny().orElse(null);
   }
 }
