@@ -9,6 +9,10 @@ public interface UserDao {
 
   void insertUser(User user);
 
+  void createSession(User user);
+
+  String getLastSessionToken(User user);
+
   void updateUser(User user);
 
   void executeUpdateUser(User user);

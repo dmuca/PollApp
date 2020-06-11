@@ -9,7 +9,6 @@ import {MyPollsComponent} from './view/my-polls/my-polls.component';
 import {AuthGuard} from './model/authentication/auth.guard';
 
 const routes: Routes = [
-  {path: '', redirectTo: 'users', pathMatch: 'full'},
   {path: 'users', component: UserListComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'login', component: LoginComponent},
