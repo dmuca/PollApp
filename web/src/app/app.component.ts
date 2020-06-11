@@ -15,7 +15,7 @@ export class AppComponent {
     this.title = 'PollApp - anonimowe ankiety';
     this.userService.loggedInUser$.subscribe(user => {
       if (user){
-        this.title = `Witaj ${user.name}, dobrze Cię znów widzieć!`;
+        this.title = `Witaj ${user.firstname}, dobrze Cię znów widzieć!`;
       }
       else if (this.loggedUser){
         this.title = `Zostałeś wylogowany, do zobaczenia ponownie!`;
