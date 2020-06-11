@@ -6,8 +6,9 @@
      [attr.data-index]="i">
   <div>
     <label>Odpowiedź nr. {{i + 1}}</label>
-    <app-insert-answer [answer]="answer"></app-insert-answer>
+    <app-insert-answer [answer]="question.answers[i]"></app-insert-answer>
   </div>
 </div>
+
 
 <button (click)="addAnswer()" class="btn btn-primary">Nowa odpowiedź</button>

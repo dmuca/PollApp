@@ -5,6 +5,7 @@ import {User} from '../../model/user/user';
 import {first} from 'rxjs/operators';
 import {AlertService} from '../../model/alert/alert.service';
 import {Question} from '../../model/poll/question';
+import {Poll} from '../../model/poll/poll';
 
 @Component({
   selector: 'app-create-poll',
@@ -16,10 +17,22 @@ export class CreatePollComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl: string;
-  questions: Question [] = [{
-    title: 'xdd',
-    answers: ['nie', 'tak', 'może']
-  }];
+
+  poll: Poll = {
+    pollId: undefined,
+    name: '',
+    questions: [
+      {
+        title: 'Ile masz lat?',
+        answers: [{content: '10'}, {content: '20'}, {content: '70'}],
+      },
+      {
+        title: 'Gdzie mieszkasz?',
+        answers: [{content: 'Wieś'}, {content: 'Miast do 50 tyś mieszkańców'}, {content: 'Miasto powyżej 50 tys mieszkańców'}],
+      }
+    ],
+    state: undefined,
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -43,7 +56,8 @@ export class CreatePollComponent implements OnInit {
     // this.loading = true;
 
     // this.alertService.error('sample error');
-    console.log(this.questions);
+    console.log(this.poll.name)
+    console.log(this.poll.questions);
   }
 
   get getFormControls() {
@@ -55,7 +69,7 @@ export class CreatePollComponent implements OnInit {
       title: '',
       answers: [],
     };
-    this.questions = this.questions.concat(newQuestion);
+    this.poll.questions = this.poll.questions.concat(newQuestion);
   }
 
   onQuestionChanged(question: Question) {

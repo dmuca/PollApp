@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {Answer} from '../../../model/poll/answer';
 
 @Component({
   selector: 'app-insert-answer',
@@ -7,11 +8,10 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class InsertAnswerComponent implements OnInit {
   @Input()
-  answer: string;
+  answer: Answer;
 
   constructor() { }
 
   ngOnInit(): void {
   }
-
 }
