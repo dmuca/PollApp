@@ -5,7 +5,7 @@ import {AppComponent} from './app.component';
 import {PollMainPageComponent} from './view/poll-main-page/poll-main-page.component';
 import {UserListComponent} from './view/user-list/user-list.component';
 import {RegisterComponent} from './view/register/register.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {UserService} from './model/user/user.service';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {LoginComponent} from './view/login/login.component';
@@ -127,6 +127,7 @@ import {JwtInterceptor} from './model/interceptors/jwt.interceptor';
     MatTreeModule,
     PortalModule,
     ScrollingModule,
+    ReactiveFormsModule,
   ],
   exports: [
     A11yModule,

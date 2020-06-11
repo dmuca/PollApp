@@ -3,6 +3,9 @@ import {User} from '../../model/user/user';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserService} from '../../model/user/user.service';
 import {AlertService} from '../../model/alert/alert.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AuthenticationService} from '../../model/authentication/authentication.service';
+import {first} from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-log-in',
@@ -10,28 +13,74 @@ import {AlertService} from '../../model/alert/alert.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  user: User;
+  loginForm: FormGroup;
+  loading = false;
+  submitted = false;
+  returnUrl: string;
 
-  constructor(private route: ActivatedRoute,
-              private router: Router, private userService: UserService, private alertService: AlertService) {
-    this.user = new User();
+  // user: User;
 
-    this.userService.loggedInUser$.subscribe(loggedUser => {
-      if (loggedUser) {
-        sessionStorage.setItem('token', btoa(`${this.user.email}:${this.user.password}`));
-        this.router.navigate(['/polls']);
-      } else {
-        sessionStorage.setItem('token', '');
-        alertService.error('Błędne dane logowania, spróbuj jeszcze raz.');
-      }
+  constructor(
+    private formBuilder: FormBuilder,
+    private userService: UserService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private authenticationService: AuthenticationService,
+    private alertService: AlertService
+  ) {
+    // this.user = new User();
+    // redirect to home if already logged in
+    if (this.authenticationService.currentUserValue) {
+      this.router.navigate(['/']);
+    }
+
+    // this.userService.loggedInUser$.subscribe(loggedUser => {
+    //   if (loggedUser) {
+    //     sessionStorage.setItem('token', btoa(`${this.user.email}:${this.user.password}`));
+    //     this.router.navigate(['/polls']);
+    //   } else {
+    //     sessionStorage.setItem('token', '');
+    //     alertService.error('Błędne dane logowania, spróbuj jeszcze raz.');
+    //   }
+    // });
+  }
+
+
+  ngOnInit() {
+    this.loginForm = this.formBuilder.group({
+      userEmail: ['', Validators.required],
+      password: ['', Validators.required]
     });
+    this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
   }
 
-  ngOnInit(): void {
-    sessionStorage.setItem('token', '');
+  onSubmit() {
+    this.submitted = true;
+
+    // reset alerts on submit
+    this.alertService.clear();
+
+    // stop here if form is invalid
+    if (this.loginForm.invalid) {
+      return;
+    }
+
+    this.loading = true;
+    const userEmail = this.getFormControls.userEmail.value;
+    const password = this.getFormControls.password.value;
+    this.authenticationService.login(userEmail, password)
+    .pipe(first())
+    .subscribe(
+      data => {
+        this.router.navigate([this.returnUrl]);
+      },
+      error => {
+        this.alertService.error(error);
+        this.loading = false;
+      });
   }
 
-  logIn(user: User) {
-    this.userService.login(this.user);
+  get getFormControls() {
+    return this.loginForm.controls;
   }
 }
