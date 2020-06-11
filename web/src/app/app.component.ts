@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {User} from './model/user/user';
 import {UserService} from './model/user/user.service';
+import {AuthenticationService} from './model/authentication/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -11,24 +12,24 @@ export class AppComponent {
   title: string;
   loggedUser: User = null;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private authenticationService: AuthenticationService) {
     this.title = 'PollApp - anonimowe ankiety';
-    this.userService.loggedInUser$.subscribe(user => {
+    this.authenticationService.currentUser.subscribe(user => {
       if (user){
         this.title = `Witaj ${user.firstName}, dobrze Cię znów widzieć!`;
       }
       else if (this.loggedUser){
-        this.title = `Zostałeś wylogowany, do zobaczenia ponownie!`;
+        this.title = `PollApp - anonimowe ankiety`;
       }
       this.loggedUser = user;
     });
   }
 
   logout() {
-    this.userService.loggedInUser$.next(null);
+    this.authenticationService.logout();
   }
 
   isUserLoggedIn(){
-    return this.loggedUser !== null;
+    return this.authenticationService.currentUserValue;
   }
 }
