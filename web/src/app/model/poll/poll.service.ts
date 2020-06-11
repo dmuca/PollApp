@@ -3,6 +3,7 @@ import {Poll} from './poll';
 import {Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {PollState} from './poll.state';
+import {REST_API_URL} from '../../../common';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +11,7 @@ import {PollState} from './poll.state';
 export class PollService {
   public pollsList$: Subject<Poll[]> = new Subject<Poll[]>();
 
-  private url: string;
-
   constructor(private http: HttpClient) {
-    this.url = 'http://93.180.178.64:2000/pollApp/';
   }
 
   public listAllPolls() {
@@ -27,7 +25,7 @@ export class PollService {
       state: PollState.New,
     }];
     this.pollsList$.next(fakePolls);
-    this.http.get<Poll[]>(`${this.url}listPolls`).subscribe((polls) => {
+    this.http.get<Poll[]>(`${REST_API_URL}listPolls`).subscribe((polls) => {
       this.pollsList$.next(polls.concat(fakePolls));
     });
   }
