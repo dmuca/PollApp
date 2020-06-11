@@ -21,11 +21,15 @@ export class AllPollsComponent implements OnInit {
     this.pollService.listAllPolls();
   }
 
+  isPollNew(poll: Poll): boolean {
+    return poll.state === PollState.New;
+  }
+
   fillPoll(poll: Poll) {
     console.log(`Fill poll: ${poll}`);
   }
 
-  isPollNew(poll: Poll): boolean {
-    return poll.state === PollState.New;
+  viewMyAnswers(poll: Poll) {
+    console.log(`Fill poll: ${poll}`);
   }
 }
