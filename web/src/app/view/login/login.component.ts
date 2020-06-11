@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {User} from '../../model/user';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserService} from '../../model/user.service';
+import {AlertService} from '../../model/alert.service';
 
 @Component({
   selector: 'app-user-log-in',
@@ -9,12 +10,10 @@ import {UserService} from '../../model/user.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-
   user: User;
-  isInvaligLoginWarrningHidden = true;
 
   constructor(private route: ActivatedRoute,
-              private router: Router, private userService: UserService) {
+              private router: Router, private userService: UserService, private alertService: AlertService) {
     this.user = new User();
 
     this.userService.loggedInUser$.subscribe(loggedUser => {
@@ -23,7 +22,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/polls']);
       } else {
         sessionStorage.setItem('token', '');
-        this.isInvaligLoginWarrningHidden = false;
+        alertService.error('Błędne dane logowania, spróbuj jeszcze raz.');
       }
     });
   }
@@ -33,7 +32,6 @@ export class LoginComponent implements OnInit {
   }
 
   logIn(user: User) {
-    this.isInvaligLoginWarrningHidden = true;
     this.userService.login(this.user);
   }
 }
