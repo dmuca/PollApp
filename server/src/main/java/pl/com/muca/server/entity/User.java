@@ -9,6 +9,7 @@ public class User {
   private String lastName;
   private String password;
   private String email;
+  private String token;
 
   public long getId() {
     return id;
@@ -50,6 +51,14 @@ public class User {
     this.email = email;
   }
 
+  public String getToken() {
+    return token;
+  }
+
+  public void setToken(String token) {
+    this.token = token;
+  }
+
   @Override
   public String toString() {
     return String.format(
@@ -58,9 +67,10 @@ public class User {
             + "firstName='%s', "
             + "lastName='%s', "
             + "password='%s', "
-            + "email='%s'"
+            + "email='%s', "
+            + "token='%s'"
             + "}",
-        id, firstName, lastName, password, email);
+        id, firstName, lastName, password, email, token);
   }
 
   @Override
