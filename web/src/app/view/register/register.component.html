@@ -1,66 +1,60 @@
-<div class="card my-5">
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="card my-5">
   <div class="card-body">
-    <form (ngSubmit)="onSubmit()" #userForm="ngForm">
-      <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" [(ngModel)]="user.firstName"
-               class="form-control"
-               id="name"
-               name="name"
-               placeholder="Enter name"
-               required #name="ngModel">
-      </div>
-      <div [hidden]='name.pristine || name.value !== ""'
-           class="alert alert-danger">Name is
-        required
-      </div>
-
-      <div class="form-group">
-        <label for="last-name">Last Name</label>
-        <input type="text" [(ngModel)]="user.lastName"
-               class="form-control"
-               id="last-name"
-               name="last-name"
-               placeholder="Enter last name"
-               required #lastName="ngModel">
-      </div>
-      <div [hidden]='lastName.pristine || lastName.value !== ""'
-           class="alert alert-danger">Last name is
-        required
-      </div>
-
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="text" [(ngModel)]="user.email"
-               class="form-control"
-               id="email"
-               name="email"
-               placeholder="Enter email address"
-               required #email="ngModel">
-        <div [hidden]='email.pristine || email.value !== ""'
-             class="alert alert-danger">Email is
-          required
+    <h2>Rejestracja</h2>
+    <div class="form-group">
+      <label for="firstName">Imie</label>
+      <input type="text" formControlName="firstName" class="form-control"
+             placeholder="Imie"
+             [ngClass]="{ 'is-invalid': submitted && getFormControls.firstName.errors }"/>
+      <div *ngIf="submitted && getFormControls.firstName.errors"
+           class="invalid-feedback">
+        <div *ngIf="getFormControls.firstName.errors.required">Imie jest wymagane
         </div>
       </div>
-
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" [(ngModel)]="user.password"
-               class="form-control"
-               id="password"
-               name="password"
-               placeholder="Enter password"
-               required #passwordHash="ngModel">
-        <div [hidden]='passwordHash.pristine || passwordHash.value !== ""'
-             class="alert alert-danger">
-          Password is required
+    </div>
+    <div class="form-group">
+      <label for="lastName">Nazwisko</label>
+      <input type="text" formControlName="lastName" class="form-control"
+             placeholder="Nazwisko"
+             [ngClass]="{ 'is-invalid': submitted && getFormControls.lastName.errors }"/>
+      <div *ngIf="submitted && getFormControls.lastName.errors"
+           class="invalid-feedback">
+        <div *ngIf="getFormControls.lastName.errors.required">Nazwisko jest wymagane
         </div>
-        <!-- TODO (Damian Muca): 5/28/20 add second password input and proper validation. -->
       </div>
-      <button type="submit" [disabled]="!userForm.form.valid"
-              class="btn btn-primary">Zarejestruj
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="text" formControlName="email" class="form-control"
+             placeholder="Email"
+             [ngClass]="{ 'is-invalid': submitted && getFormControls.email.errors }"/>
+      <div *ngIf="submitted && getFormControls.email.errors"
+           class="invalid-feedback">
+        <div *ngIf="getFormControls.email.errors.required">Email jest wymagany
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password">Hasło</label>
+      <input type="password" formControlName="password" class="form-control"
+             placeholder="Hasło"
+             [ngClass]="{ 'is-invalid': submitted && getFormControls.password.errors }"/>
+      <div *ngIf="submitted && getFormControls.password.errors"
+           class="invalid-feedback">
+        <div *ngIf="getFormControls.password.errors.required">Hasło jest wymagane
+        </div>
+        <div *ngIf="getFormControls.password.errors.minlength">Hasło musi mieć przynajmniej 6 znaków
+        </div>
+      </div>
+    </div>
+    <app-alert></app-alert>
+    <div class="form-group">
+      <button [disabled]="loading" class="btn btn-primary">
+        <span *ngIf="loading"
+              class="spinner-border spinner-border-sm mr-1"></span>
+        Zarejestruj
       </button>
-      <a routerLink="/login" class="btn btn-link">Logowanie</a>
-    </form>
+      <a routerLink="/login" class="btn btn-link">Zaloguj</a>
+    </div>
   </div>
-</div>
+</form>

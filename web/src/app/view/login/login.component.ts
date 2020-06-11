@@ -18,8 +18,6 @@ export class LoginComponent implements OnInit {
   submitted = false;
   returnUrl: string;
 
-  // user: User;
-
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
@@ -28,21 +26,9 @@ export class LoginComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private alertService: AlertService
   ) {
-    // this.user = new User();
-    // redirect to home if already logged in
     if (this.authenticationService.currentUserValue) {
       this.router.navigate(['/']);
     }
-
-    // this.userService.loggedInUser$.subscribe(loggedUser => {
-    //   if (loggedUser) {
-    //     sessionStorage.setItem('token', btoa(`${this.user.email}:${this.user.password}`));
-    //     this.router.navigate(['/polls']);
-    //   } else {
-    //     sessionStorage.setItem('token', '');
-    //     alertService.error('Błędne dane logowania, spróbuj jeszcze raz.');
-    //   }
-    // });
   }
 
 
@@ -55,17 +41,22 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    this.alertService.clear();
     this.submitted = true;
+    this.alertService.clear();
+    if (this.loginForm.invalid) {
+      return;
+    }
     this.loading = true;
 
-    const userEmail = this.getFormControls.userEmail.value;
-    const password = this.getFormControls.password.value;
-    this.authenticationService.login(userEmail, password)
+    const user: User = new User();
+    user.email = this.getFormControls.userEmail.value;
+    user.password = this.getFormControls.password.value;
+
+    this.authenticationService.login(user)
     .pipe(first())
     .subscribe(
       data => {
-        this.router.navigate([this.returnUrl]);
+        this.router.navigate(['/allPolls']);
       },
       error => {
         this.alertService.error(error.error.message);

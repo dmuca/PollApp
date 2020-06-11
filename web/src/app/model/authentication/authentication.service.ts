@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {User} from '../user/user';
 
@@ -21,16 +21,15 @@ export class AuthenticationService {
     return this.currentUserSubject.value;
   }
 
-  login(username, password) {
+  login(user: User) {
     // TODO (Damian Muca): 6/11/20 configure config.apiUrl global constant.
-    // return this.http.post<any>(`${config.apiUrl}login`, { username, password })
-    return this.http.post<User>(`${this.url}login`, {username, password})
-    .pipe(map(user => {
-      console.log('User login');
-      console.log(user);
-      localStorage.setItem('currentUser', JSON.stringify(user));
-      this.currentUserSubject.next(user);
-      return user;
+    console.log('login user');
+    console.log(user);
+    return this.http.post<User>(`${this.url}login`, user)
+    .pipe(map(loggedUser => {
+      localStorage.setItem('currentUser', JSON.stringify(loggedUser));
+      this.currentUserSubject.next(loggedUser);
+      return loggedUser;
     }));
   }
 

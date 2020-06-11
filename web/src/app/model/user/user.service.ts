@@ -6,9 +6,7 @@ import {Subject} from 'rxjs';
 
 @Injectable()
 export class UserService {
-
   public usersList$: Subject<User[]> = new Subject<User[]>();
-  public loggedInUser$: Subject<User> = new Subject();
 
   private url: string;
 
@@ -18,8 +16,6 @@ export class UserService {
 
   public getAll() {
     this.http.get<User[]>(`${this.url}listUsers`).subscribe((usersList) => {
-      console.log('listUsers');
-      console.log(usersList);
       this.usersList$.next(usersList);
     });
   }
@@ -27,13 +23,6 @@ export class UserService {
   public register(user: User): Observable<User> {
     return this.http.post<User>(`${this.url}registerUser`, user);
   }
-
-  // TODO (Damian Muca): 6/11/20 Delete login method (it's in the authentication service).
-  // public login(user: User) {
-  //   return this.http.post<User>(`${this.url}login`, user).subscribe((loggedUser: User) => {
-  //     this.loggedInUser$.next(loggedUser);
-  //   });
-  // }
 
   public delete(user: User) {
     const header: HttpHeaders = new HttpHeaders()
