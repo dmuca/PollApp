@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Question} from '../../../model/poll/question';
 
 @Component({
@@ -14,5 +14,10 @@ export class InsertQuestionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  addAnswer() {
+    const newAnswer = String('Hello geeksforgeeks');
+    this.question.answers = this.question.answers.concat(newAnswer);
   }
 }
