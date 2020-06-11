@@ -4,7 +4,7 @@ import java.util.List;
 import pl.com.muca.server.entity.Poll;
 
 public interface PollDao {
-  List<Poll> findAll();
+  List<Poll> findAll(String token);
 
   void insertPoll(Poll poll);
 

@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -32,27 +33,28 @@ public class PollDaoImpl implements PollDao {
   }
 
   @Override
-  public ImmutableList<Poll> findAll() {
+  public ImmutableList<Poll> findAll(String token) {
     ImmutableList<Poll> polls =
         ImmutableList.copyOf(template.query("SELECT * FROM poll", new PollRowMapper()));
 
-    polls.forEach(poll -> poll.setState(getPollState(poll.getPollId())));
+    polls.forEach(poll -> poll.setState(getPollState(poll.getPollId(), token)));
     return polls;
   }
 
-  private PollState getPollState(int pollId) {
-    // TODO use user session to determine user_id parameter.
-    int userId = 3;
-
+  private PollState getPollState(int pollId, String token) {
     String countUserAnswersToPollSql =
         "SELECT COUNT(*) AS howManyAnswers "
             + "FROM useranswer "
             + "INNER JOIN question "
-            + "ON useranswer.question_id = question.question_id "
-            + "WHERE user_id=:UserId AND question.poll_id=:PollId";
+            + "           ON useranswer.question_id=question.question_id "
+            + "INNER JOIN session "
+            + "           ON session.access_token=:SessionToken "
+            + "WHERE useranswer.user_id=session.user_id_hash AND question.poll_id=:PollId; ";
 
     SqlParameterSource namedParameters =
-        new MapSqlParameterSource().addValue("PollId", pollId).addValue("UserId", userId);
+        new MapSqlParameterSource()
+            .addValue("PollId", pollId)
+            .addValue("SessionToken", UUID.fromString(token));
     Optional<Integer> answersToPoll =
         Optional.ofNullable(
             template.queryForObject(countUserAnswersToPollSql, namedParameters, Integer.class));

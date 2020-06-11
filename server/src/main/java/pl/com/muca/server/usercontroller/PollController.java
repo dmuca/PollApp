@@ -25,7 +25,7 @@ public class PollController {
 
   @GetMapping(value = "/listPolls")
   public List<Poll> getPolls(@RequestHeader("Authorization") String token) {
-    return pollService.findAll();
+    return pollService.findAll(token);
   }
 
   @PostMapping(value = "/createPoll")

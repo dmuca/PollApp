@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/allPolls']);
       },
       error => {
-        this.alertService.error(error.error.message);
+        this.alertService.error(error);
         this.loading = false;
       });
   }

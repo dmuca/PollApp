@@ -1,6 +1,7 @@
 package pl.com.muca.server.service;
 
 import java.util.List;
+import javax.security.auth.login.LoginException;
 import pl.com.muca.server.entity.User;
 
 public interface UserService {
@@ -15,5 +16,5 @@ public interface UserService {
 
   void deleteUser(User user);
 
-  User login(User user);
+  User login(User user) throws LoginException;
 }
