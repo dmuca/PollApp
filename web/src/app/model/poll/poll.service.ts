@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Poll} from './poll';
 import {Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import {PollState} from "./poll.state";
+import {PollState} from './poll.state';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +28,6 @@ export class PollService {
     }];
     this.pollsList$.next(fakePolls);
     this.http.get<Poll[]>(`${this.url}listPolls`).subscribe((polls) => {
-      console.log(...polls);
       this.pollsList$.next(polls.concat(fakePolls));
     });
   }
