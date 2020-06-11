@@ -25,8 +25,6 @@ public class PollController {
 
   @GetMapping(value = "/listPolls")
   public List<Poll> getPolls(@RequestHeader("Authorization") String token) {
-    System.out.println("TOKEN");
-    System.out.println(token);
     return pollService.findAll();
   }
 
