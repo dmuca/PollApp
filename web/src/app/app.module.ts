@@ -58,9 +58,8 @@ import {MatTreeModule} from '@angular/material/tree';
 import {CreatePollComponent} from './view/create-poll/create-poll.component';
 import {MyPollsComponent} from './view/my-polls/my-polls.component';
 import {AlertComponent} from './view/alert/alert.component';
-import {AuthGuard} from './model/authentication/auth.guard';
-import {User} from './model/user/user';
-import {ErrorInterceptor} from './model/error-interceptor/error.interceptor';
+import {ErrorInterceptor} from './model/interceptors/error.interceptor';
+import {fakeBackendProvider} from './model/interceptors/fake-backend';
 
 @NgModule({
   declarations: [
@@ -174,8 +173,9 @@ import {ErrorInterceptor} from './model/error-interceptor/error.interceptor';
     ScrollingModule,
   ],
   providers: [
-    {provide: UserService},
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+    UserService,
+    fakeBackendProvider,
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     ],
   bootstrap: [AppComponent]
 })
