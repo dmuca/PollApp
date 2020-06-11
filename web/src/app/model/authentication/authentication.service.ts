@@ -23,8 +23,6 @@ export class AuthenticationService {
 
   login(user: User) {
     // TODO (Damian Muca): 6/11/20 configure config.apiUrl global constant.
-    console.log('login user');
-    console.log(user);
     return this.http.post<User>(`${this.url}login`, user)
     .pipe(map(loggedUser => {
       localStorage.setItem('currentUser', JSON.stringify(loggedUser));
