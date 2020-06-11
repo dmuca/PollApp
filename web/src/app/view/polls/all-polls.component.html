@@ -9,12 +9,18 @@
       </thead>
       <tbody>
       <tr *ngFor="let poll of this.polls">
-        <td><p class="poll-name text-center text-black py-1">{{ poll.name }}</p></td>
+        <td><p class="poll-name text-center text-black py-1">{{ poll.name }}</p>
+        </td>
         <td>
-          <button *ngIf="isPollNew(poll) else alreadyFilled" class="fill-button" mat-raised-button color="primary" (click)="fillPoll(poll)">
+          <button *ngIf="isPollNew(poll) else alreadyFilled" class="fill-button"
+                  mat-raised-button color="primary" (click)="fillPoll(poll)">
             Wypełnij
           </button>
-          <ng-template #alreadyFilled><p class="poll-filled-info">Wypełniona</p></ng-template>
+          <ng-template #alreadyFilled>
+            <button mat-raised-button class="view-answers-button"
+                    (click)="viewMyAnswers(poll)" #alreadyFilled>Podgląd
+            </button>
+          </ng-template>
         </td>
       </tr>
       </tbody>
