@@ -1,5 +1,6 @@
 <div class="card my-5">
   <div class="card-body">
+    <h2>Lista ankiet</h2>
     <table class="table table-bordered table-striped">
       <thead class="thead-dark">
       <tr>
@@ -11,14 +12,14 @@
       <tr *ngFor="let poll of this.polls">
         <td><p class="poll-name text-center text-black py-1">{{ poll.name }}</p>
         </td>
-        <td>
+        <td class="action-table-data">
           <button *ngIf="isPollNew(poll) else alreadyFilled" class="fill-button"
                   mat-raised-button color="primary" (click)="fillPoll(poll)">
             Wypełnij
           </button>
           <ng-template #alreadyFilled>
             <button mat-raised-button class="view-answers-button"
-                    (click)="viewMyAnswers(poll)" #alreadyFilled>Podgląd
+                    (click)="viewMyAnswers(poll)">Podgląd
             </button>
           </ng-template>
         </td>

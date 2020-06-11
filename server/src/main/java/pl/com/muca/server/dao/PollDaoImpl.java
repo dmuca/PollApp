@@ -6,6 +6,7 @@ import static pl.com.muca.server.entity.PollState.New;
 import com.google.common.collect.ImmutableList;
 import java.sql.PreparedStatement;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -33,12 +34,26 @@ public class PollDaoImpl implements PollDao {
   }
 
   @Override
-  public ImmutableList<Poll> findAll(String token) {
+  public List<Poll> findAll(String token) {
     ImmutableList<Poll> polls =
         ImmutableList.copyOf(template.query("SELECT * FROM poll", new PollRowMapper()));
 
     polls.forEach(poll -> poll.setState(getPollState(poll.getPollId(), token)));
     return polls;
+  }
+
+  @Override
+  public ImmutableList<Poll> findAllMine(String token) {
+    SqlParameterSource namedParameters =
+        new MapSqlParameterSource().addValue("SessionToken", UUID.fromString(token));
+    return ImmutableList.copyOf(
+        template.query(
+            "SELECT * FROM poll "
+                + "INNER JOIN session "
+                + "ON session.access_token = :SessionToken "
+                + "WHERE poll.owner_user_id = session.user_id_hash;",
+            namedParameters,
+            new PollRowMapper()));
   }
 
   private PollState getPollState(int pollId, String token) {
