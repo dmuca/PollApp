@@ -20,7 +20,7 @@ export class RegisterComponent {
   }
 
   onSubmit() {
-    this.userService.save(this.user).subscribe(result => {
+    this.userService.register(this.user).subscribe(result => {
       this.gotoUserList();
     });
   }
