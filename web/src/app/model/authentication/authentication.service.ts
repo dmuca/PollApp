@@ -20,7 +20,9 @@ export class AuthenticationService {
   }
 
   login(username, password) {
-    return this.http.post<any>(`${config.apiUrl}/users/authenticate`, { username, password })
+    // TODO (Damian Muca): 6/11/20 configure config.apiUrl global constant.
+    // return this.http.post<any>(`${config.apiUrl}/users/authenticate`, { username, password })
+    return this.http.post<any>(`http://93.180.178.64:2000/pollApp/users/authenticate`, { username, password })
     .pipe(map(user => {
       // store user details and jwt token in local storage to keep user logged in between page refreshes
       localStorage.setItem('currentUser', JSON.stringify(user));
