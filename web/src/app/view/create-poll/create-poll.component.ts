@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
+import {User} from '../../model/user/user';
+import {first} from 'rxjs/operators';
+import {AlertService} from '../../model/alert/alert.service';
 
 @Component({
   selector: 'app-create-poll',
@@ -15,7 +18,8 @@ export class CreatePollComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private alertService: AlertService) {
   }
 
   ngOnInit(): void {
@@ -26,7 +30,12 @@ export class CreatePollComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('Submit poll');
+    this.submitted = true;
+    this.alertService.clear();
+    if (this.pollForm.invalid) {
+      return;
+    }
+    this.loading = true;
   }
 
   get getFormControls() {

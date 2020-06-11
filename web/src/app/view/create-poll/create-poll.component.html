@@ -6,6 +6,10 @@
       <input type="text" formControlName="pollName" class="form-control"
              placeholder="Nazwa ankiety"
              [ngClass]="{ 'is-invalid': submitted && getFormControls.pollName.errors }"/>
+      <div *ngIf="submitted && getFormControls.pollName.errors"
+           class="invalid-feedback">
+        <div *ngIf="getFormControls.pollName.errors.required">Podaj nazwę ankiety</div>
+      </div>
     </div>
 
 
