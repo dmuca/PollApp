@@ -13,14 +13,22 @@
         </div>
       </div>
     </div>
+    <hr/>
 
-    <div  *ngFor="let question of questions; let i = index" [attr.data-index]="i">
-      <h3>Pytanie nr. {{i+1}}</h3>
-      <app-insert-question [question]="question"></app-insert-question>
+    <div *ngFor="let question of questions; let i = index"
+         [attr.data-index]="i">
+      <div class="form-group">
+        <label for="question{{i+1}}">Pytanie nr. {{i + 1}}</label>
+        <app-insert-question [question]="question"></app-insert-question>
+      </div>
+      <br/>
     </div>
+
+
     <app-alert></app-alert>
     <div class="form-group">
-      <button (click)="addQuestion()" class="btn btn-primary">Nowe pytanie</button>
+      <button (click)="addQuestion()" class="btn btn-primary">Nowe pytanie
+      </button>
       <button [disabled]="loading" class="btn btn-primary">
         <span *ngIf="loading"
               class="spinner-border spinner-border-m mr-1"></span>
