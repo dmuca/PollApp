@@ -25,8 +25,6 @@ export class RegisterComponent implements OnInit {
     private alertService: AlertService
   ) {
     if (this.authenticationService.currentUserValue) {
-      console.log('this.authenticationService.currentUserValue');
-      console.log(this.authenticationService.currentUserValue);
       this.router.navigate(['/']);
     }
   }
@@ -58,8 +56,6 @@ export class RegisterComponent implements OnInit {
         this.router.navigate(['/register']);
       },
       error => {
-        console.log('error');
-        console.log(error);
         this.alertService.error(error);
         this.loading = false;
       });
