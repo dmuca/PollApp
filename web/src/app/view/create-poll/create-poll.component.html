@@ -1,6 +1,21 @@
 <form [formGroup]=pollForm (ngSubmit)="onSubmit()" class="card my-5">
   <div class="card-body">
     <h2>Kreator ankiety</h2>
-    
+    <div class="form-group">
+      <label for="pollName">Nazwa ankiety</label>
+      <input type="text" formControlName="pollName" class="form-control"
+             placeholder="Nazwa ankiety"
+             [ngClass]="{ 'is-invalid': submitted && getFormControls.pollName.errors }"/>
+    </div>
+
+
+    <app-alert></app-alert>
+    <div class="form-group">
+      <button [disabled]="loading" class="btn btn-primary">
+        <span *ngIf="loading"
+              class="spinner-border spinner-border-m mr-1"></span>
+        Stwórz
+      </button>
+    </div>
   </div>
 </form>
