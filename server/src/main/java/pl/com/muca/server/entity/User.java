@@ -4,18 +4,19 @@ import java.util.Objects;
 
 public class User {
 
-  private int id;
+  private int idHash;
   private String firstName;
   private String lastName;
   private String password;
   private String email;
+  private String token;
 
-  public long getId() {
-    return id;
+  public long getIdHash() {
+    return idHash;
   }
 
-  public void setId(int id) {
-    this.id = id;
+  public void setIdHash(int idHash) {
+    this.idHash = idHash;
   }
 
   public String getFirstName() {
@@ -50,6 +51,14 @@ public class User {
     this.email = email;
   }
 
+  public String getToken() {
+    return token;
+  }
+
+  public void setToken(String token) {
+    this.token = token;
+  }
+
   @Override
   public String toString() {
     return String.format(
@@ -58,9 +67,10 @@ public class User {
             + "firstName='%s', "
             + "lastName='%s', "
             + "password='%s', "
-            + "email='%s'"
+            + "email='%s', "
+            + "token='%s'"
             + "}",
-        id, firstName, lastName, password, email);
+        idHash, firstName, lastName, password, email, token);
   }
 
   @Override

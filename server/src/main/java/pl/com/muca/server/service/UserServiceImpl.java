@@ -1,7 +1,13 @@
 package pl.com.muca.server.service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import javax.annotation.Resource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 import pl.com.muca.server.dao.UserDao;
 import pl.com.muca.server.entity.User;
@@ -40,9 +46,21 @@ public class UserServiceImpl implements UserService {
   @Override
   public User login(User userCredentials) {
     // TODO (Damian Muca): 5/30/20 add find method.
-    return userDao.findAll().stream()
+    Optional<User> optionalUser = userDao.findAll().stream()
         .filter(u -> u.getEmail().equals(userCredentials.getEmail().trim()))
         .filter(u -> u.getPassword().equals(userCredentials.getPassword()))
-        .findAny().orElse(null);
+        .findAny();
+
+    if (optionalUser.isEmpty()){
+      return null;
+    }
+    else{
+      User user = optionalUser.get();
+      userDao.createSession(user);
+      String sessionToken = userDao.getLastSessionToken(user);
+      user.setToken(sessionToken);
+      user.setPassword("not-visible");
+      return user;
+    }
   }
 }

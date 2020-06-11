@@ -1,9 +1,14 @@
 package pl.com.muca.server.dao;
 
+import static pl.com.muca.server.entity.PollState.Filled;
+import static pl.com.muca.server.entity.PollState.New;
+
 import com.google.common.collect.ImmutableList;
 import java.sql.PreparedStatement;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import org.hibernate.SessionException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -55,7 +60,7 @@ public class UserDaoImpl implements UserDao {
   public void updateUser(User user) {
     KeyHolder holder = new GeneratedKeyHolder();
     SqlParameterSource param = new MapSqlParameterSource()
-        .addValue("user_id_hash", user.getId())
+        .addValue("user_id_hash", user.getIdHash())
         .addValue("name", user.getFirstName().trim())
         .addValue("last_name", user.getLastName().trim())
         .addValue("password_hash", user.getPassword())
@@ -66,7 +71,7 @@ public class UserDaoImpl implements UserDao {
   @Override
   public void executeUpdateUser(User user) {
     Map<String, Object> map = new HashMap<>();
-    map.put("user_id_hash", user.getId());
+    map.put("user_id_hash", user.getIdHash());
     map.put("name", user.getFirstName().trim());
     map.put("last_name", user.getLastName().trim());
     map.put("password_hash", user.getPassword());
@@ -80,8 +85,42 @@ public class UserDaoImpl implements UserDao {
   public void deleteUser(User user) {
     final String sql = "DELETE FROM appuser WHERE user_id_hash=:user_id_hash";
     final Map<String, Object> map = new HashMap<>();
-    map.put("user_id_hash", user.getId());
+    map.put("user_id_hash", user.getIdHash());
     template.execute(sql, map,
         (PreparedStatementCallback<Object>) PreparedStatement::executeUpdate);
+  }
+
+  @Override
+  public void createSession(User user) {
+    final String sql = "INSERT INTO session(user_id_hash) VALUES (:user_id_hash)";
+
+    KeyHolder holder = new GeneratedKeyHolder();
+    SqlParameterSource namedParameters = new MapSqlParameterSource()
+        .addValue("user_id_hash", user.getIdHash());
+    template.update(sql, namedParameters, holder);
+  }
+
+  @Override
+  public String getLastSessionToken(User user) {
+    final String sql ="SELECT access_token FROM session "
+        + "INNER JOIN  ( "
+        + "             SELECT user_id_hash AS userIdHash, MAX(granted) as grantDate "
+        + "             FROM session "
+        + "             WHERE user_id_hash = :UserId "
+        + "             GROUP BY user_id_hash "
+        + "            ) as newestdate "
+        + "ON session.granted = newestdate.grantDate "
+        + "AND session.user_id_hash = newestdate.userIdHash;";
+    SqlParameterSource namedParameters =
+        new MapSqlParameterSource().addValue("UserId", user.getIdHash());
+
+    Optional<String> sessionToken =
+        Optional.ofNullable(
+            template.queryForObject(sql, namedParameters, String.class));
+
+    if (sessionToken.isEmpty()) {
+      throw new SessionException(String.format("Could not find session for specified user %s", user.toString()));
+    };
+    return sessionToken.orElse("");
   }
 }
