@@ -14,7 +14,8 @@
       </div>
     </div>
 
-    <div *ngFor="let question of this.questions">
+    <div  *ngFor="let question of questions; let i = index" [attr.data-index]="i">
+      <h3>Pytanie nr. {{i+1}}</h3>
       <app-insert-question [question]="question"></app-insert-question>
     </div>
     <app-alert></app-alert>
