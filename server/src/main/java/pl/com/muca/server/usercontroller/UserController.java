@@ -69,6 +69,6 @@ public class UserController {
   }
 
   private void logAction(String info, String methodName) {
-    System.out.printf("%s %s\n", methodName, info);
+    System.out.printf("API Method (%s), Data %s\n", methodName, info);
   }
 }

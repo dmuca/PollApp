@@ -5,6 +5,8 @@ import pl.com.muca.server.entity.Poll;
 
 public interface PollService {
 
+  List<Poll> findAllMine(String token);
+
   List<Poll> findAll(String token);
 
   void insertPoll(Poll poll);
