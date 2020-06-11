@@ -31,7 +31,24 @@ CREATE TABLE useranswer (
   PRIMARY KEY (user_id, question_id)
 );
 
+CREATE TABLE session (
+  id SERIAL PRIMARY KEY,
+  user_id_hash int,
+  access_token UUID DEFAULT uuid_generate_v4() NOT NULL UNIQUE,
+  granted TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT current_timestamp
+);
+
 ALTER TABLE question ADD FOREIGN KEY (poll_id) REFERENCES poll (poll_id);
 ALTER TABLE answer ADD FOREIGN KEY (question_id) REFERENCES question (question_id);
 ALTER TABLE useranswer ADD FOREIGN KEY (question_id) REFERENCES question (question_id);
 ALTER TABLE useranswer ADD FOREIGN KEY (answer_chosen) REFERENCES answer (answer_id);
+ALTER TABLE session ADD FOREIGN KEY (user_id_hash) REFERENCES appuser (user_id_hash);
+
+SELECT access_token FROM session
+INNER JOIN  (
+             SELECT user_id_hash AS userIdHash, MAX(granted) as grantDate
+             FROM session
+             WHERE user_id_hash = 1
+             GROUP BY user_id_hash
+            ) as newestdate
+ON session.granted = newestdate.grantDate AND session.user_id_hash = newestdate.userIdHash;
