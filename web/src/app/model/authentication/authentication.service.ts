@@ -3,18 +3,17 @@ import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {User} from '../user/user';
+import {REST_API_URL} from '../../../common';
 
 
 @Injectable({providedIn: 'root'})
 export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
-  private url: string;
 
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
-    this.url = 'http://93.180.178.64:2000/pollApp/';
   }
 
   public get currentUserValue(): User {
@@ -22,8 +21,7 @@ export class AuthenticationService {
   }
 
   login(user: User) {
-    // TODO (Damian Muca): 6/11/20 configure config.apiUrl global constant.
-    return this.http.post<User>(`${this.url}login`, user)
+    return this.http.post<User>(`${REST_API_URL}login`, user)
     .pipe(map(loggedUser => {
       localStorage.setItem('currentUser', JSON.stringify(loggedUser));
       this.currentUserSubject.next(loggedUser);
