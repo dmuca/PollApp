@@ -2,7 +2,6 @@ package pl.com.muca.server.service;
 
 import java.util.List;
 import javax.annotation.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import pl.com.muca.server.dao.PollDao;
 import pl.com.muca.server.entity.Poll;
