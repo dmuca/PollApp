@@ -8,12 +8,16 @@ import pl.com.muca.server.entity.Poll;
 
 @Component
 public class PollServiceImpl implements PollService {
-  @Resource
-  PollDao pollDao;
+  @Resource PollDao pollDao;
 
   @Override
   public List<Poll> findAll(String token) {
     return pollDao.findAll(token);
+  }
+
+  @Override
+  public List<Poll> findAllMine(String token) {
+    return pollDao.findAllMine(token);
   }
 
   @Override

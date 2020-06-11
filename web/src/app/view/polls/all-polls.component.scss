@@ -11,14 +11,11 @@ p.poll-name{
   font-size: x-large;
 }
 
-p.poll-filled-info{
-  padding: 12px 0 0 0;
-  font-family: "Andale Mono";
-  font-weight: bold;
-  color: #089800;
-}
-
 button.view-answers-button{
   color: #fff;
   background-color: #56c653;
+}
+
+td.action-table-data{
+  width: 120px;
 }

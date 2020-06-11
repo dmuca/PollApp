@@ -28,6 +28,11 @@ public class PollController {
     return pollService.findAll(token);
   }
 
+  @GetMapping(value = "/listMyPolls")
+  public List<Poll> getMyPolls(@RequestHeader("Authorization") String token) {
+    return pollService.findAllMine(token);
+  }
+
   @PostMapping(value = "/createPoll")
   public void createPoll(@RequestBody Poll poll) {
     pollService.insertPoll(poll);
