@@ -52,6 +52,12 @@ INSERT INTO answer(answer_id, question_id, content) VALUES (20, 5, 'Owszem');
 INSERT INTO answer(answer_id, question_id, content) VALUES (21, 5, 'Polecę');
 INSERT INTO useranswer(user_id, question_id, answer_chosen) VALUES (4, 5, 19);
 
+
+
+
+
+
+
 -- CLEARING TABLES
 DELETE FROM appuser WHERE TRUE=TRUE;
 DELETE FROM poll WHERE TRUE=TRUE;

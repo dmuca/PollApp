@@ -1,8 +1,5 @@
 package pl.com.muca.server.dao;
 
-import static pl.com.muca.server.entity.PollState.Filled;
-import static pl.com.muca.server.entity.PollState.New;
-
 import com.google.common.collect.ImmutableList;
 import java.sql.PreparedStatement;
 import java.util.HashMap;
