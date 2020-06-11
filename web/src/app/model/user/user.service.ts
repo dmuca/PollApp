@@ -16,7 +16,7 @@ export class UserService {
     this.url = 'http://93.180.178.64:2000/pollApp/';
   }
 
-  public refreshUsersList() {
+  public getAll() {
     this.http.get<User[]>(`${this.url}listUsers`).subscribe((usersList) => {
       console.log('listUsers');
       console.log(usersList);
@@ -24,7 +24,7 @@ export class UserService {
     });
   }
 
-  public save(user: User): Observable<User> {
+  public register(user: User): Observable<User> {
     return this.http.post<User>(`${this.url}registerUser`, user);
   }
 
@@ -44,7 +44,7 @@ export class UserService {
       body: user
     };
     return this.http.delete<User>(`${this.url}deleteUser`, httpOptions).subscribe((response) => {
-      this.refreshUsersList();
+      this.getAll();
     });
   }
 }
