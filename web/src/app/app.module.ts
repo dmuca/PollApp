@@ -7,7 +7,7 @@ import {UserListComponent} from './view/user-list/user-list.component';
 import {RegisterComponent} from './view/register/register.component';
 import {FormsModule} from '@angular/forms';
 import {UserService} from './model/user/user.service';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {LoginComponent} from './view/login/login.component';
 import {AllPollsComponent} from './view/polls/all-polls.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -55,10 +55,12 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
-import { CreatePollComponent } from './view/create-poll/create-poll.component';
-import { MyPollsComponent } from './view/my-polls/my-polls.component';
-import { AlertComponent } from './view/alert/alert.component';
+import {CreatePollComponent} from './view/create-poll/create-poll.component';
+import {MyPollsComponent} from './view/my-polls/my-polls.component';
+import {AlertComponent} from './view/alert/alert.component';
 import {AuthGuard} from './model/authentication/auth.guard';
+import {User} from './model/user/user';
+import {ErrorInterceptor} from './model/error-interceptor/error.interceptor';
 
 @NgModule({
   declarations: [
@@ -171,7 +173,10 @@ import {AuthGuard} from './model/authentication/auth.guard';
     PortalModule,
     ScrollingModule,
   ],
-  providers: [UserService],
+  providers: [
+    {provide: UserService},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
