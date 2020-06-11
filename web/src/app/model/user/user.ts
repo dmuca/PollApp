@@ -1,7 +1,8 @@
 export class User {
-  userIdHash: number;
+  id: number;
   name: string;
   lastName: string;
-  passwordHash: string;
+  password: string;
   email: string;
+  token: string;
 }

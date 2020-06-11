@@ -13,10 +13,10 @@
       </thead>
       <tbody>
       <tr *ngFor="let user of this.users">
-        <td>{{ user.userIdHash }}</td>
+        <td>{{ user.id }}</td>
         <td>{{ user.name }}</td>
         <td>{{ user.lastName }}</td>
-        <td>{{ user.passwordHash }}</td>
+        <td>{{ user.password }}</td>
         <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
         <td class="delete-button">
           <button mat-icon-button color="warn"
