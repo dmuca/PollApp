@@ -29,11 +29,11 @@ export class UserService {
   }
 
   // TODO (Damian Muca): 6/11/20 Delete login method (it's in the authentication service).
-  public login(user: User) {
-    return this.http.post<User>(`${this.url}login`, user).subscribe((loggedUser: User) => {
-      this.loggedInUser$.next(loggedUser);
-    });
-  }
+  // public login(user: User) {
+  //   return this.http.post<User>(`${this.url}login`, user).subscribe((loggedUser: User) => {
+  //     this.loggedInUser$.next(loggedUser);
+  //   });
+  // }
 
   public delete(user: User) {
     const header: HttpHeaders = new HttpHeaders()
