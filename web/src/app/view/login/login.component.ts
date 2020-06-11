@@ -55,17 +55,10 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    this.submitted = true;
-
-    // reset alerts on submit
     this.alertService.clear();
-
-    // stop here if form is invalid
-    if (this.loginForm.invalid) {
-      return;
-    }
-
+    this.submitted = true;
     this.loading = true;
+
     const userEmail = this.getFormControls.userEmail.value;
     const password = this.getFormControls.password.value;
     this.authenticationService.login(userEmail, password)
