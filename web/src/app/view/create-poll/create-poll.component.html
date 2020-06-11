@@ -18,7 +18,7 @@
     <div *ngFor="let question of questions; let i = index"
          [attr.data-index]="i">
       <div class="form-group">
-        <label for="question{{i+1}}">Pytanie nr. {{i + 1}}</label>
+        <label>Pytanie nr. {{i + 1}}</label>
         <app-insert-question [question]="question"></app-insert-question>
       </div>
       <br/>
