@@ -23,10 +23,10 @@ export class AuthenticationService {
   login(user: User) {
     return this.http.post<User>(`${REST_API_URL}login`, user)
     .pipe(map(loggedUser => {
-      console.log('loggedUser');
-      console.log(loggedUser);
       localStorage.setItem('currentUser', JSON.stringify(loggedUser));
       this.currentUserSubject.next(loggedUser);
+      console.log(`New user session.`);
+      console.log(loggedUser);
       return loggedUser;
     }));
   }
