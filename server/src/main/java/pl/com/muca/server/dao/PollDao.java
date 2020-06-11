@@ -6,6 +6,8 @@ import pl.com.muca.server.entity.Poll;
 public interface PollDao {
   List<Poll> findAll(String token);
 
+  List<Poll> findAllMine(String token);
+
   void insertPoll(Poll poll);
 
   void updatePoll(Poll poll);

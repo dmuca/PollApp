@@ -1,1 +1,24 @@
-<p>my-polls works!</p>
+<div class="card my-5">
+  <div class="card-body">
+    <h2>Moje ankiety</h2>
+    <table class="table table-bordered table-striped">
+      <thead class="thead-dark">
+      <tr>
+        <th scope="col">Ankieta</th>
+        <th scope="col">Akcja</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let poll of this.polls">
+        <td><p class="poll-name text-center text-black py-1">{{ poll.name }}</p>
+        </td>
+        <td class="action-table-data">
+          <button mat-raised-button class="view-answers-button"
+                  (click)="viewAnswers(poll)" #alreadyFilled>Podgląd
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
