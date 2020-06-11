@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-create-poll',
@@ -6,10 +7,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./create-poll.component.scss']
 })
 export class CreatePollComponent implements OnInit {
+  pollForm: FormGroup;
 
-  constructor() { }
+  constructor(
+    private formBuilder: FormBuilder) {
+  }
 
   ngOnInit(): void {
   }
 
+  onSubmit() {
+    console.log('Submit poll');
+  }
 }
