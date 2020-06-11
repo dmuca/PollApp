@@ -56,15 +56,6 @@ public class UserController {
     return userService.login(user);
   }
 
-  //  @GetMapping(value = "/user")
-  //  public Principal user(HttpServletRequest request) {
-  //    logAction(request.toString());
-  //    String authToken = request.getHeader("Authorization")
-  //        .substring("Basic".length()).trim();
-  //    return () -> new String(Base64.getDecoder()
-  //        .decode(authToken)).split(":")[0];
-  //  }
-
   // TODO (Damian Muca): 5/18/20 log4j to log all action invoked on REST API.
   private void logAction() {
     String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
