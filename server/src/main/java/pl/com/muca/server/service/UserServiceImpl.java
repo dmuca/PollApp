@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import javax.annotation.Resource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 import pl.com.muca.server.dao.UserDao;
 import pl.com.muca.server.entity.User;
@@ -52,13 +56,10 @@ public class UserServiceImpl implements UserService {
     }
     else{
       User user = optionalUser.get();
-      String token = createSession(user);
-      user.setToken(token);
+      userDao.createSession(user);
+      String sessionToken = userDao.getLastSessionToken(user);
+      user.setToken(sessionToken);
       return user;
     }
-  }
-
-  private String createSession(User user) {
-    return "FAKE TOKEN";
   }
 }
