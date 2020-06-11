@@ -1,4 +1,13 @@
-<input type="text" class="form-control" [(ngModel)] = 'question.title'
-       placeholder="Dodaj pytanie"/>
+<input type="text" class="form-control" [(ngModel)]='question.title'
+       placeholder="Pytanie"/>
+<br/>
 
+<div *ngFor="let answer of question.answers; let i = index"
+     [attr.data-index]="i">
+  <div>
+    <label>Odpowiedź nr. {{i + 1}}</label>
+    <app-insert-answer [answer]="answer"></app-insert-answer>
+  </div>
+</div>
 
+<button (click)="addAnswer()" class="btn btn-primary">Nowa odpowiedź</button>

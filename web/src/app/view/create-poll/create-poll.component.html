@@ -2,7 +2,7 @@
   <div class="card-body">
     <h2>Kreator ankiety</h2>
     <div class="form-group">
-      <label for="pollName">Nazwa ankiety</label>
+      <label for="pollName"><b>Nazwa ankiety</b></label>
       <input type="text" formControlName="pollName" class="form-control"
              placeholder="Nazwa ankiety"
              [ngClass]="{ 'is-invalid': submitted && getFormControls.pollName.errors }"/>
@@ -18,10 +18,10 @@
     <div *ngFor="let question of questions; let i = index"
          [attr.data-index]="i">
       <div class="form-group">
-        <label>Pytanie nr. {{i + 1}}</label>
+        <label><b>Pytanie nr. {{i + 1}}</b></label>
         <app-insert-question [question]="question"></app-insert-question>
       </div>
-      <br/>
+      <hr/>
     </div>
 
 

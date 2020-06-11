@@ -51,7 +51,10 @@ export class CreatePollComponent implements OnInit {
   }
 
   addQuestion() {
-    const newQuestion: Question = new Question();
+    const newQuestion: Question = {
+      title: '',
+      answers: [],
+    };
     this.questions = this.questions.concat(newQuestion);
   }
 
