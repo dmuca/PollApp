@@ -1,6 +1,7 @@
 package pl.com.muca.server.usercontroller;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.com.muca.server.entity.Answer;
 import pl.com.muca.server.entity.Poll;
+import pl.com.muca.server.entity.UserAnswer;
 import pl.com.muca.server.service.PollService;
 
 @RestController
@@ -37,7 +40,6 @@ public class PollController {
 
   @GetMapping(value = "/getPollDetails/{pollId}")
   public Poll getPollDetails(@PathVariable Integer pollId) {
-    System.out.printf("Get poll details, pollId: %d \n", pollId);
     return pollService.getPollDetails(pollId);
   }
 
@@ -46,6 +48,13 @@ public class PollController {
       throws SQLException {
     logAction(poll.toString());
     pollService.insertPoll(poll, token);
+  }
+
+  @PostMapping(value = "/saveUserAnswers")
+  public void createPoll(@RequestHeader("Authorization") String token, @RequestBody UserAnswer [] answers)
+      throws SQLException {
+    logAction(Arrays.toString(answers));
+    pollService.saveUserAnswers(answers, token);
   }
 
   @PutMapping(value = "/updatePoll")
