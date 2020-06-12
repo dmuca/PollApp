@@ -22,7 +22,7 @@ export class InsertQuestionComponent implements OnInit {
 
   addAnswer() {
     const newAnswer: Answer = {
-      content: '', questionId: 0, answerId: 0,
+      content: '', questionId: 0, answerId: 0, markedByUser: false
     };
     this.questions[this.questionIndex].answers = this.questions[this.questionIndex].answers.concat(newAnswer);
   }
