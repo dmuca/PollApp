@@ -29,4 +29,8 @@ export class PollService {
   public createPoll(poll: Poll): Observable<boolean> {
     return this.http.post<boolean>(`${REST_API_URL}createPoll`, poll);
   }
+
+  public getPollDetails(pollId: number): Observable<Poll>{
+    return this.http.get<Poll>(`${REST_API_URL}getPollDetails/${pollId}`);
+  }
 }

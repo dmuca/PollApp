@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
-import {User} from '../../model/user/user';
 import {first} from 'rxjs/operators';
 import {AlertService} from '../../model/alert/alert.service';
 import {Question} from '../../model/poll/question';
