@@ -1,1 +1,36 @@
-<p>create-poll works!</p>
+<div class="card my-5">
+  <div class="card-body">
+    <h2>Kreator ankiety</h2>
+    <div class="form-group">
+      <label for="pollName"><b>Nazwa ankiety</b></label>
+      <input type="text" class="poll-name form-control"
+             placeholder="Nazwa ankiety" [(ngModel)]="poll.name"/>
+    </div>
+    <hr/>
+
+    <div *ngFor="let question of poll.questions; let i = index"
+         [attr.data-index]="i">
+      <div class="form-group">
+        <label><b>Pytanie nr. {{i + 1}}</b></label>
+        <app-insert-question [questions]="poll.questions"
+                             [questionIndex]=i></app-insert-question>
+      </div>
+      <br/>
+      <hr/>
+    </div>
+
+
+    <app-alert></app-alert>
+    <div class="form-group">
+      <button [disabled]="loading" (click)="addQuestion()"
+              class="btn btn-primary">Nowe pytanie
+      </button>
+      <button [disabled]="loading" (click)="createPoll()"
+              class="create-poll btn btn-primary">
+        <span *ngIf="loading"
+              class="spinner-border spinner-border-m mr-1"></span>
+        Stwórz Ankietę
+      </button>
+    </div>
+  </div>
+</div>

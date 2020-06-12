@@ -1,0 +1,32 @@
+button{
+  margin: 16px 8px 0 0;
+  padding: 4px;
+  background-color: #67cdcc;
+  border-color: #4bbfbe;
+}
+
+button:hover{
+  background-color: #59b2b1;
+}
+
+button.remove-answer{
+  background-color: #ff8d77;
+  border-color: #d36f71;
+}
+
+button.remove-answer:hover{
+  background-color: #e27f68;
+}
+
+button.remove-question{
+  background-color: #ff2c34;
+  border-color: #d32f33;
+}
+
+button.remove-question:hover{
+  background-color: #e0272e;
+}
+
+input.question{
+  background-color: rgba(240, 246, 255, 0.53);
+}

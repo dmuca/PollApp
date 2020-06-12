@@ -1,5 +1,6 @@
 package pl.com.muca.server.usercontroller;
 
+import java.sql.SQLException;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,41 +16,61 @@ import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.service.PollService;
 
 @RestController
-//@CrossOrigin(origins = "http://localhost:4200")
 @CrossOrigin
 @RequestMapping("/pollApp")
 public class PollController {
 
-  @Resource
-  PollService pollService;
+  @Resource PollService pollService;
 
   @GetMapping(value = "/listPolls")
   public List<Poll> getPolls(@RequestHeader("Authorization") String token) {
+    logAction();
     return pollService.findAll(token);
   }
 
   @GetMapping(value = "/listMyPolls")
   public List<Poll> getMyPolls(@RequestHeader("Authorization") String token) {
+    logAction();
     return pollService.findAllMine(token);
   }
 
   @PostMapping(value = "/createPoll")
-  public void createPoll(@RequestBody Poll poll) {
-    pollService.insertPoll(poll);
+  public void createPoll(@RequestHeader("Authorization") String token, @RequestBody Poll poll)
+      throws SQLException {
+    logAction(poll.toString());
+    pollService.insertPoll(poll, token);
   }
 
   @PutMapping(value = "/updatePoll")
   public void updatePoll(@RequestBody Poll poll) {
+    logAction(poll.toString());
     pollService.updatePoll(poll);
   }
 
   @PutMapping(value = "/executeUpdatePoll")
   public void executeUpdatePoll(@RequestBody Poll poll) {
+    logAction(poll.toString());
     pollService.executeUpdatePoll(poll);
   }
 
   @DeleteMapping(value = "/deletePoll")
   public void deletePoll(@RequestBody Poll poll) {
+    logAction(poll.toString());
     pollService.deletePoll(poll);
+  }
+
+  // TODO (Damian Muca): 5/18/20 log4j to log all action invoked on REST API.
+  private void logAction() {
+    String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+    logAction("", methodName);
+  }
+
+  private void logAction(String info) {
+    String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+    logAction(info, methodName);
+  }
+
+  private void logAction(String info, String methodName) {
+    System.out.printf("API Method (%s), Data %s\n", methodName, info);
   }
 }

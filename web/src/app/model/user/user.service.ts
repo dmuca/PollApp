@@ -14,6 +14,7 @@ export class UserService {
 
   public getAll() {
     this.http.get<User[]>(`${REST_API_URL}listUsers`).subscribe((usersList) => {
+      console.log(usersList);
       this.usersList$.next(usersList);
     });
   }
