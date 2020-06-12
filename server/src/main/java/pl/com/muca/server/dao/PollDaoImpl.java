@@ -268,6 +268,7 @@ public class PollDaoImpl implements PollDao {
         template.query(sql, answerParameters, new AnswerRowMapper()).toArray(Answer[]::new);
     for (Answer answer : answers) {
       answer.setMarkedByUser(isMarkedByUser(answer.getAnswerId(), token));
+      answer.setAnswersCounter(30);
     }
     return answers;
   }

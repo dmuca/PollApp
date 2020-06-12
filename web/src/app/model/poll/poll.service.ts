@@ -36,8 +36,6 @@ export class PollService {
   }
 
   public saveAnswers(userAnswers: UserAnswer[]): Observable<any> {
-    console.log('SAVING ANSWERS');
-    console.log(userAnswers);
     return this.http.post<any>(`${REST_API_URL}saveUserAnswers`, userAnswers);
   }
 }
