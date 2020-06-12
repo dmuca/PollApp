@@ -48,16 +48,44 @@ export class CreatePollComponent implements OnInit {
   }
 
   onSubmit() {
-    // this.submitted = true;
-    // this.alertService.clear();
-    // if (this.pollForm.invalid) {
-    //   return;
-    // }
-    // this.loading = true;
+    this.submitted = true;
+    this.alertService.clear();
+    this.loading = true;
 
-    // this.alertService.error('sample error');
-    console.log(this.poll.name)
+    console.log(this.poll.name);
     console.log(this.poll.questions);
+
+    if (this.poll.name.length === 0) {
+      this.alertService.error('Ankieta musi mieć nazwę.');
+      this.loading = false;
+      return;
+    }
+
+    if (this.poll.questions.length === 0) {
+      this.alertService.error('Ankieta musi zawierać pytania.');
+      this.loading = false;
+      return;
+    }
+
+    for (const question of this.poll.questions) {
+      if (question.answers.length < 2) {
+        this.alertService.error('Każde z pytań musi posiadać przynajmniej dwie odpowiedzi.');
+        this.loading = false;
+        return;
+      }
+      else if (question.title.length === 0){
+        this.alertService.error('Treść pytań nie może być pusta.');
+        this.loading = false;
+        return;
+      }
+      for (const answer of question.answers){
+        if (answer.content.length === 0){
+          this.alertService.error('Treść odpowiedzi nie może być pusta.');
+          this.loading = false;
+          return;
+        }
+      }
+    }
   }
 
   get getFormControls() {
