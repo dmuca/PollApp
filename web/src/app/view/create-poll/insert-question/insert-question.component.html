@@ -13,7 +13,7 @@
 
 <button (click)="addAnswer()" class="add btn btn-primary">
   Nowa odpowiedź</button>
-<button (click)="removeAnswer()" class="remove-answer btn btn-primary">
+<button (click)="removeAnswer()" *ngIf="questions[questionIndex].answers.length > 0" class="remove-answer btn btn-primary">
   Usuń odpowiedź</button>
 <button (click)="removeQuestion()" class="remove-question btn btn-primary">
   Usuń pytanie</button>
