@@ -23,4 +23,8 @@ export class InsertQuestionComponent implements OnInit {
     };
     this.question.answers = this.question.answers.concat(newAnswer);
   }
+
+  removeAnswer() {
+    this.question.answers.pop();
+  }
 }
