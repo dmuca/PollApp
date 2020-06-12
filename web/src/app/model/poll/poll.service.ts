@@ -3,6 +3,7 @@ import {Poll} from './poll';
 import {Observable, Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {REST_API_URL} from '../../../common';
+import {UserAnswer} from './user.answer';
 
 @Injectable({
   providedIn: 'root'
@@ -28,5 +29,15 @@ export class PollService {
 
   public createPoll(poll: Poll): Observable<boolean> {
     return this.http.post<boolean>(`${REST_API_URL}createPoll`, poll);
+  }
+
+  public getPollDetails(pollId: number): Observable<Poll>{
+    return this.http.get<Poll>(`${REST_API_URL}getPollDetails/${pollId}`);
+  }
+
+  public saveAnswers(userAnswers: UserAnswer[]): Observable<any> {
+    console.log('SAVING ANSWERS');
+    console.log(userAnswers);
+    return this.http.post<any>(`${REST_API_URL}saveUserAnswers`, userAnswers);
   }
 }

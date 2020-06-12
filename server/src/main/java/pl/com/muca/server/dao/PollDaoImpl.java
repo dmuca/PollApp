@@ -6,12 +6,12 @@ import static pl.com.muca.server.entity.PollState.New;
 import com.google.common.collect.ImmutableList;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Stream;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -23,7 +23,10 @@ import pl.com.muca.server.entity.Answer;
 import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.PollState;
 import pl.com.muca.server.entity.Question;
+import pl.com.muca.server.entity.UserAnswer;
+import pl.com.muca.server.mapper.AnswerRowMapper;
 import pl.com.muca.server.mapper.PollRowMapper;
+import pl.com.muca.server.mapper.QuestionRowMapper;
 
 @Repository
 public class PollDaoImpl implements PollDao {
@@ -88,19 +91,17 @@ public class PollDaoImpl implements PollDao {
     int latestAnswerId = getLatestAnswerId();
 
     poll.setOwnerUserId(getUserId(token));
-    System.out.println("LATEST POLL ID " + getLatestPollId());
     poll.setPollId(++latestPollId);
-    for (int i = 0; i < poll.getQuestions().length; ++i){
+    for (int i = 0; i < poll.getQuestions().length; ++i) {
       Question question = poll.getQuestions()[i];
       question.setPollId(poll.getPollId());
       question.setQuestionId(++latestQuestionId);
-      for (int j = 0; j < question.getAnswers().length; ++j){
+      for (int j = 0; j < question.getAnswers().length; ++j) {
         Answer answer = question.getAnswers()[j];
         answer.setQuestionId(question.getQuestionId());
         answer.setAnswerId(++latestAnswerId);
       }
     }
-
 
     insertPollTableData(poll);
     insertQuestionTableData(poll);
@@ -121,14 +122,15 @@ public class PollDaoImpl implements PollDao {
   private Integer getLatestQuestionId() {
     final String latestQuestionIdSql = "SELECT MAX(question.question_id) " + "FROM question;";
     return Optional.ofNullable(
-        template.queryForObject(latestQuestionIdSql, new MapSqlParameterSource(), Integer.class))
+            template.queryForObject(
+                latestQuestionIdSql, new MapSqlParameterSource(), Integer.class))
         .orElse(0);
   }
 
   private Integer getLatestAnswerId() {
     final String latestAnswerIdSql = "SELECT MAX(answer.answer_id) " + "FROM answer;";
     return Optional.ofNullable(
-        template.queryForObject(latestAnswerIdSql, new MapSqlParameterSource(), Integer.class))
+            template.queryForObject(latestAnswerIdSql, new MapSqlParameterSource(), Integer.class))
         .orElse(0);
   }
 
@@ -172,11 +174,6 @@ public class PollDaoImpl implements PollDao {
               .addValue("question_id", question.getQuestionId())
               .addValue("poll_id", question.getPollId())
               .addValue("content", question.getTitle());
-      System.out.println("INERTINNG");
-      System.out.println("INERTINNG");
-      System.out.println("INERTINNG");
-      System.out.println("INERTINNG");
-      System.out.println(param.toString());
       template.update(sql, param);
     }
   }
@@ -228,5 +225,63 @@ public class PollDaoImpl implements PollDao {
     map.put("poll_id", poll.getPollId());
     template.execute(
         sql, map, (PreparedStatementCallback<Object>) PreparedStatement::executeUpdate);
+  }
+
+  @Override
+  public Poll getPollDetails(int pollId) {
+    Poll poll = new Poll();
+    poll.setPollId(pollId);
+    poll.setName(getPollName(pollId));
+    poll.setQuestions(getQuestions(pollId));
+    Arrays.stream(poll.getQuestions())
+        .forEach(question -> question.setAnswers(getAnswers(question.getQuestionId())));
+    return poll;
+  }
+
+  private String getPollName(int pollId) {
+    String sql = "SELECT poll.name FROM poll WHERE poll_id = :PollId;";
+    MapSqlParameterSource mapSqlParameterSource =
+        new MapSqlParameterSource().addValue("PollId", pollId);
+    return template.queryForObject(sql, mapSqlParameterSource, String.class);
+  }
+
+  private Question[] getQuestions(int pollId) {
+    String sql =
+        "SELECT question.question_id, question.poll_id, question.content "
+            + "FROM question "
+            + "WHERE question.poll_id = :PollId;";
+    SqlParameterSource questionParameters = new MapSqlParameterSource().addValue("PollId", pollId);
+    return template
+        .query(sql, questionParameters, new QuestionRowMapper())
+        .toArray(Question[]::new);
+  }
+
+  private Answer[] getAnswers(int questionId) {
+    String sql =
+        "SELECT answer.answer_id, answer.question_id, answer.content "
+            + "FROM answer "
+            + "WHERE answer.question_id = :QuestionId;";
+    SqlParameterSource answerParameters =
+        new MapSqlParameterSource().addValue("QuestionId", questionId);
+    return template.query(sql, answerParameters, new AnswerRowMapper()).toArray(Answer[]::new);
+  }
+
+  @Override
+  public void saveUserAnswers(UserAnswer[] userAnswers, String token) throws SQLException {
+    int userId = getUserId(token);
+
+
+    for (UserAnswer userAnswer : userAnswers) {
+      final String sql =
+          "INSERT INTO useranswer(user_id_hash, question_id, answer_chosen) "
+              + "VALUES (:UserIdHash, :QuestionId, :AnswerChosen)";
+      SqlParameterSource param =
+          new MapSqlParameterSource()
+              // TODO (Damian Muca): 6/12/20 inser user hash ID.
+              .addValue("UserIdHash", userId)
+              .addValue("QuestionId", userAnswer.getQuestionId())
+              .addValue("AnswerChosen", userAnswer.getAnswerChosen());
+      template.update(sql, param);
+    }
   }
 }
