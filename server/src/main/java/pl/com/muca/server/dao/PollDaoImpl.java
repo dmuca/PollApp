@@ -79,14 +79,36 @@ public class PollDaoImpl implements PollDao {
 
   @Override
   public void insertPoll(Poll poll, String token) throws SQLException {
+    poll.setPollId(getLatestPollId() + 1);
+    poll.setOwnerUserId(getUserHashId(token));
+
+    insertPollTableData(poll);
+  }
+
+  private void insertPollTableData(Poll poll) {
+    final String sql = "INSERT INTO poll(owner_user_id, name) " +
+        "VALUES (:owner_user_id, :name)";
+    KeyHolder holder = new GeneratedKeyHolder();
+    SqlParameterSource param =
+        new MapSqlParameterSource()
+            .addValue("owner_user_id", poll.getOwnerUserId())
+            .addValue("name", poll.getName().trim());
+    template.update(sql, param, holder);
+  }
+
+  private Integer getLatestPollId() {
+    Integer latestPollId;
     final String latestPollIdSql = "SELECT MAX(poll.poll_id) " + "FROM poll;";
-    Integer latestPollId =
+    latestPollId =
         Optional.ofNullable(
                 template.queryForObject(
                     latestPollIdSql, new MapSqlParameterSource(), Integer.class))
             .orElse(0);
-    poll.setPollId(++latestPollId);
+    return latestPollId;
+  }
 
+  private int getUserHashId(String token) throws SQLException {
+    int userId;
     final String requestorUserIdSql =
         "SELECT appuser.user_id_hash FROM appuser "
             + "INNER JOIN session on appuser.user_id_hash = session.user_id_hash "
@@ -100,18 +122,9 @@ public class PollDaoImpl implements PollDao {
     if (userIdHash.isEmpty()) {
       throw new SQLException("Couldn't find user id hash base on its session token");
     } else {
-      poll.setOwnerUserId(userIdHash.get());
+      userId = userIdHash.get();
     }
-
-    final String sql = "INSERT INTO poll(owner_user_id, name) " + "VALUES (:owner_user_id, :name)";
-
-    KeyHolder holder = new GeneratedKeyHolder();
-    SqlParameterSource param =
-        new MapSqlParameterSource()
-            .addValue("owner_user_id", poll.getOwnerUserId())
-            .addValue("name", poll.getName().trim());
-
-    template.update(sql, param, holder);
+    return userId;
   }
 
   @Override
