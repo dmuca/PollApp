@@ -1,3 +1,26 @@
+<div class="card my-5">
+  <div class="card-body">
+    <h1>{{poll.name}}</h1>
 
-<p>{{poll.name}}</p>
+    <div *ngFor="let question of poll.questions; let i = index"
+         [attr.data-index]="i">
 
+      <label class="question" id="example-radio-group-label">Pytanie {{i + 1}}: {{question.title}}</label>
+      <mat-radio-group
+        aria-labelledby="example-radio-group-label"
+        class="example-radio-group"
+        [(ngModel)]="userAnswers[i].answerChosen">
+        <mat-radio-button class="example-radio-button" *ngFor="let answer of question.answers" [value]="answer.answerId">
+          {{answer.content}}
+        </mat-radio-button>
+      </mat-radio-group>
+      <div>Twoja odpowiedź to: {{userAnswers[i].answerChosen}}</div>
+      <hr/>
+    </div>
+
+    <button [disabled]="loading" (click)="answerOnPoll()"
+            class="create-poll btn btn-primary">
+      Wyślij odpowiedź
+    </button>
+  </div>
+</div>
