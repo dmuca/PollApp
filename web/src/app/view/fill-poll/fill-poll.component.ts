@@ -4,6 +4,8 @@ import {ActivatedRoute} from '@angular/router';
 import {UserAnswer} from '../../model/poll/user.answer';
 import {map} from 'rxjs/operators';
 import {PollService} from '../../model/poll/poll.service';
+import {AlertService} from '../../model/alert/alert.service';
+import {isSuccess} from '@angular/http/src/http_utils';
 
 @Component({
   selector: 'app-fill-poll',
@@ -15,7 +17,9 @@ export class FillPollComponent implements OnInit {
   userAnswers: UserAnswer[] = [];
   loading: boolean;
 
-  constructor(private activatedRoute: ActivatedRoute, private pollService: PollService) {
+  constructor(private activatedRoute: ActivatedRoute,
+              private pollService: PollService,
+              private alertService: AlertService) {
   }
 
   ngOnInit(): void {
@@ -36,6 +40,13 @@ export class FillPollComponent implements OnInit {
   }
 
   answerOnPoll() {
-    console.log(this.poll.pollId);
+    this.loading = true;
+    for (const userAnswer of this.userAnswers) {
+      if (userAnswer.answerChosen === -1) {
+        this.alertService.error('Uzupełnij wszystkie odpowiedzi w ankiecie.');
+        this.loading = false;
+        return;
+      }
+    }
   }
 }
