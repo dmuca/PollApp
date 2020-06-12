@@ -57,7 +57,7 @@ public class UserDaoImpl implements UserDao {
   public void updateUser(User user) {
     KeyHolder holder = new GeneratedKeyHolder();
     SqlParameterSource param = new MapSqlParameterSource()
-        .addValue("user_id", user.getIdHash())
+        .addValue("user_id", user.getId())
         .addValue("name", user.getFirstName().trim())
         .addValue("last_name", user.getLastName().trim())
         .addValue("password", user.getPassword())
@@ -68,7 +68,7 @@ public class UserDaoImpl implements UserDao {
   @Override
   public void executeUpdateUser(User user) {
     Map<String, Object> map = new HashMap<>();
-    map.put("user_id", user.getIdHash());
+    map.put("user_id", user.getId());
     map.put("name", user.getFirstName().trim());
     map.put("last_name", user.getLastName().trim());
     map.put("password", user.getPassword());
@@ -82,7 +82,7 @@ public class UserDaoImpl implements UserDao {
   public void deleteUser(User user) {
     final String sql = "DELETE FROM appuser WHERE user_id=:user_id";
     final Map<String, Object> map = new HashMap<>();
-    map.put("user_id", user.getIdHash());
+    map.put("user_id", user.getId());
     template.execute(sql, map,
         (PreparedStatementCallback<Object>) PreparedStatement::executeUpdate);
   }
@@ -93,7 +93,7 @@ public class UserDaoImpl implements UserDao {
 
     KeyHolder holder = new GeneratedKeyHolder();
     SqlParameterSource namedParameters = new MapSqlParameterSource()
-        .addValue("user_id", user.getIdHash());
+        .addValue("user_id", user.getId());
     template.update(sql, namedParameters, holder);
   }
 
@@ -109,7 +109,7 @@ public class UserDaoImpl implements UserDao {
         + "ON session.granted = newestdate.grantDate "
         + "AND session.user_id = newestdate.userId;";
     SqlParameterSource namedParameters =
-        new MapSqlParameterSource().addValue("UserId", user.getIdHash());
+        new MapSqlParameterSource().addValue("UserId", user.getId());
 
     Optional<String> sessionToken =
         Optional.ofNullable(

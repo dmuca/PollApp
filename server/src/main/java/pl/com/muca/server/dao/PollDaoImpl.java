@@ -87,8 +87,7 @@ public class PollDaoImpl implements PollDao {
   }
 
   private void insertPollTableData(Poll poll) {
-    final String sql = "INSERT INTO poll(owner_user_id, name) " +
-        "VALUES (:owner_user_id, :name)";
+    final String sql = "INSERT INTO poll(owner_user_id, name) " + "VALUES (:owner_user_id, :name)";
     KeyHolder holder = new GeneratedKeyHolder();
     SqlParameterSource param =
         new MapSqlParameterSource()
@@ -109,23 +108,20 @@ public class PollDaoImpl implements PollDao {
   }
 
   private int getUserId(String token) throws SQLException {
-    int userId;
     final String requestorUserIdSql =
         "SELECT appuser.user_id FROM appuser "
             + "INNER JOIN session on appuser.user_id = session.user_id "
             + "WHERE session.access_token = :SessionToken;";
     SqlParameterSource sessionTokenParam =
         new MapSqlParameterSource().addValue("SessionToken", UUID.fromString(token));
-    Optional<Integer> userIdHash =
+    Optional<Integer> userIdOptional =
         Optional.ofNullable(
             template.queryForObject(requestorUserIdSql, sessionTokenParam, Integer.class));
 
-    if (userIdHash.isEmpty()) {
+    if (userIdOptional.isEmpty()) {
       throw new SQLException("Couldn't find user id hash base on its session token");
-    } else {
-      userId = userIdHash.get();
     }
-    return userId;
+    return userIdOptional.get();
   }
 
   @Override

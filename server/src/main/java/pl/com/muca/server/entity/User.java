@@ -3,21 +3,19 @@ package pl.com.muca.server.entity;
 import java.util.Objects;
 
 public class User {
-
-  // TODO change to Id
-  private int idHash;
+  private int id;
   private String firstName;
   private String lastName;
   private String password;
   private String email;
   private String token;
 
-  public long getIdHash() {
-    return idHash;
+  public long getId() {
+    return id;
   }
 
-  public void setIdHash(int idHash) {
-    this.idHash = idHash;
+  public void setId(int id) {
+    this.id = id;
   }
 
   public String getFirstName() {
@@ -71,7 +69,7 @@ public class User {
             + "email='%s', "
             + "token='%s'"
             + "}",
-        idHash, firstName, lastName, password, email, token);
+        id, firstName, lastName, password, email, token);
   }
 
   @Override
