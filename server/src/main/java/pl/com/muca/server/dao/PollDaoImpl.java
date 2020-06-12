@@ -43,20 +43,6 @@ public class PollDaoImpl implements PollDao {
     return polls;
   }
 
-  @Override
-  public ImmutableList<Poll> findAllMine(String token) {
-    SqlParameterSource namedParameters =
-        new MapSqlParameterSource().addValue("SessionToken", UUID.fromString(token));
-    return ImmutableList.copyOf(
-        template.query(
-            "SELECT * FROM poll "
-                + "INNER JOIN session "
-                + "ON session.access_token = :SessionToken "
-                + "WHERE poll.owner_user_id = session.user_id;",
-            namedParameters,
-            new PollRowMapper()));
-  }
-
   private PollState getPollState(int pollId, String token) {
     String countUserAnswersToPollSql =
         "SELECT COUNT(*) AS howManyAnswers "
@@ -76,6 +62,20 @@ public class PollDaoImpl implements PollDao {
         Optional.ofNullable(
             template.queryForObject(countUserAnswersToPollSql, namedParameters, Integer.class));
     return answersToPoll.filter(integer -> integer > 0).map(integer -> Filled).orElse(New);
+  }
+
+  @Override
+  public ImmutableList<Poll> findAllMine(String token) {
+    SqlParameterSource namedParameters =
+        new MapSqlParameterSource().addValue("SessionToken", UUID.fromString(token));
+    return ImmutableList.copyOf(
+        template.query(
+            "SELECT * FROM poll "
+                + "INNER JOIN session "
+                + "ON session.access_token = :SessionToken "
+                + "WHERE poll.owner_user_id = session.user_id;",
+            namedParameters,
+            new PollRowMapper()));
   }
 
   @Override
