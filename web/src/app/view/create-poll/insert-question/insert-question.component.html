@@ -1,6 +1,7 @@
-<input type="text" class="form-control" [(ngModel)]='question.title'
+<input type="text" class="question form-control" [(ngModel)]='question.title'
        placeholder="Pytanie"/>
 <br/>
+<hr/>
 
 <div *ngFor="let answer of question.answers; let i = index"
      [attr.data-index]="i">
