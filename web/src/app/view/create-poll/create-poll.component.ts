@@ -34,16 +34,19 @@ export class CreatePollComponent implements OnInit {
         answers: [{
           content: '10',
           answerId: 1,
-          questionId: 1
+          questionId: 1,
+          markedByUser: false,
         }
           , {
             content: '20',
             answerId: 2,
-            questionId: 1
+            questionId: 1,
+            markedByUser: false,
           }, {
             content: '70',
             answerId: 3,
-            questionId: 1
+            questionId: 1,
+            markedByUser: false,
           }],
       },
       {
@@ -52,15 +55,18 @@ export class CreatePollComponent implements OnInit {
         answers: [{
           content: 'Wieś',
           answerId: 4,
-          questionId: 2
+          questionId: 2,
+          markedByUser: false,
         }, {
           content: 'Miast do 50 tyś mieszkańców',
           answerId: 5,
-          questionId: 2
+          questionId: 2,
+          markedByUser: false,
         }, {
           content: 'Miasto powyżej 50 tys mieszkańców',
           answerId: 6,
-          questionId: 2
+          questionId: 2,
+          markedByUser: false,
         }],
       }
     ],
@@ -139,8 +145,8 @@ export class CreatePollComponent implements OnInit {
       questionId: 0,
       title: '',
       answers: [
-        {content: '', questionId: 0, answerId: 0},
-        {content: '', questionId: 0, answerId: 0},
+        {content: '', questionId: 0, answerId: 0, markedByUser: false},
+        {content: '', questionId: 0, answerId: 0, markedByUser: false},
       ],
     };
     this.poll.questions = this.poll.questions.concat(newQuestion);
