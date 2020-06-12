@@ -74,9 +74,10 @@ export class FillPollComponent implements OnInit {
     // TODO invoke service, because here poll contains only pollId, state and name,
     // TODO need to provide questions
     .subscribe(state => {
-      console.log(`Get pollId: ${state.poll.pollId}`);
       this.pollService.getPollDetails(state.poll.pollId).subscribe((poll) => {
         // this.poll = poll;
+        console.log('FROM BE.');
+        console.log(poll);
         this.userAnswers = new Array(this.poll.questions.length);
         for (let i = 0; i < this.poll.questions.length; ++i) {
           this.userAnswers[i] = {
@@ -97,7 +98,6 @@ export class FillPollComponent implements OnInit {
   }
 
   answerOnPoll() {
-    console.log(...this.userAnswers);
     console.log(this.poll.pollId);
   }
 }

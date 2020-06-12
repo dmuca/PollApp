@@ -17,4 +17,6 @@ public interface PollService {
   void executeUpdatePoll(Poll poll);
 
   void deletePoll(Poll poll);
+
+  Poll getPollDetails(int pollId);
 }

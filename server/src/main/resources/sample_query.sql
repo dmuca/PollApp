@@ -1,2 +1,2 @@
-SELECT MAX(poll.poll_id)
-FROM poll;
+SELECT question.content, question.poll_id, question.question_id FROM question
+WHERE question.poll_id = :PollId;

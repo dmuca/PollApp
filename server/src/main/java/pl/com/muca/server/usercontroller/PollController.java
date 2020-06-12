@@ -36,9 +36,9 @@ public class PollController {
   }
 
   @GetMapping(value = "/getPollDetails/{pollId}")
-  public Poll getPollDetails(@PathVariable Long pollId) {
+  public Poll getPollDetails(@PathVariable Integer pollId) {
     System.out.printf("Get poll details, pollId: %d \n", pollId);
-    return null;
+    return pollService.getPollDetails(pollId);
   }
 
   @PostMapping(value = "/createPoll")

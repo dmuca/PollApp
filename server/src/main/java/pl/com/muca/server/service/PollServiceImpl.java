@@ -40,4 +40,9 @@ public class PollServiceImpl implements PollService {
   public void deletePoll(Poll poll) {
     pollDao.deletePoll(poll);
   }
+
+  @Override
+  public Poll getPollDetails(int pollId) {
+    return pollDao.getPollDetails(pollId);
+  }
 }
