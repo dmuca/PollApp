@@ -3,7 +3,7 @@
     <h2>Kreator ankiety</h2>
     <div class="form-group">
       <label for="pollName"><b>Nazwa ankiety</b></label>
-      <input type="text" formControlName="pollName" class="form-control"
+      <input type="text" formControlName="pollName" class="poll-name form-control"
              placeholder="Nazwa ankiety" [(ngModel)]="poll.name"
              [ngClass]="{ 'is-invalid': submitted && getFormControls.pollName.errors }"/>
       <div *ngIf="submitted && getFormControls.pollName.errors"
