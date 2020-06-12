@@ -1,3 +1,11 @@
+-- Clear tables
+DELETE FROM session WHERE TRUE=TRUE;
+DELETE FROM appuser WHERE TRUE=TRUE;
+DELETE FROM useranswer WHERE TRUE=TRUE;
+DELETE FROM answer WHERE TRUE=TRUE;
+DELETE FROM question WHERE TRUE=TRUE;
+DELETE FROM poll WHERE TRUE=TRUE;
+
 -- Fill users table.
 INSERT INTO appuser(user_id_hash, name, last_name, password_hash, email) VALUES (1, 'Karol', 'Wojciechowski', '1', 'KarolW@gmail.com');
 INSERT INTO appuser(user_id_hash, name, last_name, password_hash, email) VALUES (2, 'Bartek', 'Mazurkiewicz', '2', 'Bartosz@gmail.com');
@@ -52,14 +60,6 @@ INSERT INTO answer(answer_id, question_id, content) VALUES (20, 5, 'Owszem');
 INSERT INTO answer(answer_id, question_id, content) VALUES (21, 5, 'Polecę');
 INSERT INTO useranswer(user_id, question_id, answer_chosen) VALUES (4, 5, 19);
 
--- -- CLEARING TABLES
--- DELETE FROM appuser WHERE TRUE=TRUE;
--- DELETE FROM poll WHERE TRUE=TRUE;
--- DELETE FROM question WHERE TRUE=TRUE;
--- DELETE FROM answer WHERE TRUE=TRUE;
--- DELETE FROM useranswer WHERE TRUE=TRUE;
--- DELETE FROM session WHERE TRUE=TRUE;
---
 -- -- DROP ALL TABLES
 -- DROP TABLE useranswer;
 -- DROP TABLE answer;

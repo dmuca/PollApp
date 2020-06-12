@@ -1,5 +1,6 @@
 package pl.com.muca.server.service;
 
+import java.sql.SQLException;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
@@ -21,8 +22,8 @@ public class PollServiceImpl implements PollService {
   }
 
   @Override
-  public void insertPoll(Poll poll) {
-    pollDao.insertPoll(poll);
+  public void insertPoll(Poll poll, String token) throws SQLException {
+    pollDao.insertPoll(poll, token);
   }
 
   @Override

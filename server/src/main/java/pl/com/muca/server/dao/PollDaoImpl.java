@@ -5,6 +5,7 @@ import static pl.com.muca.server.entity.PollState.New;
 
 import com.google.common.collect.ImmutableList;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,17 +78,39 @@ public class PollDaoImpl implements PollDao {
   }
 
   @Override
-  public void insertPoll(Poll poll) {
-    final String sql =
-        "INSERT INTO poll(poll_id, owner_user_id, name) "
-            + "VALUES (:poll_id, :owner_user_id, :name)";
+  public void insertPoll(Poll poll, String token) throws SQLException {
+    final String latestPollIdSql = "SELECT MAX(poll.poll_id) " + "FROM poll;";
+    Integer latestPollId =
+        Optional.ofNullable(
+                template.queryForObject(
+                    latestPollIdSql, new MapSqlParameterSource(), Integer.class))
+            .orElse(0);
+    poll.setPollId(++latestPollId);
+
+    final String requestorUserIdSql =
+        "SELECT appuser.user_id_hash FROM appuser "
+            + "INNER JOIN session on appuser.user_id_hash = session.user_id_hash "
+            + "WHERE session.access_token = :SessionToken;";
+    SqlParameterSource sessionTokenParam =
+        new MapSqlParameterSource().addValue("SessionToken", UUID.fromString(token));
+    Optional<Integer> userIdHash =
+        Optional.ofNullable(
+            template.queryForObject(requestorUserIdSql, sessionTokenParam, Integer.class));
+
+    if (userIdHash.isEmpty()) {
+      throw new SQLException("Couldn't find user id hash base on its session token");
+    } else {
+      poll.setOwnerUserId(userIdHash.get());
+    }
+
+    final String sql = "INSERT INTO poll(owner_user_id, name) " + "VALUES (:owner_user_id, :name)";
 
     KeyHolder holder = new GeneratedKeyHolder();
     SqlParameterSource param =
         new MapSqlParameterSource()
-            .addValue("poll_id", poll.getPollId())
             .addValue("owner_user_id", poll.getOwnerUserId())
             .addValue("name", poll.getName().trim());
+
     template.update(sql, param, holder);
   }
 
