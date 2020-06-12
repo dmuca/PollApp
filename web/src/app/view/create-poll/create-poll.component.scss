@@ -1,0 +1,16 @@
+button{
+  margin: 2px;
+}
+
+input.poll-name{
+  font-size: 22px;
+  background-color: rgba(231, 231, 255, 0.42);
+}
+
+button.create-poll{
+  background-color: rgb(125, 212, 75);
+}
+
+button.create-poll:hover{
+  background-color: rgb(108, 183, 65);
+}
