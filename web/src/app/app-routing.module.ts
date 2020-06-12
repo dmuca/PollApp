@@ -9,6 +9,7 @@ import {MyPollsComponent} from './view/my-polls/my-polls.component';
 import {AuthGuard} from './model/authentication/auth.guard';
 import {FillPollComponent} from './view/fill-poll/fill-poll.component';
 import {ViewMyAnswersComponent} from './view/view-my-answers/view-my-answers.component';
+import {ViewAnswersToMyPollComponent} from './view/view-answers-to-my-poll/view-answers-to-my-poll.component';
 
 const routes: Routes = [
   {path: 'users', component: UserListComponent},
@@ -25,6 +26,11 @@ const routes: Routes = [
   {
     path: 'viewMyAnswers',
     component: ViewMyAnswersComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'viewAnswersToMyPoll',
+    component: ViewAnswersToMyPollComponent,
     canActivate: [AuthGuard]
   },
 ];

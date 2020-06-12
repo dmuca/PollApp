@@ -5,6 +5,7 @@ public class Answer {
   private int questionId;
   private String content;
   private boolean markedByUser;
+  private int answersCounter;
 
   public int getAnswerId() {
     return answerId;
@@ -36,6 +37,14 @@ public class Answer {
 
   public void setMarkedByUser(boolean markedByUser) {
     this.markedByUser = markedByUser;
+  }
+
+  public int getAnswersCounter() {
+    return answersCounter;
+  }
+
+  public void setAnswersCounter(int answersCounter) {
+    this.answersCounter = answersCounter;
   }
 
   @Override

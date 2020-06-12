@@ -6,7 +6,6 @@ import static pl.com.muca.server.entity.PollState.New;
 import com.google.common.collect.ImmutableList;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -266,10 +265,31 @@ public class PollDaoImpl implements PollDao {
         new MapSqlParameterSource().addValue("QuestionId", questionId);
     Answer[] answers =
         template.query(sql, answerParameters, new AnswerRowMapper()).toArray(Answer[]::new);
+
+    boolean isUserOwnerOfTheQuestion = isUserACreatorOfTheQuestion(questionId, token);
+
     for (Answer answer : answers) {
       answer.setMarkedByUser(isMarkedByUser(answer.getAnswerId(), token));
+      if (isUserOwnerOfTheQuestion) {
+        answer.setAnswersCounter(countAnswers(answer.getAnswerId()));
+      }
     }
     return answers;
+  }
+
+  private boolean isUserACreatorOfTheQuestion(int questionId, String token) throws SQLException {
+    String sql =
+        "SELECT COUNT(*) FROM question "
+            + "INNER JOIN poll "
+            + "ON poll.poll_id = question.poll_id "
+            + "WHERE question.question_id = :QuestionId AND poll.owner_user_id = :UserId;";
+    SqlParameterSource sqlParameterSource =
+        new MapSqlParameterSource()
+            .addValue("QuestionId", questionId)
+            .addValue("UserId", getUserId(token));
+    return Optional.ofNullable(template.queryForObject(sql, sqlParameterSource, Integer.class))
+            .orElse(0)
+        > 0;
   }
 
   private boolean isMarkedByUser(int answerId, String token) throws SQLException {
@@ -285,6 +305,15 @@ public class PollDaoImpl implements PollDao {
     Integer value = template.queryForObject(sql, sqlParameterSource, Integer.class);
     System.out.println(sqlParameterSource.toString());
     return Optional.ofNullable(value).orElse(0) > 0;
+  }
+
+  private int countAnswers(int answerId) throws SQLException {
+    String sql = "SELECT COUNT(*) FROM useranswer WHERE answer_chosen = :AnswerId;";
+    SqlParameterSource sqlParameterSource =
+        new MapSqlParameterSource().addValue("AnswerId", answerId);
+    Optional<Integer> howManyCheckedAnswers =
+        Optional.ofNullable(template.queryForObject(sql, sqlParameterSource, Integer.class));
+    return howManyCheckedAnswers.orElse(0);
   }
 
   @Override
