@@ -7,6 +7,8 @@ import {AllPollsComponent} from './view/polls/all-polls.component';
 import {CreatePollComponent} from './view/create-poll/create-poll.component';
 import {MyPollsComponent} from './view/my-polls/my-polls.component';
 import {AuthGuard} from './model/authentication/auth.guard';
+import {FillPollComponent} from './view/fill-poll/fill-poll.component';
+import {Poll} from './model/poll/poll';
 
 const routes: Routes = [
   {path: 'users', component: UserListComponent},
@@ -15,6 +17,7 @@ const routes: Routes = [
   {path: 'myPolls', component: MyPollsComponent, canActivate: [AuthGuard]},
   {path: 'allPolls', component: AllPollsComponent, canActivate: [AuthGuard]},
   {path: 'createPoll', component: CreatePollComponent, canActivate: [AuthGuard]},
+  {path: 'fillPoll', component: FillPollComponent, data: {poll : Poll} ,  canActivate: [AuthGuard]},
 ];
 
 @NgModule({
