@@ -24,12 +24,39 @@ export class CreatePollComponent implements OnInit {
     name: 'Przykładowa ankieta',
     questions: [
       {
+        questionId: 1,
         title: 'Ile masz lat?',
-        answers: [{content: '10'}, {content: '20'}, {content: '70'}],
+        answers: [{
+          content: '10',
+          answerId: 1,
+          questionId: 1
+        }
+          , {
+            content: '20',
+            answerId: 2,
+            questionId: 1
+          }, {
+            content: '70',
+            answerId: 3,
+            questionId: 1
+          }],
       },
       {
+        questionId: 2,
         title: 'Gdzie mieszkasz?',
-        answers: [{content: 'Wieś'}, {content: 'Miast do 50 tyś mieszkańców'}, {content: 'Miasto powyżej 50 tys mieszkańców'}],
+        answers: [{
+          content: 'Wieś',
+          answerId: 4,
+          questionId: 2
+        }, {
+          content: 'Miast do 50 tyś mieszkańców',
+          answerId: 5,
+          questionId: 2
+        }, {
+          content: 'Miasto powyżej 50 tys mieszkańców',
+          answerId: 6,
+          questionId: 2
+        }],
       }
     ],
     state: undefined,
@@ -104,10 +131,11 @@ export class CreatePollComponent implements OnInit {
 
   addQuestion() {
     const newQuestion: Question = {
+      questionId: 0,
       title: '',
       answers: [
-        {content: ''},
-        {content: ''},
+        {content: '', questionId: 0, answerId: 0},
+        {content: '', questionId: 0, answerId: 0},
       ],
     };
     this.poll.questions = this.poll.questions.concat(newQuestion);
