@@ -1,18 +1,19 @@
-<input type="text" class="question form-control" [(ngModel)]='question.title'
+<input type="text" class="question form-control" [(ngModel)]='questions[questionIndex].title'
        placeholder="Pytanie"/>
 <br/>
-<hr/>
 
-<div *ngFor="let answer of question.answers; let i = index"
-     [attr.data-index]="i">
+<div *ngFor="let answer of questions[questionIndex].answers; let j = index"
+     [attr.data-index]="j">
   <div>
-    <label>Odpowiedź nr. {{i + 1}}</label>
-    <app-insert-answer [answer]="question.answers[i]"></app-insert-answer>
+    <label>Odpowiedź nr. {{j + 1}}</label>
+    <app-insert-answer [answer]="questions[questionIndex].answers[j]"></app-insert-answer>
   </div>
 </div>
 
 
 <button (click)="addAnswer()" class="add btn btn-primary">
   Nowa odpowiedź</button>
-<button (click)="removeAnswer()" class="remove btn btn-primary">
+<button (click)="removeAnswer()" class="remove-answer btn btn-primary">
   Usuń odpowiedź</button>
+<button (click)="removeQuestion()" class="remove-question btn btn-primary">
+  Usuń pytanie</button>
