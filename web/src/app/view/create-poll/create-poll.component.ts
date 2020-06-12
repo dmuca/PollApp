@@ -6,6 +6,7 @@ import {first} from 'rxjs/operators';
 import {AlertService} from '../../model/alert/alert.service';
 import {Question} from '../../model/poll/question';
 import {Poll} from '../../model/poll/poll';
+import {PollService} from '../../model/poll/poll.service';
 
 @Component({
   selector: 'app-create-poll',
@@ -37,7 +38,9 @@ export class CreatePollComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private alertService: AlertService) {
+    private alertService: AlertService,
+    private pollService: PollService
+  ) {
   }
 
   ngOnInit(): void {
@@ -72,20 +75,26 @@ export class CreatePollComponent implements OnInit {
         this.alertService.error('Każde z pytań musi posiadać przynajmniej dwie odpowiedzi.');
         this.loading = false;
         return;
-      }
-      else if (question.title.length === 0){
+      } else if (question.title.length === 0) {
         this.alertService.error('Treść pytań nie może być pusta.');
         this.loading = false;
         return;
       }
-      for (const answer of question.answers){
-        if (answer.content.length === 0){
+      for (const answer of question.answers) {
+        if (answer.content.length === 0) {
           this.alertService.error('Treść odpowiedzi nie może być pusta.');
           this.loading = false;
           return;
         }
       }
     }
+
+    this.pollService.createPoll(this.poll).pipe(first()).subscribe((response) => {
+        this.alertService.success('Ankieta została utworzona.');
+      },
+      error => {
+        this.alertService.error('Błąd serwera, tworzenie ankiety nie powiodło się.');
+      });
   }
 
   get getFormControls() {

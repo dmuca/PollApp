@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Poll} from './poll';
-import {Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {REST_API_URL} from '../../../common';
 
@@ -15,14 +15,18 @@ export class PollService {
   }
 
   public listAllPolls() {
-    this.http.get<Poll[]>(`${REST_API_URL}listPolls`).subscribe((polls) => {
+    this.http.get<Poll[]>(`${REST_API_URL}listPolls`).subscribe((polls: Poll[]) => {
       this.pollsList$.next(polls);
     });
   }
 
   public listMyPolls() {
-    this.http.get<Poll[]>(`${REST_API_URL}listMyPolls`).subscribe((polls) => {
+    this.http.get<Poll[]>(`${REST_API_URL}listMyPolls`).subscribe((polls: Poll[]) => {
       this.myPollsList$.next(polls);
     });
+  }
+
+  public createPoll(poll: Poll): Observable<boolean> {
+    return this.http.post<boolean>(`${REST_API_URL}createPoll`, poll);
   }
 }
