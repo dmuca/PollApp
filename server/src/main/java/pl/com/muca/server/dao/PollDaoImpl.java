@@ -20,6 +20,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.PollState;
+import pl.com.muca.server.entity.Question;
 import pl.com.muca.server.mapper.PollRowMapper;
 
 @Repository
@@ -84,6 +85,7 @@ public class PollDaoImpl implements PollDao {
     poll.setOwnerUserId(getUserId(token));
 
     insertPollTableData(poll);
+    insertQuestionTableData(poll);
   }
 
   private Integer getLatestPollId() {
@@ -91,8 +93,8 @@ public class PollDaoImpl implements PollDao {
     final String latestPollIdSql = "SELECT MAX(poll.poll_id) " + "FROM poll;";
     latestPollId =
         Optional.ofNullable(
-            template.queryForObject(
-                latestPollIdSql, new MapSqlParameterSource(), Integer.class))
+                template.queryForObject(
+                    latestPollIdSql, new MapSqlParameterSource(), Integer.class))
             .orElse(0);
     return latestPollId;
   }
@@ -115,14 +117,38 @@ public class PollDaoImpl implements PollDao {
   }
 
   private void insertPollTableData(Poll poll) {
-    final String sql = "INSERT INTO poll(poll_id, owner_user_id, name) " + "VALUES (:poll_id,:owner_user_id, :name)";
-    KeyHolder holder = new GeneratedKeyHolder();
+    final String sql =
+        "INSERT INTO poll(poll_id, owner_user_id, name) "
+            + "VALUES (:poll_id,:owner_user_id, :name)";
     SqlParameterSource param =
         new MapSqlParameterSource()
             .addValue("poll_id", poll.getPollId())
             .addValue("owner_user_id", poll.getOwnerUserId())
             .addValue("name", poll.getName().trim());
-    template.update(sql, param, holder);
+    template.update(sql, param);
+  }
+
+  private void insertQuestionTableData(Poll poll) {
+    int latestQuestionId = getLatestQuestionId();
+    final String sql =
+        "INSERT INTO question(question_id, poll_id, content) "
+            + "VALUES (:question_id, :poll_id, :content)";
+
+    for (Question question : poll.getQuestions()) {
+      SqlParameterSource param =
+          new MapSqlParameterSource()
+              .addValue("question_id", ++latestQuestionId)
+              .addValue("poll_id", poll.getPollId())
+              .addValue("content", question.getTitle());
+      template.update(sql, param);
+    }
+  }
+
+  private Integer getLatestQuestionId() {
+    final String latestPollIdSql = "SELECT MAX(question.question_id) " + "FROM question;";
+    return Optional.ofNullable(
+            template.queryForObject(latestPollIdSql, new MapSqlParameterSource(), Integer.class))
+        .orElse(0);
   }
 
   @Override
