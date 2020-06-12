@@ -86,23 +86,13 @@ public class PollDaoImpl implements PollDao {
     insertPollTableData(poll);
   }
 
-  private void insertPollTableData(Poll poll) {
-    final String sql = "INSERT INTO poll(owner_user_id, name) " + "VALUES (:owner_user_id, :name)";
-    KeyHolder holder = new GeneratedKeyHolder();
-    SqlParameterSource param =
-        new MapSqlParameterSource()
-            .addValue("owner_user_id", poll.getOwnerUserId())
-            .addValue("name", poll.getName().trim());
-    template.update(sql, param, holder);
-  }
-
   private Integer getLatestPollId() {
     Integer latestPollId;
     final String latestPollIdSql = "SELECT MAX(poll.poll_id) " + "FROM poll;";
     latestPollId =
         Optional.ofNullable(
-                template.queryForObject(
-                    latestPollIdSql, new MapSqlParameterSource(), Integer.class))
+            template.queryForObject(
+                latestPollIdSql, new MapSqlParameterSource(), Integer.class))
             .orElse(0);
     return latestPollId;
   }
@@ -122,6 +112,17 @@ public class PollDaoImpl implements PollDao {
       throw new SQLException("Couldn't find user id hash base on its session token");
     }
     return userIdOptional.get();
+  }
+
+  private void insertPollTableData(Poll poll) {
+    final String sql = "INSERT INTO poll(poll_id, owner_user_id, name) " + "VALUES (:poll_id,:owner_user_id, :name)";
+    KeyHolder holder = new GeneratedKeyHolder();
+    SqlParameterSource param =
+        new MapSqlParameterSource()
+            .addValue("poll_id", poll.getPollId())
+            .addValue("owner_user_id", poll.getOwnerUserId())
+            .addValue("name", poll.getName().trim());
+    template.update(sql, param, holder);
   }
 
   @Override
