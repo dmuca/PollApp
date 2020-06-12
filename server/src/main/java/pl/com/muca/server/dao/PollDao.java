@@ -9,6 +9,8 @@ public interface PollDao {
 
   List<Poll> findAllMine(String token);
 
+  Poll getPollDetails(int pollId);
+
   void insertPoll(Poll poll, String token) throws SQLException;
 
   void updatePoll(Poll poll);
