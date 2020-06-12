@@ -3,4 +3,5 @@ export class Answer{
   questionId: number;
   content: string;
   markedByUser: boolean;
+  answersCounter: number;
 }

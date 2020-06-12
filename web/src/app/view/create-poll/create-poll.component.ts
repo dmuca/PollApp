@@ -36,17 +36,20 @@ export class CreatePollComponent implements OnInit {
           answerId: 1,
           questionId: 1,
           markedByUser: false,
+          answersCounter: 0,
         }
           , {
             content: '20',
             answerId: 2,
             questionId: 1,
             markedByUser: false,
+            answersCounter: 0,
           }, {
             content: '70',
             answerId: 3,
             questionId: 1,
             markedByUser: false,
+            answersCounter: 0,
           }],
       },
       {
@@ -57,16 +60,19 @@ export class CreatePollComponent implements OnInit {
           answerId: 4,
           questionId: 2,
           markedByUser: false,
+          answersCounter: 0,
         }, {
           content: 'Miast do 50 tyś mieszkańców',
           answerId: 5,
           questionId: 2,
           markedByUser: false,
+          answersCounter: 0,
         }, {
           content: 'Miasto powyżej 50 tys mieszkańców',
           answerId: 6,
           questionId: 2,
           markedByUser: false,
+          answersCounter: 0,
         }],
       }
     ],
@@ -93,9 +99,6 @@ export class CreatePollComponent implements OnInit {
     this.submitted = true;
     this.alertService.clear();
     this.loading = true;
-
-    console.log(this.poll.name);
-    console.log(this.poll.questions);
 
     if (this.poll.name.length === 0) {
       this.alertService.error('Ankieta musi mieć nazwę.');
@@ -145,14 +148,22 @@ export class CreatePollComponent implements OnInit {
       questionId: 0,
       title: '',
       answers: [
-        {content: '', questionId: 0, answerId: 0, markedByUser: false},
-        {content: '', questionId: 0, answerId: 0, markedByUser: false},
+        {
+          content: '',
+          questionId: 0,
+          answerId: 0,
+          markedByUser: false,
+          answersCounter: 0
+        },
+        {
+          content: '',
+          questionId: 0,
+          answerId: 0,
+          markedByUser: false,
+          answersCounter: 0
+        },
       ],
     };
     this.poll.questions = this.poll.questions.concat(newQuestion);
-  }
-
-  onQuestionChanged(question: Question) {
-    console.log(question);
   }
 }

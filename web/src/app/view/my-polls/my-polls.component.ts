@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Poll} from '../../model/poll/poll';
 import {PollService} from '../../model/poll/poll.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-my-polls',
@@ -10,7 +11,8 @@ import {PollService} from '../../model/poll/poll.service';
 export class MyPollsComponent implements OnInit {
   polls: Poll[];
 
-  constructor(private pollService: PollService) {
+  constructor(private pollService: PollService,
+              private router: Router) {
     pollService.myPollsList$.subscribe((polls) => {
       this.polls = polls;
     });
@@ -20,7 +22,7 @@ export class MyPollsComponent implements OnInit {
     this.pollService.listMyPolls();
   }
 
-  viewAnswers(poll: Poll) {
-    console.log(`Fill poll: ${poll}`);
+  viewAnswersToMyPoll(poll: Poll) {
+    this.router.navigateByUrl('/viewAnswersToMyPoll', {state: {poll}});
   }
 }
