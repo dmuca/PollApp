@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -18,6 +19,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import pl.com.muca.server.entity.Answer;
 import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.PollState;
 import pl.com.muca.server.entity.Question;
@@ -81,11 +83,28 @@ public class PollDaoImpl implements PollDao {
 
   @Override
   public void insertPoll(Poll poll, String token) throws SQLException {
-    poll.setPollId(getLatestPollId() + 1);
+    int latestPollId = getLatestPollId();
+    int latestQuestionId = getLatestQuestionId();
+    int latestAnswerId = getLatestAnswerId();
+
     poll.setOwnerUserId(getUserId(token));
+    System.out.println("LATEST POLL ID " + getLatestPollId());
+    poll.setPollId(++latestPollId);
+    for (int i = 0; i < poll.getQuestions().length; ++i){
+      Question question = poll.getQuestions()[i];
+      question.setPollId(poll.getPollId());
+      question.setQuestionId(++latestQuestionId);
+      for (int j = 0; j < question.getAnswers().length; ++j){
+        Answer answer = question.getAnswers()[j];
+        answer.setQuestionId(question.getQuestionId());
+        answer.setAnswerId(++latestAnswerId);
+      }
+    }
+
 
     insertPollTableData(poll);
     insertQuestionTableData(poll);
+    insertAnswerTableData(poll);
   }
 
   private Integer getLatestPollId() {
@@ -97,6 +116,20 @@ public class PollDaoImpl implements PollDao {
                     latestPollIdSql, new MapSqlParameterSource(), Integer.class))
             .orElse(0);
     return latestPollId;
+  }
+
+  private Integer getLatestQuestionId() {
+    final String latestQuestionIdSql = "SELECT MAX(question.question_id) " + "FROM question;";
+    return Optional.ofNullable(
+        template.queryForObject(latestQuestionIdSql, new MapSqlParameterSource(), Integer.class))
+        .orElse(0);
+  }
+
+  private Integer getLatestAnswerId() {
+    final String latestAnswerIdSql = "SELECT MAX(answer.answer_id) " + "FROM answer;";
+    return Optional.ofNullable(
+        template.queryForObject(latestAnswerIdSql, new MapSqlParameterSource(), Integer.class))
+        .orElse(0);
   }
 
   private int getUserId(String token) throws SQLException {
@@ -129,7 +162,6 @@ public class PollDaoImpl implements PollDao {
   }
 
   private void insertQuestionTableData(Poll poll) {
-    int latestQuestionId = getLatestQuestionId();
     final String sql =
         "INSERT INTO question(question_id, poll_id, content) "
             + "VALUES (:question_id, :poll_id, :content)";
@@ -137,18 +169,34 @@ public class PollDaoImpl implements PollDao {
     for (Question question : poll.getQuestions()) {
       SqlParameterSource param =
           new MapSqlParameterSource()
-              .addValue("question_id", ++latestQuestionId)
-              .addValue("poll_id", poll.getPollId())
+              .addValue("question_id", question.getQuestionId())
+              .addValue("poll_id", question.getPollId())
               .addValue("content", question.getTitle());
+      System.out.println("INERTINNG");
+      System.out.println("INERTINNG");
+      System.out.println("INERTINNG");
+      System.out.println("INERTINNG");
+      System.out.println(param.toString());
       template.update(sql, param);
     }
   }
 
-  private Integer getLatestQuestionId() {
-    final String latestPollIdSql = "SELECT MAX(question.question_id) " + "FROM question;";
-    return Optional.ofNullable(
-            template.queryForObject(latestPollIdSql, new MapSqlParameterSource(), Integer.class))
-        .orElse(0);
+  private void insertAnswerTableData(Poll poll) {
+    int latestAnswerId = getLatestAnswerId();
+    final String sql =
+        "INSERT INTO answer(answer_id, question_id, content) "
+            + "VALUES (:answer_id, :question_id, :content)";
+
+    for (Question question : poll.getQuestions()) {
+      for (Answer answer : question.getAnswers()) {
+        SqlParameterSource param =
+            new MapSqlParameterSource()
+                .addValue("answer_id", answer.getAnswerId())
+                .addValue("question_id", answer.getQuestionId())
+                .addValue("content", answer.getContent());
+        template.update(sql, param);
+      }
+    }
   }
 
   @Override

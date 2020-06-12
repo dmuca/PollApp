@@ -6,6 +6,8 @@ public class Question {
 
   private String title;
   private Answer [] answers;
+  private int pollId;
+  private int questionId;
 
   public String getTitle() {
     return title;
@@ -21,6 +23,22 @@ public class Question {
 
   public void setAnswers(Answer[] answers) {
     this.answers = answers;
+  }
+
+  public int getPollId() {
+    return pollId;
+  }
+
+  public void setPollId(int pollId) {
+    this.pollId = pollId;
+  }
+
+  public int getQuestionId() {
+    return questionId;
+  }
+
+  public void setQuestionId(int questionId) {
+    this.questionId = questionId;
   }
 
   @Override
