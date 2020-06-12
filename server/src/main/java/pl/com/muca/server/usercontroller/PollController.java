@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.com.muca.server.entity.Answer;
 import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.UserAnswer;
 import pl.com.muca.server.service.PollService;
@@ -39,8 +38,9 @@ public class PollController {
   }
 
   @GetMapping(value = "/getPollDetails/{pollId}")
-  public Poll getPollDetails(@PathVariable Integer pollId) {
-    return pollService.getPollDetails(pollId);
+  public Poll getPollDetails(@PathVariable Integer pollId, @RequestHeader("Authorization") String token)
+      throws SQLException {
+    return pollService.getPollDetails(pollId, token);
   }
 
   @PostMapping(value = "/createPoll")
