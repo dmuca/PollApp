@@ -1,5 +1,5 @@
 button{
-  margin: 16px 0 0 0;
+  margin: 16px 8px 0 0;
   padding: 4px;
   background-color: #67cdcc;
   border-color: #4bbfbe;
@@ -8,4 +8,14 @@ button{
 button:hover{
   background-color: #59b2b1;
   border-color: #3a9594;
+}
+
+button.remove{
+  background-color: #df453f;
+  border-color: #95323a;
+}
+
+button.remove:hover{
+  background-color: #9f3136;
+  border-color: #591e23;
 }
