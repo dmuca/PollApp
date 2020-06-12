@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Stream;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -24,6 +23,7 @@ import pl.com.muca.server.entity.Answer;
 import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.PollState;
 import pl.com.muca.server.entity.Question;
+import pl.com.muca.server.entity.UserAnswer;
 import pl.com.muca.server.mapper.AnswerRowMapper;
 import pl.com.muca.server.mapper.PollRowMapper;
 import pl.com.muca.server.mapper.QuestionRowMapper;
@@ -91,7 +91,6 @@ public class PollDaoImpl implements PollDao {
     int latestAnswerId = getLatestAnswerId();
 
     poll.setOwnerUserId(getUserId(token));
-    System.out.println("LATEST POLL ID " + getLatestPollId());
     poll.setPollId(++latestPollId);
     for (int i = 0; i < poll.getQuestions().length; ++i) {
       Question question = poll.getQuestions()[i];
@@ -175,11 +174,6 @@ public class PollDaoImpl implements PollDao {
               .addValue("question_id", question.getQuestionId())
               .addValue("poll_id", question.getPollId())
               .addValue("content", question.getTitle());
-      System.out.println("INERTINNG");
-      System.out.println("INERTINNG");
-      System.out.println("INERTINNG");
-      System.out.println("INERTINNG");
-      System.out.println(param.toString());
       template.update(sql, param);
     }
   }
@@ -270,5 +264,24 @@ public class PollDaoImpl implements PollDao {
     SqlParameterSource answerParameters =
         new MapSqlParameterSource().addValue("QuestionId", questionId);
     return template.query(sql, answerParameters, new AnswerRowMapper()).toArray(Answer[]::new);
+  }
+
+  @Override
+  public void saveUserAnswers(UserAnswer[] userAnswers, String token) throws SQLException {
+    int userId = getUserId(token);
+
+
+    for (UserAnswer userAnswer : userAnswers) {
+      final String sql =
+          "INSERT INTO useranswer(user_id_hash, question_id, answer_chosen) "
+              + "VALUES (:UserIdHash, :QuestionId, :AnswerChosen)";
+      SqlParameterSource param =
+          new MapSqlParameterSource()
+              // TODO (Damian Muca): 6/12/20 inser user hash ID.
+              .addValue("UserIdHash", userId)
+              .addValue("QuestionId", userAnswer.getQuestionId())
+              .addValue("AnswerChosen", userAnswer.getAnswerChosen());
+      template.update(sql, param);
+    }
   }
 }

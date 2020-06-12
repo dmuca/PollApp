@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 import pl.com.muca.server.dao.PollDao;
 import pl.com.muca.server.entity.Poll;
+import pl.com.muca.server.entity.UserAnswer;
 
 @Component
 public class PollServiceImpl implements PollService {
@@ -24,6 +25,12 @@ public class PollServiceImpl implements PollService {
   @Override
   public void insertPoll(Poll poll, String token) throws SQLException {
     pollDao.insertPoll(poll, token);
+  }
+
+  @Override
+  public void saveUserAnswers(UserAnswer[] answers, String token)
+      throws SQLException {
+    pollDao.saveUserAnswers(answers, token);
   }
 
   @Override

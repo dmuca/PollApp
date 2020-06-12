@@ -2,7 +2,9 @@ package pl.com.muca.server.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import pl.com.muca.server.entity.Answer;
 import pl.com.muca.server.entity.Poll;
+import pl.com.muca.server.entity.UserAnswer;
 
 public interface PollService {
 
@@ -19,4 +21,6 @@ public interface PollService {
   void deletePoll(Poll poll);
 
   Poll getPollDetails(int pollId);
+
+  void saveUserAnswers(UserAnswer[] answers, String token) throws SQLException;
 }

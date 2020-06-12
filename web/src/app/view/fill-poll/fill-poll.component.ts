@@ -48,5 +48,8 @@ export class FillPollComponent implements OnInit {
         return;
       }
     }
+    this.pollService.saveAnswers(this.userAnswers).subscribe(() => {
+      this.alertService.success('Odpowiedzi zostały zapisane.');
+    });
   }
 }
