@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class User {
 
+  // TODO change to Id
   private int idHash;
   private String firstName;
   private String lastName;

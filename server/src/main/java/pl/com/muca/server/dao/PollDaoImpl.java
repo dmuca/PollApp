@@ -52,7 +52,7 @@ public class PollDaoImpl implements PollDao {
             "SELECT * FROM poll "
                 + "INNER JOIN session "
                 + "ON session.access_token = :SessionToken "
-                + "WHERE poll.owner_user_id = session.user_id_hash;",
+                + "WHERE poll.owner_user_id = session.user_id;",
             namedParameters,
             new PollRowMapper()));
   }
@@ -65,7 +65,8 @@ public class PollDaoImpl implements PollDao {
             + "           ON useranswer.question_id=question.question_id "
             + "INNER JOIN session "
             + "           ON session.access_token=:SessionToken "
-            + "WHERE useranswer.user_id=session.user_id_hash AND question.poll_id=:PollId; ";
+            // TODO (Damian Muca): 6/12/20 decrypt useranswer.user_id_hash.
+            + "WHERE useranswer.user_id_hash=session.user_id AND question.poll_id=:PollId; ";
 
     SqlParameterSource namedParameters =
         new MapSqlParameterSource()
@@ -80,7 +81,7 @@ public class PollDaoImpl implements PollDao {
   @Override
   public void insertPoll(Poll poll, String token) throws SQLException {
     poll.setPollId(getLatestPollId() + 1);
-    poll.setOwnerUserId(getUserHashId(token));
+    poll.setOwnerUserId(getUserId(token));
 
     insertPollTableData(poll);
   }
@@ -107,11 +108,11 @@ public class PollDaoImpl implements PollDao {
     return latestPollId;
   }
 
-  private int getUserHashId(String token) throws SQLException {
+  private int getUserId(String token) throws SQLException {
     int userId;
     final String requestorUserIdSql =
-        "SELECT appuser.user_id_hash FROM appuser "
-            + "INNER JOIN session on appuser.user_id_hash = session.user_id_hash "
+        "SELECT appuser.user_id FROM appuser "
+            + "INNER JOIN session on appuser.user_id = session.user_id "
             + "WHERE session.access_token = :SessionToken;";
     SqlParameterSource sessionTokenParam =
         new MapSqlParameterSource().addValue("SessionToken", UUID.fromString(token));
