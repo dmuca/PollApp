@@ -228,13 +228,14 @@ public class PollDaoImpl implements PollDao {
   }
 
   @Override
-  public Poll getPollDetails(int pollId) {
+  public Poll getPollDetails(int pollId, String token) throws SQLException {
     Poll poll = new Poll();
     poll.setPollId(pollId);
     poll.setName(getPollName(pollId));
     poll.setQuestions(getQuestions(pollId));
-    Arrays.stream(poll.getQuestions())
-        .forEach(question -> question.setAnswers(getAnswers(question.getQuestionId())));
+    for (Question question : poll.getQuestions()) {
+      question.setAnswers(getAnswers(question.getQuestionId(), token));
+    }
     return poll;
   }
 
@@ -256,20 +257,39 @@ public class PollDaoImpl implements PollDao {
         .toArray(Question[]::new);
   }
 
-  private Answer[] getAnswers(int questionId) {
+  private Answer[] getAnswers(int questionId, String token) throws SQLException {
     String sql =
         "SELECT answer.answer_id, answer.question_id, answer.content "
             + "FROM answer "
             + "WHERE answer.question_id = :QuestionId;";
     SqlParameterSource answerParameters =
         new MapSqlParameterSource().addValue("QuestionId", questionId);
-    return template.query(sql, answerParameters, new AnswerRowMapper()).toArray(Answer[]::new);
+    Answer[] answers =
+        template.query(sql, answerParameters, new AnswerRowMapper()).toArray(Answer[]::new);
+    for (Answer answer : answers) {
+      answer.setMarkedByUser(isMarkedByUser(answer.getAnswerId(), token));
+    }
+    return answers;
+  }
+
+  private boolean isMarkedByUser(int answerId, String token) throws SQLException {
+    int userId = getUserId(token);
+    String sql =
+        "SELECT COUNT(*) AS markedCounter "
+            + "FROM useranswer "
+            + "INNER JOIN answer "
+            + "ON useranswer.answer_chosen = :AnswerId "
+            + "WHERE useranswer.user_id_hash = :UserId";
+    SqlParameterSource sqlParameterSource =
+        new MapSqlParameterSource().addValue("AnswerId", answerId).addValue("UserId", userId);
+    Integer value = template.queryForObject(sql, sqlParameterSource, Integer.class);
+    System.out.println(sqlParameterSource.toString());
+    return Optional.ofNullable(value).orElse(0) > 0;
   }
 
   @Override
   public void saveUserAnswers(UserAnswer[] userAnswers, String token) throws SQLException {
     int userId = getUserId(token);
-
 
     for (UserAnswer userAnswer : userAnswers) {
       final String sql =

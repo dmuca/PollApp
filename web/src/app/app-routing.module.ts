@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 import {UserListComponent} from './view/user-list/user-list.component';
 import {RegisterComponent} from './view/register/register.component';
 import {LoginComponent} from './view/login/login.component';
@@ -8,7 +8,7 @@ import {CreatePollComponent} from './view/create-poll/create-poll.component';
 import {MyPollsComponent} from './view/my-polls/my-polls.component';
 import {AuthGuard} from './model/authentication/auth.guard';
 import {FillPollComponent} from './view/fill-poll/fill-poll.component';
-import {Poll} from './model/poll/poll';
+import {ViewMyAnswersComponent} from './view/view-my-answers/view-my-answers.component';
 
 const routes: Routes = [
   {path: 'users', component: UserListComponent},
@@ -16,8 +16,17 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'myPolls', component: MyPollsComponent, canActivate: [AuthGuard]},
   {path: 'allPolls', component: AllPollsComponent, canActivate: [AuthGuard]},
-  {path: 'createPoll', component: CreatePollComponent, canActivate: [AuthGuard]},
-  {path: 'fillPoll', component: FillPollComponent, data: {poll : Poll} ,  canActivate: [AuthGuard]},
+  {
+    path: 'createPoll',
+    component: CreatePollComponent,
+    canActivate: [AuthGuard]
+  },
+  {path: 'fillPoll', component: FillPollComponent, canActivate: [AuthGuard]},
+  {
+    path: 'viewMyAnswers',
+    component: ViewMyAnswersComponent,
+    canActivate: [AuthGuard]
+  },
 ];
 
 @NgModule({

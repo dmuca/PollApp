@@ -10,7 +10,7 @@ public interface PollDao {
 
   List<Poll> findAllMine(String token);
 
-  Poll getPollDetails(int pollId);
+  Poll getPollDetails(int pollId, String token) throws SQLException;
 
   void insertPoll(Poll poll, String token) throws SQLException;
 

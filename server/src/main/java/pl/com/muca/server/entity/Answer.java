@@ -4,6 +4,7 @@ public class Answer {
   private int answerId;
   private int questionId;
   private String content;
+  private boolean markedByUser;
 
   public int getAnswerId() {
     return answerId;
@@ -27,6 +28,14 @@ public class Answer {
 
   public void setContent(String content) {
     this.content = content;
+  }
+
+  public boolean isMarkedByUser() {
+    return markedByUser;
+  }
+
+  public void setMarkedByUser(boolean markedByUser) {
+    this.markedByUser = markedByUser;
   }
 
   @Override

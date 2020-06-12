@@ -63,6 +63,7 @@ import {JwtInterceptor} from './model/interceptors/jwt.interceptor';
 import { InsertQuestionComponent } from './view/create-poll/insert-question/insert-question.component';
 import { InsertAnswerComponent } from './view/create-poll/insert-answer/insert-answer.component';
 import { FillPollComponent } from './view/fill-poll/fill-poll.component';
+import { ViewMyAnswersComponent } from './view/view-my-answers/view-my-answers.component';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,7 @@ import { FillPollComponent } from './view/fill-poll/fill-poll.component';
     InsertQuestionComponent,
     InsertAnswerComponent,
     FillPollComponent,
+    ViewMyAnswersComponent,
   ],
   imports: [
     BrowserModule,

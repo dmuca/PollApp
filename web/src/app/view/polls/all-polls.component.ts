@@ -2,9 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Poll} from '../../model/poll/poll';
 import {PollService} from '../../model/poll/poll.service';
 import {PollState} from '../../model/poll/poll.state';
-import {ActivatedRoute, Router} from '@angular/router';
-import {FillPollComponent} from '../fill-poll/fill-poll.component';
-import {AuthGuard} from '../../model/authentication/auth.guard';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-polls',
@@ -35,6 +33,6 @@ export class AllPollsComponent implements OnInit {
   }
 
   viewMyAnswers(poll: Poll) {
-    console.log(`Fill poll: ${poll}`);
+    this.router.navigateByUrl('/viewMyAnswers', {state: {poll}});
   }
 }
