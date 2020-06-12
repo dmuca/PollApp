@@ -50,7 +50,8 @@ export class CreatePollComponent implements OnInit {
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
   }
 
-  onSubmit() {
+
+  createPoll() {
     this.submitted = true;
     this.alertService.clear();
     this.loading = true;
