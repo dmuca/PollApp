@@ -17,7 +17,7 @@
       <div>Twoja odpowiedź to: {{userAnswers[i].answerChosen}}</div>
       <hr/>
     </div>
-
+    <app-alert></app-alert>
     <button [disabled]="loading" (click)="answerOnPoll()"
             class="create-poll btn btn-primary">
       Wyślij odpowiedź
