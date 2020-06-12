@@ -24,6 +24,7 @@ import pl.com.muca.server.entity.Answer;
 import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.PollState;
 import pl.com.muca.server.entity.Question;
+import pl.com.muca.server.mapper.AnswerRowMapper;
 import pl.com.muca.server.mapper.PollRowMapper;
 import pl.com.muca.server.mapper.QuestionRowMapper;
 
@@ -238,8 +239,8 @@ public class PollDaoImpl implements PollDao {
     poll.setPollId(pollId);
     poll.setName(getPollName(pollId));
     poll.setQuestions(getQuestions(pollId));
-
-    
+    Arrays.stream(poll.getQuestions())
+        .forEach(question -> question.setAnswers(getAnswers(question.getQuestionId())));
     return poll;
   }
 
@@ -259,5 +260,15 @@ public class PollDaoImpl implements PollDao {
     return template
         .query(sql, questionParameters, new QuestionRowMapper())
         .toArray(Question[]::new);
+  }
+
+  private Answer[] getAnswers(int questionId) {
+    String sql =
+        "SELECT answer.answer_id, answer.question_id, answer.content "
+            + "FROM answer "
+            + "WHERE answer.question_id = :QuestionId;";
+    SqlParameterSource answerParameters =
+        new MapSqlParameterSource().addValue("QuestionId", questionId);
+    return template.query(sql, answerParameters, new AnswerRowMapper()).toArray(Answer[]::new);
   }
 }
