@@ -18,6 +18,12 @@ export class CreatePollComponent implements OnInit {
   submitted = false;
   returnUrl: string;
 
+  // poll: Poll = {
+  //   pollId: undefined,
+  //   name: '',
+  //   questions: [],
+  //   state: undefined
+  // };
   poll: Poll = {
     pollId: undefined,
     name: 'Przykładowa ankieta',
