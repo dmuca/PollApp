@@ -1,2 +1,2 @@
-SELECT question.content, question.poll_id, question.question_id FROM question
-WHERE question.poll_id = :PollId;
+SELECT answer.answer_id, answer.question_id, answer.content FROM answer
+WHERE answer.question_id = :QuestionId;
