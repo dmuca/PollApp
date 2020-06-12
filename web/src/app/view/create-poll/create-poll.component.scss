@@ -6,3 +6,11 @@ input.poll-name{
   font-size: 24px;
   background-color: #efeeff;
 }
+
+button.create-poll{
+  background-color: rgb(125, 212, 75);
+}
+
+button.create-poll:hover{
+  background-color: rgb(108, 183, 65);
+}
