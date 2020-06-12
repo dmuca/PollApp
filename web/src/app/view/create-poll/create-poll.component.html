@@ -19,8 +19,9 @@
          [attr.data-index]="i">
       <div class="form-group">
         <label><b>Pytanie nr. {{i + 1}}</b></label>
-        <app-insert-question [question]="question"></app-insert-question>
+        <app-insert-question [questions]="poll.questions" [questionIndex]=i></app-insert-question>
       </div>
+      <br/>
       <hr/>
     </div>
 

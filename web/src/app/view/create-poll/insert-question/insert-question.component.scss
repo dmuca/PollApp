@@ -10,14 +10,26 @@ button:hover{
   border-color: #3a9594;
 }
 
-button.remove{
-  background-color: #e37d7a;
+button.remove-answer{
+  background-color: #ff8d77;
   border-color: #d36f71;
 }
 
-button.remove:hover{
-  background-color: #9f4449;
-  border-color: #592e30;
+button.remove-answer:hover{
+  background-color: #e27f68;
+}
+
+button.remove-question{
+  background-color: #ff2c34;
+  border-color: #d32f33;
+}
+
+button.remove-question:hover{
+  background-color: #e0272e;
+}
+
+input.question{
+  background-color: #f0f6ff;
 }
 
 input.question{

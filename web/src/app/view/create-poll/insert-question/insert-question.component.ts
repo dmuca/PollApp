@@ -9,7 +9,10 @@ import {Answer} from '../../../model/poll/answer';
 })
 export class InsertQuestionComponent implements OnInit {
   @Input()
-  question: Question;
+  questions: Question[];
+
+  @Input()
+  questionIndex: number;
 
   constructor() {
   }
@@ -21,10 +24,14 @@ export class InsertQuestionComponent implements OnInit {
     const newAnswer: Answer = {
       content: '',
     };
-    this.question.answers = this.question.answers.concat(newAnswer);
+    this.questions[this.questionIndex].answers = this.questions[this.questionIndex].answers.concat(newAnswer);
   }
 
   removeAnswer() {
-    this.question.answers.pop();
+    this.questions[this.questionIndex].answers.pop();
+  }
+
+  removeQuestion() {
+    this.questions.splice(this.questionIndex, 1);
   }
 }
