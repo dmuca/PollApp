@@ -21,7 +21,7 @@ export class CreatePollComponent implements OnInit {
 
   poll: Poll = {
     pollId: undefined,
-    name: '',
+    name: 'Przykładowa ankieta',
     questions: [
       {
         title: 'Ile masz lat?',

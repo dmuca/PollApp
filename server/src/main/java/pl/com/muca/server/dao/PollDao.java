@@ -1,5 +1,6 @@
 package pl.com.muca.server.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 import pl.com.muca.server.entity.Poll;
 
@@ -8,7 +9,7 @@ public interface PollDao {
 
   List<Poll> findAllMine(String token);
 
-  void insertPoll(Poll poll);
+  void insertPoll(Poll poll, String token) throws SQLException;
 
   void updatePoll(Poll poll);
 
