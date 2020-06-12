@@ -3,6 +3,7 @@ import {Poll} from '../../model/poll/poll';
 import {ActivatedRoute} from '@angular/router';
 import {UserAnswer} from '../../model/poll/user.answer';
 import {map} from 'rxjs/operators';
+import {PollService} from '../../model/poll/poll.service';
 
 @Component({
   selector: 'app-fill-poll',
@@ -12,7 +13,7 @@ import {map} from 'rxjs/operators';
 export class FillPollComponent implements OnInit {
   // public poll: Poll = new Poll();
   poll: Poll = {
-    pollId: undefined,
+    pollId: -1,
     name: 'Przykładowa ankieta',
     questions: [
       {
@@ -64,25 +65,27 @@ export class FillPollComponent implements OnInit {
 
   loading: boolean;
 
-  constructor(private activatedRoute: ActivatedRoute) {
+  constructor(private activatedRoute: ActivatedRoute, private pollService: PollService) {
   }
 
   ngOnInit(): void {
-    // this.activatedRoute.paramMap
-    // .pipe(map(() => window.history.state))
-    // // TODO invoke service, because here poll contains only pollId, state and name,
-    // // TODO need to provide questions
-    // .subscribe(state => {
-    //   this.poll = state.poll;
-    //   console.log(this.poll);
-    //   this.userAnswers = new Array(this.poll.questions.length);
-    //   for (let i = 0; i < this.poll.questions.length; ++i) {
-    //     this.userAnswers[i] = {
-    //       questionId: this.poll.questions[i].questionId,
-    //       answerChosen: -1,
-    //     };
-    //   }
-    // });
+    this.activatedRoute.paramMap
+    .pipe(map(() => window.history.state))
+    // TODO invoke service, because here poll contains only pollId, state and name,
+    // TODO need to provide questions
+    .subscribe(state => {
+      console.log(`Get pollId: ${state.poll.pollId}`);
+      this.pollService.getPollDetails(state.poll.pollId).subscribe((poll) => {
+        // this.poll = poll;
+        this.userAnswers = new Array(this.poll.questions.length);
+        for (let i = 0; i < this.poll.questions.length; ++i) {
+          this.userAnswers[i] = {
+            questionId: this.poll.questions[i].questionId,
+            answerChosen: -1,
+          };
+        }
+      });
+    });
 
     this.userAnswers = new Array(this.poll.questions.length);
     for (let i = 0; i < this.poll.questions.length; ++i) {
@@ -95,5 +98,6 @@ export class FillPollComponent implements OnInit {
 
   answerOnPoll() {
     console.log(...this.userAnswers);
+    console.log(this.poll.pollId);
   }
 }

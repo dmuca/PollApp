@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +33,12 @@ public class PollController {
   public List<Poll> getMyPolls(@RequestHeader("Authorization") String token) {
     logAction();
     return pollService.findAllMine(token);
+  }
+
+  @GetMapping(value = "/getPollDetails/{pollId}")
+  public Poll getPollDetails(@PathVariable Long pollId) {
+    System.out.printf("Get poll details, pollId: %d \n", pollId);
+    return null;
   }
 
   @PostMapping(value = "/createPoll")
