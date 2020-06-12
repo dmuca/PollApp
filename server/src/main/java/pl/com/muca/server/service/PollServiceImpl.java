@@ -49,7 +49,7 @@ public class PollServiceImpl implements PollService {
   }
 
   @Override
-  public Poll getPollDetails(int pollId) {
-    return pollDao.getPollDetails(pollId);
+  public Poll getPollDetails(int pollId, String token) throws SQLException {
+    return pollDao.getPollDetails(pollId, token);
   }
 }

@@ -1,0 +1,26 @@
+<div class="card my-5">
+  <div class="card-body">
+    <p>Podgląd udzielonych odpowiedzi</p>
+    <hr/>
+    <h1>{{poll.name}}</h1>
+
+    <div *ngFor="let question of poll.questions; let i = index"
+         [attr.data-index]="i">
+
+      <label class="question" id="example-radio-group-label">Pytanie {{i + 1}}
+        : {{question.title}}</label>
+      <mat-radio-group
+        [disabled]="true"
+        aria-labelledby="example-radio-group-label"
+        class="example-radio-group">
+        <mat-radio-button *ngFor="let answer of question.answers"
+                          [value]="answer.answerId"
+                          [checked]="answer.markedByUser">
+          {{answer.content}}
+        </mat-radio-button>
+      </mat-radio-group>
+      <hr/>
+    </div>
+    <app-alert></app-alert>
+  </div>
+</div>

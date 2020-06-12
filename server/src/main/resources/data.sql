@@ -52,7 +52,7 @@ INSERT INTO answer(answer_id, question_id, content) VALUES (15, 4, 'Odlotowe');
 INSERT INTO answer(answer_id, question_id, content) VALUES (16, 4, 'Świetne');
 INSERT INTO answer(answer_id, question_id, content) VALUES (17, 4, 'Najlepsze');
 INSERT INTO answer(answer_id, question_id, content) VALUES (18, 4, 'Niesamowite');
-INSERT INTO useranswer(user_id_hash, question_id, answer_chosen) VALUES (4, 4, 13);
+INSERT INTO useranswer(user_id_hash, question_id, answer_chosen) VALUES (4, 4, 16);
 -- Question nr.2
 INSERT INTO question(question_id, poll_id, content) VALUES (5, 2, 'Czy poleciłbyś Kraków znajomym?');
 INSERT INTO answer(answer_id, question_id, content) VALUES (19, 5, 'Tak');
