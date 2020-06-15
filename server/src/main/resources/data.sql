@@ -7,10 +7,10 @@ DELETE FROM question WHERE TRUE=TRUE;
 DELETE FROM poll WHERE TRUE=TRUE;
 
 -- Fill users table.
-INSERT INTO appuser(user_id, name, last_name, password, email) VALUES (1, 'Karol', 'Wojciechowski', '1', 'KarolW@gmail.com');
-INSERT INTO appuser(user_id, name, last_name, password, email) VALUES (2, 'Bartek', 'Mazurkiewicz', '2', 'Bartosz@gmail.com');
-INSERT INTO appuser(user_id, name, last_name, password, email) VALUES (3, 'Joanna', 'Kowal', '3', 'JoannaKow@gmail.com');
-INSERT INTO appuser(user_id, name, last_name, password, email) VALUES (4, 'Katarzyna', 'Grzeszczuk', '4', 'KatarzynaG@gmail.com');
+INSERT INTO appuser(user_id, name, last_name, password, email) VALUES (3242531, 'Karol', 'Wojciechowski', 'karol', 'KarolW@gmail.com');
+INSERT INTO appuser(user_id, name, last_name, password, email) VALUES (1164223, 'Bartek', 'Mazurkiewicz', 'bartek', 'Bartosz@gmail.com');
+INSERT INTO appuser(user_id, name, last_name, password, email) VALUES (73453445, 'Joanna', 'Kowal', 'joanna', 'JoannaKow@gmail.com');
+INSERT INTO appuser(user_id, name, last_name, password, email) VALUES (21213213, 'Katarzyna', 'Grzeszczuk', 'katarzyna', 'KatarzynaG@gmail.com');
 
 -- Poll nr.1
 INSERT INTO poll(poll_id, owner_user_id, name) VALUES (1, 1, 'Wrażenia z użytkownika aplikacji PollApp');
