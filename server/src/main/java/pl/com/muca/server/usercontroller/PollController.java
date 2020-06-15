@@ -26,7 +26,8 @@ public class PollController {
   @Resource PollService pollService;
 
   @GetMapping(value = "/listPolls")
-  public List<Poll> getPolls(@RequestHeader("Authorization") String token) {
+  public List<Poll> getPolls(@RequestHeader("Authorization") String token)
+      throws Exception {
     logAction();
     return pollService.findAll(token);
   }
@@ -39,7 +40,7 @@ public class PollController {
 
   @GetMapping(value = "/getPollDetails/{pollId}")
   public Poll getPollDetails(@PathVariable Integer pollId, @RequestHeader("Authorization") String token)
-      throws SQLException {
+      throws Exception {
     return pollService.getPollDetails(pollId, token);
   }
 
@@ -52,7 +53,7 @@ public class PollController {
 
   @PostMapping(value = "/saveUserAnswers")
   public void createPoll(@RequestHeader("Authorization") String token, @RequestBody UserAnswer [] answers)
-      throws SQLException {
+      throws Exception {
     logAction(Arrays.toString(answers));
     pollService.saveUserAnswers(answers, token);
   }

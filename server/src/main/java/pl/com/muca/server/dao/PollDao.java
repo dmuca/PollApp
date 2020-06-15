@@ -6,11 +6,11 @@ import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.UserAnswer;
 
 public interface PollDao {
-  List<Poll> findAll(String token);
+  List<Poll> findAll(String token) throws Exception;
 
   List<Poll> findAllMine(String token);
 
-  Poll getPollDetails(int pollId, String token) throws SQLException;
+  Poll getPollDetails(int pollId, String token) throws Exception;
 
   void insertPoll(Poll poll, String token) throws SQLException;
 
@@ -20,5 +20,5 @@ public interface PollDao {
 
   void deletePoll(Poll poll);
 
-  void saveUserAnswers(UserAnswer[] answers, String token) throws SQLException;
+  void saveUserAnswers(UserAnswer[] answers, String token) throws Exception;
 }

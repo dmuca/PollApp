@@ -9,7 +9,7 @@ public interface PollService {
 
   List<Poll> findAllMine(String token);
 
-  List<Poll> findAll(String token);
+  List<Poll> findAll(String token) throws Exception;
 
   void insertPoll(Poll poll, String token) throws SQLException;
 
@@ -19,7 +19,7 @@ public interface PollService {
 
   void deletePoll(Poll poll);
 
-  Poll getPollDetails(int pollId, String token) throws SQLException;
+  Poll getPollDetails(int pollId, String token) throws Exception;
 
-  void saveUserAnswers(UserAnswer[] answers, String token) throws SQLException;
+  void saveUserAnswers(UserAnswer[] answers, String token) throws Exception;
 }

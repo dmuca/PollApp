@@ -1,3 +1,4 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE "session" (
   "id" SERIAL PRIMARY KEY,
   "user_id" int,
@@ -32,7 +33,7 @@ CREATE TABLE "answer" (
 );
 
 CREATE TABLE "useranswer" (
-  "user_id_hash" int,
+  "user_id_hash" varchar(256),
   "question_id" int,
   "answer_chosen" int,
   PRIMARY KEY ("user_id_hash", "question_id")

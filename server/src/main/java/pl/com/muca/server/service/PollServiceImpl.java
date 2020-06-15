@@ -13,7 +13,7 @@ public class PollServiceImpl implements PollService {
   @Resource PollDao pollDao;
 
   @Override
-  public List<Poll> findAll(String token) {
+  public List<Poll> findAll(String token) throws Exception {
     return pollDao.findAll(token);
   }
 
@@ -29,7 +29,7 @@ public class PollServiceImpl implements PollService {
 
   @Override
   public void saveUserAnswers(UserAnswer[] answers, String token)
-      throws SQLException {
+      throws Exception {
     pollDao.saveUserAnswers(answers, token);
   }
 
@@ -49,7 +49,7 @@ public class PollServiceImpl implements PollService {
   }
 
   @Override
-  public Poll getPollDetails(int pollId, String token) throws SQLException {
+  public Poll getPollDetails(int pollId, String token) throws Exception {
     return pollDao.getPollDetails(pollId, token);
   }
 }

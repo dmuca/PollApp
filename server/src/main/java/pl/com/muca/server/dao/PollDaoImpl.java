@@ -4,6 +4,7 @@ import static pl.com.muca.server.entity.PollState.Filled;
 import static pl.com.muca.server.entity.PollState.New;
 
 import com.google.common.collect.ImmutableList;
+import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -11,6 +12,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -29,6 +34,7 @@ import pl.com.muca.server.mapper.QuestionRowMapper;
 
 @Repository
 public class PollDaoImpl implements PollDao {
+  private Cryptographer cryptographer = Cryptographer.getInstance();
 
   private static final String UPDATE_SQL =
       "UPDATE poll " + "SET name=:name, owner_user_id=:owner_user_id " + "WHERE poll_id=:poll_id";
@@ -37,18 +43,22 @@ public class PollDaoImpl implements PollDao {
 
   public PollDaoImpl(NamedParameterJdbcTemplate template) {
     this.template = template;
+
   }
 
   @Override
-  public List<Poll> findAll(String token) {
+  public List<Poll> findAll(String token) throws Exception {
     ImmutableList<Poll> polls =
         ImmutableList.copyOf(template.query("SELECT * FROM poll", new PollRowMapper()));
 
-    polls.forEach(poll -> poll.setState(getPollState(poll.getPollId(), token)));
+    for (Poll poll : polls) {
+      poll.setState(getPollState(poll.getPollId(), token));
+    }
     return polls;
   }
 
-  private PollState getPollState(int pollId, String token) {
+  private PollState getPollState(int pollId, String token) throws Exception {
+    String userIdHash = cryptographer.encrypt(getUserId(token));
     String countUserAnswersToPollSql =
         "SELECT COUNT(*) AS howManyAnswers "
             + "FROM useranswer "
@@ -56,13 +66,13 @@ public class PollDaoImpl implements PollDao {
             + "           ON useranswer.question_id=question.question_id "
             + "INNER JOIN session "
             + "           ON session.access_token=:SessionToken "
-            // TODO (Damian Muca): 6/12/20 decrypt useranswer.user_id_hash.
-            + "WHERE useranswer.user_id_hash=session.user_id AND question.poll_id=:PollId; ";
+            + "WHERE useranswer.user_id_hash=:UserIdHash AND question.poll_id=:PollId; ";
 
     SqlParameterSource namedParameters =
         new MapSqlParameterSource()
             .addValue("PollId", pollId)
-            .addValue("SessionToken", UUID.fromString(token));
+            .addValue("SessionToken", UUID.fromString(token))
+            .addValue("UserIdHash", userIdHash);
     Optional<Integer> answersToPoll =
         Optional.ofNullable(
             template.queryForObject(countUserAnswersToPollSql, namedParameters, Integer.class));
@@ -227,7 +237,7 @@ public class PollDaoImpl implements PollDao {
   }
 
   @Override
-  public Poll getPollDetails(int pollId, String token) throws SQLException {
+  public Poll getPollDetails(int pollId, String token) throws Exception {
     Poll poll = new Poll();
     poll.setPollId(pollId);
     poll.setName(getPollName(pollId));
@@ -256,7 +266,7 @@ public class PollDaoImpl implements PollDao {
         .toArray(Question[]::new);
   }
 
-  private Answer[] getAnswers(int questionId, String token) throws SQLException {
+  private Answer[] getAnswers(int questionId, String token) throws Exception {
     String sql =
         "SELECT answer.answer_id, answer.question_id, answer.content "
             + "FROM answer "
@@ -292,16 +302,17 @@ public class PollDaoImpl implements PollDao {
         > 0;
   }
 
-  private boolean isMarkedByUser(int answerId, String token) throws SQLException {
-    int userId = getUserId(token);
+  private boolean isMarkedByUser(int answerId, String token) throws Exception {
+    String userIdHash = Cryptographer.getInstance().encrypt(getUserId(token));
+
     String sql =
         "SELECT COUNT(*) AS markedCounter "
             + "FROM useranswer "
             + "INNER JOIN answer "
             + "ON useranswer.answer_chosen = :AnswerId "
-            + "WHERE useranswer.user_id_hash = :UserId";
+            + "WHERE useranswer.user_id_hash = :UserIdHash";
     SqlParameterSource sqlParameterSource =
-        new MapSqlParameterSource().addValue("AnswerId", answerId).addValue("UserId", userId);
+        new MapSqlParameterSource().addValue("AnswerId", answerId).addValue("UserIdHash", userIdHash);
     Integer value = template.queryForObject(sql, sqlParameterSource, Integer.class);
     System.out.println(sqlParameterSource.toString());
     return Optional.ofNullable(value).orElse(0) > 0;
@@ -317,8 +328,9 @@ public class PollDaoImpl implements PollDao {
   }
 
   @Override
-  public void saveUserAnswers(UserAnswer[] userAnswers, String token) throws SQLException {
-    int userId = getUserId(token);
+  public void saveUserAnswers(UserAnswer[] userAnswers, String token)
+      throws Exception {
+    String userIdHash = cryptographer.encrypt(String.valueOf(getUserId(token)));
 
     for (UserAnswer userAnswer : userAnswers) {
       final String sql =
@@ -327,7 +339,7 @@ public class PollDaoImpl implements PollDao {
       SqlParameterSource param =
           new MapSqlParameterSource()
               // TODO (Damian Muca): 6/12/20 inser user hash ID.
-              .addValue("UserIdHash", userId)
+              .addValue("UserIdHash", userIdHash)
               .addValue("QuestionId", userAnswer.getQuestionId())
               .addValue("AnswerChosen", userAnswer.getAnswerChosen());
       template.update(sql, param);
