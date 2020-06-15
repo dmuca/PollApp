@@ -18,65 +18,11 @@ export class CreatePollComponent implements OnInit {
   submitted = false;
   returnUrl: string;
 
-  // poll: Poll = {
-  //   pollId: undefined,
-  //   name: '',
-  //   questions: [],
-  //   state: undefined
-  // };
   poll: Poll = {
     pollId: undefined,
-    name: 'Przykładowa ankieta',
-    questions: [
-      {
-        questionId: 1,
-        title: 'Ile masz lat?',
-        answers: [{
-          content: '10',
-          answerId: 1,
-          questionId: 1,
-          markedByUser: false,
-          answersCounter: 0,
-        }
-          , {
-            content: '20',
-            answerId: 2,
-            questionId: 1,
-            markedByUser: false,
-            answersCounter: 0,
-          }, {
-            content: '70',
-            answerId: 3,
-            questionId: 1,
-            markedByUser: false,
-            answersCounter: 0,
-          }],
-      },
-      {
-        questionId: 2,
-        title: 'Gdzie mieszkasz?',
-        answers: [{
-          content: 'Wieś',
-          answerId: 4,
-          questionId: 2,
-          markedByUser: false,
-          answersCounter: 0,
-        }, {
-          content: 'Miast do 50 tyś mieszkańców',
-          answerId: 5,
-          questionId: 2,
-          markedByUser: false,
-          answersCounter: 0,
-        }, {
-          content: 'Miasto powyżej 50 tys mieszkańców',
-          answerId: 6,
-          questionId: 2,
-          markedByUser: false,
-          answersCounter: 0,
-        }],
-      }
-    ],
-    state: undefined,
+    name: '',
+    questions: [],
+    state: undefined
   };
 
   constructor(
