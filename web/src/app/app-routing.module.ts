@@ -12,7 +12,7 @@ import {ViewMyAnswersComponent} from './view/view-my-answers/view-my-answers.com
 import {ViewAnswersToMyPollComponent} from './view/view-answers-to-my-poll/view-answers-to-my-poll.component';
 
 const routes: Routes = [
-  {path: 'users', component: UserListComponent},
+  // {path: 'users', component: UserListComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'login', component: LoginComponent},
   {path: 'myPolls', component: MyPollsComponent, canActivate: [AuthGuard]},
