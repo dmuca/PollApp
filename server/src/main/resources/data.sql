@@ -13,7 +13,7 @@ INSERT INTO appuser(user_id, name, last_name, password, email) VALUES (73453445,
 INSERT INTO appuser(user_id, name, last_name, password, email) VALUES (21213213, 'Katarzyna', 'Grzeszczuk', 'katarzyna', 'KatarzynaG@gmail.com');
 
 -- Poll nr.1
-INSERT INTO poll(poll_id, owner_user_id, name) VALUES (1, 1, 'Wrażenia z użytkownika aplikacji PollApp');
+INSERT INTO poll(poll_id, owner_user_id, name) VALUES (1, 3242531, 'Wrażenia z użytkownika aplikacji PollApp');
 -- Question nr.1
 INSERT INTO question(question_id, poll_id, content) VALUES (1, 1, 'Jak oceniasz aplikację?');
 INSERT INTO answer(answer_id, question_id, content) VALUES (1, 1, 'Super');
@@ -35,7 +35,7 @@ INSERT INTO answer(answer_id, question_id, content) VALUES (12, 3, 'Z ciekawośc
 INSERT INTO answer(answer_id, question_id, content) VALUES (13, 3, 'To był missclick');
 
 -- Poll nr.2
-INSERT INTO poll(poll_id, owner_user_id, name) VALUES (2, 2, 'Moje miasto - Kraków');
+INSERT INTO poll(poll_id, owner_user_id, name) VALUES (2, 1164223, 'Moje miasto - Kraków');
 -- Question nr.1
 INSERT INTO question(question_id, poll_id, content) VALUES (4, 2, 'Co myślisz o swoim mieście?');
 INSERT INTO answer(answer_id, question_id, content) VALUES (14, 4, 'Super');
