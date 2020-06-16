@@ -4,6 +4,9 @@ PollApp umozliwia tworzenie oraz przeprowadzanie ankiet w sposób pozwalający n
 zachowanie pełnej anonimowość użytkowników.
 Do zapewnienia anonimowości aplikacja wykorzystuje techniki kryptograficzne.
 
+
+Do uruchomienia aplikacji wymagana jest Java ver. 11.
+
 ### Kompilacja oraz uruchomienie aplikacji
 ```bash
 mvn clean package
@@ -15,7 +18,3 @@ następnie otworzyć stronę https://localhost:8080
 ### Twórcy
 - Damian Muca
 - Tomasz Widomski
-
-
-
- sudo ng serve --host 192.168.0.4 --disableHostCheck true
