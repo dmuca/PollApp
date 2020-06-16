@@ -34,8 +34,6 @@ import pl.com.muca.server.mapper.QuestionRowMapper;
 
 @Repository
 public class PollDaoImpl implements PollDao {
-  private Cryptographer cryptographer = Cryptographer.getInstance();
-
   private static final String UPDATE_SQL =
       "UPDATE poll " + "SET name=:name, owner_user_id=:owner_user_id " + "WHERE poll_id=:poll_id";
 
@@ -43,7 +41,6 @@ public class PollDaoImpl implements PollDao {
 
   public PollDaoImpl(NamedParameterJdbcTemplate template) {
     this.template = template;
-
   }
 
   @Override
@@ -58,7 +55,7 @@ public class PollDaoImpl implements PollDao {
   }
 
   private PollState getPollState(int pollId, String token) throws Exception {
-    String userIdHash = cryptographer.encrypt(getUserId(token));
+    String userIdHash = getUserHashIdFromToken(token);
     String countUserAnswersToPollSql =
         "SELECT COUNT(*) AS howManyAnswers "
             + "FROM useranswer "
@@ -77,6 +74,11 @@ public class PollDaoImpl implements PollDao {
         Optional.ofNullable(
             template.queryForObject(countUserAnswersToPollSql, namedParameters, Integer.class));
     return answersToPoll.filter(integer -> integer > 0).map(integer -> Filled).orElse(New);
+  }
+
+  private String getUserHashIdFromToken(String token) throws Exception {
+    return Cryptographer.encrypt(
+        String.format("dzien dobry %d", getUserId(token)), getUserId(token));
   }
 
   @Override
@@ -122,8 +124,8 @@ public class PollDaoImpl implements PollDao {
     final String latestPollIdSql = "SELECT MAX(poll.poll_id) " + "FROM poll;";
     latestPollId =
         Optional.ofNullable(
-                template.queryForObject(
-                    latestPollIdSql, new MapSqlParameterSource(), Integer.class))
+            template.queryForObject(
+                latestPollIdSql, new MapSqlParameterSource(), Integer.class))
             .orElse(0);
     return latestPollId;
   }
@@ -131,15 +133,15 @@ public class PollDaoImpl implements PollDao {
   private Integer getLatestQuestionId() {
     final String latestQuestionIdSql = "SELECT MAX(question.question_id) " + "FROM question;";
     return Optional.ofNullable(
-            template.queryForObject(
-                latestQuestionIdSql, new MapSqlParameterSource(), Integer.class))
+        template.queryForObject(
+            latestQuestionIdSql, new MapSqlParameterSource(), Integer.class))
         .orElse(0);
   }
 
   private Integer getLatestAnswerId() {
     final String latestAnswerIdSql = "SELECT MAX(answer.answer_id) " + "FROM answer;";
     return Optional.ofNullable(
-            template.queryForObject(latestAnswerIdSql, new MapSqlParameterSource(), Integer.class))
+        template.queryForObject(latestAnswerIdSql, new MapSqlParameterSource(), Integer.class))
         .orElse(0);
   }
 
@@ -298,13 +300,12 @@ public class PollDaoImpl implements PollDao {
             .addValue("QuestionId", questionId)
             .addValue("UserId", getUserId(token));
     return Optional.ofNullable(template.queryForObject(sql, sqlParameterSource, Integer.class))
-            .orElse(0)
+        .orElse(0)
         > 0;
   }
 
   private boolean isMarkedByUser(int answerId, String token) throws Exception {
-    String userIdHash = Cryptographer.getInstance().encrypt(getUserId(token));
-
+    String userIdHash = getUserHashIdFromToken(token);
     String sql =
         "SELECT COUNT(*) AS markedCounter "
             + "FROM useranswer "
@@ -312,7 +313,9 @@ public class PollDaoImpl implements PollDao {
             + "ON useranswer.answer_chosen = :AnswerId "
             + "WHERE useranswer.user_id_hash = :UserIdHash";
     SqlParameterSource sqlParameterSource =
-        new MapSqlParameterSource().addValue("AnswerId", answerId).addValue("UserIdHash", userIdHash);
+        new MapSqlParameterSource()
+            .addValue("AnswerId", answerId)
+            .addValue("UserIdHash", userIdHash);
     Integer value = template.queryForObject(sql, sqlParameterSource, Integer.class);
     System.out.println(sqlParameterSource.toString());
     return Optional.ofNullable(value).orElse(0) > 0;
@@ -328,9 +331,8 @@ public class PollDaoImpl implements PollDao {
   }
 
   @Override
-  public void saveUserAnswers(UserAnswer[] userAnswers, String token)
-      throws Exception {
-    String userIdHash = cryptographer.encrypt(String.valueOf(getUserId(token)));
+  public void saveUserAnswers(UserAnswer[] userAnswers, String token) throws Exception {
+    String userIdHash = getUserHashIdFromToken(token);
 
     for (UserAnswer userAnswer : userAnswers) {
       final String sql =
