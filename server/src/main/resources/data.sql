@@ -1,10 +1,10 @@
 -- Clear tables
-DELETE FROM session WHERE TRUE=TRUE;
-DELETE FROM appuser WHERE TRUE=TRUE;
-DELETE FROM useranswer WHERE TRUE=TRUE;
-DELETE FROM answer WHERE TRUE=TRUE;
-DELETE FROM question WHERE TRUE=TRUE;
-DELETE FROM poll WHERE TRUE=TRUE;
+-- DELETE FROM session WHERE TRUE=TRUE;
+-- DELETE FROM appuser WHERE TRUE=TRUE;
+-- DELETE FROM useranswer WHERE TRUE=TRUE;
+-- DELETE FROM answer WHERE TRUE=TRUE;
+-- DELETE FROM question WHERE TRUE=TRUE;
+-- DELETE FROM poll WHERE TRUE=TRUE;
 
 -- Fill users table.
 INSERT INTO appuser(user_id, name, last_name, password, email) VALUES (3242531, 'Karol', 'Wojciechowski', 'karol', 'KarolW@gmail.com');
