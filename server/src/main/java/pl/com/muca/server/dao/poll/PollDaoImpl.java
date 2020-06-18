@@ -55,6 +55,7 @@ public class PollDaoImpl implements PollDao {
     return polls;
   }
 
+  // TODO (Damian Muca): 6/18/20 make public, put into PollDao interface.
   private PollState getPollState(int pollId, String token) throws Exception {
     String userIdHash = this.userDao.getUserHashIdFromToken(token);
     String countUserAnswersToPollSql =
@@ -126,6 +127,7 @@ public class PollDaoImpl implements PollDao {
     return latestPollId;
   }
 
+  // TODO (Damian Muca): 6/18/20 move to QuestionDao.
   private Integer getLatestQuestionId() {
     final String latestQuestionIdSql = "SELECT MAX(question.question_id) " + "FROM question;";
     return Optional.ofNullable(
@@ -134,6 +136,7 @@ public class PollDaoImpl implements PollDao {
         .orElse(0);
   }
 
+  // TODO (Damian Muca): 6/18/20 move to AnswerDao.
   private Integer getLatestAnswerId() {
     final String latestAnswerIdSql = "SELECT MAX(answer.answer_id) " + "FROM answer;";
     return Optional.ofNullable(
@@ -141,6 +144,7 @@ public class PollDaoImpl implements PollDao {
         .orElse(0);
   }
 
+  // TODO (Damian Muca): 6/18/20 make public, put into interface.
   private void insertPollTableData(Poll poll) {
     final String sql =
         "INSERT INTO poll(poll_id, owner_user_id, name) "
@@ -153,6 +157,7 @@ public class PollDaoImpl implements PollDao {
     template.update(sql, param);
   }
 
+  // TODO (Damian Muca): 6/18/20 make public, put into QuestionDao.
   private void insertQuestionTableData(Poll poll) {
     final String sql =
         "INSERT INTO question(question_id, poll_id, content) "
@@ -168,6 +173,7 @@ public class PollDaoImpl implements PollDao {
     }
   }
 
+  // TODO (Damian Muca): 6/18/20 make public, put into AnswerDao.
   private void insertAnswerTableData(Poll poll) {
     int latestAnswerId = getLatestAnswerId();
     final String sql =
