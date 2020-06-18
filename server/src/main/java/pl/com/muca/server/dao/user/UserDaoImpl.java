@@ -102,7 +102,7 @@ public class UserDaoImpl implements UserDao {
   }
 
   @Override
-  public String getLastSessionToken(int userId) {
+  public String getLatestSessionTokenForUser(int userId) {
     final String sql =
         "SELECT access_token FROM session "
             + "INNER JOIN  ( "
