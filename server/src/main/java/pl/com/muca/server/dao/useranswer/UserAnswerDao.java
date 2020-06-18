@@ -1,6 +1,7 @@
 package pl.com.muca.server.dao.useranswer;
 
 import pl.com.muca.server.entity.Answer;
+import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.UserAnswer;
 
 public interface UserAnswerDao {
@@ -13,4 +14,8 @@ public interface UserAnswerDao {
   boolean isAnswerMarkedByUser(int answerId, String token) throws Exception;
 
   int countAnswers(int answerId);
+
+  Integer getLatestAnswerId();
+
+  void insertAnswerTableData(Poll poll);
 }

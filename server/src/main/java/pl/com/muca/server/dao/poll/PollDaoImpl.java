@@ -94,7 +94,7 @@ public class PollDaoImpl implements PollDao {
   public void insertPoll(Poll poll, String token) throws SQLException {
     int latestPollId = getLatestPollId();
     int latestQuestionId = this.userDao.getLatestQuestionId();
-    int latestAnswerId = getLatestAnswerId();
+    int latestAnswerId = this.userAnswerDao.getLatestAnswerId();
 
     poll.setOwnerUserId(this.userDao.getUserId(token));
     poll.setPollId(++latestPollId);
@@ -111,7 +111,7 @@ public class PollDaoImpl implements PollDao {
 
     insertPollTableData(poll);
     this.userDao.insertQuestionTableData(poll);
-    insertAnswerTableData(poll);
+    this.userAnswerDao.insertAnswerTableData(poll);
   }
 
   private Integer getLatestPollId() {
@@ -125,14 +125,6 @@ public class PollDaoImpl implements PollDao {
     return latestPollId;
   }
 
-  // TODO (Damian Muca): 6/18/20 move to AnswerDao.
-  private Integer getLatestAnswerId() {
-    final String latestAnswerIdSql = "SELECT MAX(answer.answer_id) " + "FROM answer;";
-    return Optional.ofNullable(
-            template.queryForObject(latestAnswerIdSql, new MapSqlParameterSource(), Integer.class))
-        .orElse(0);
-  }
-
   // TODO (Damian Muca): 6/18/20 make public, put into interface.
   private void insertPollTableData(Poll poll) {
     final String sql =
@@ -144,25 +136,6 @@ public class PollDaoImpl implements PollDao {
             .addValue("owner_user_id", poll.getOwnerUserId())
             .addValue("name", poll.getName().trim());
     template.update(sql, param);
-  }
-
-  // TODO (Damian Muca): 6/18/20 make public, put into AnswerDao.
-  private void insertAnswerTableData(Poll poll) {
-    int latestAnswerId = getLatestAnswerId();
-    final String sql =
-        "INSERT INTO answer(answer_id, question_id, content) "
-            + "VALUES (:answer_id, :question_id, :content)";
-
-    for (Question question : poll.getQuestions()) {
-      for (Answer answer : question.getAnswers()) {
-        SqlParameterSource param =
-            new MapSqlParameterSource()
-                .addValue("answer_id", answer.getAnswerId())
-                .addValue("question_id", answer.getQuestionId())
-                .addValue("content", answer.getContent());
-        template.update(sql, param);
-      }
-    }
   }
 
   @Override
