@@ -1,4 +1,4 @@
-package pl.com.muca.server.dao;
+package pl.com.muca.server.dao.useranswer;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -6,6 +6,13 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
+import pl.com.muca.server.dao.poll.PollDao;
+import pl.com.muca.server.dao.poll.PollDaoImpl;
+import pl.com.muca.server.dao.question.QuestionDao;
+import pl.com.muca.server.dao.question.QuestionDaoImpl;
+import pl.com.muca.server.dao.useranswervalidator.UserAnswerValidatorDaoImpl;
+import pl.com.muca.server.dao.user.UserDao;
+import pl.com.muca.server.dao.user.UserDaoImpl;
 import pl.com.muca.server.entity.Answer;
 import pl.com.muca.server.entity.UserAnswer;
 import pl.com.muca.server.mapper.AnswerRowMapper;

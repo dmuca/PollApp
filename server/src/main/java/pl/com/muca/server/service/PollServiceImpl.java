@@ -4,8 +4,8 @@ import java.sql.SQLException;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
-import pl.com.muca.server.dao.PollDao;
-import pl.com.muca.server.dao.UserAnswerDao;
+import pl.com.muca.server.dao.poll.PollDao;
+import pl.com.muca.server.dao.useranswer.UserAnswerDao;
 import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.UserAnswer;
 

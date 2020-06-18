@@ -1,4 +1,4 @@
-package pl.com.muca.server.dao;
+package pl.com.muca.server.dao.poll;
 
 import static pl.com.muca.server.entity.PollState.Filled;
 import static pl.com.muca.server.entity.PollState.New;
@@ -18,6 +18,10 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import pl.com.muca.server.dao.user.UserDao;
+import pl.com.muca.server.dao.user.UserDaoImpl;
+import pl.com.muca.server.dao.useranswer.UserAnswerDao;
+import pl.com.muca.server.dao.useranswer.UserAnswerDaoImpl;
 import pl.com.muca.server.entity.Answer;
 import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.PollState;

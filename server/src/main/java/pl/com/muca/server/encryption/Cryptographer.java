@@ -1,4 +1,4 @@
-package pl.com.muca.server.dao;
+package pl.com.muca.server.encryption;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;

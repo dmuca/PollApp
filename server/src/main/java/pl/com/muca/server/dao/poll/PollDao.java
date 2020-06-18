@@ -1,4 +1,4 @@
-package pl.com.muca.server.dao;
+package pl.com.muca.server.dao.poll;
 
 import java.sql.SQLException;
 import java.util.List;

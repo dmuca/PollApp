@@ -1,4 +1,4 @@
-package pl.com.muca.server.dao;
+package pl.com.muca.server.dao.useranswer;
 
 import pl.com.muca.server.entity.Answer;
 import pl.com.muca.server.entity.UserAnswer;

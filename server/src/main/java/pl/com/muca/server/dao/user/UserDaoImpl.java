@@ -1,4 +1,4 @@
-package pl.com.muca.server.dao;
+package pl.com.muca.server.dao.user;
 
 import com.google.common.collect.ImmutableList;
 import java.sql.PreparedStatement;
@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import pl.com.muca.server.encryption.Cryptographer;
 import pl.com.muca.server.entity.User;
 import pl.com.muca.server.mapper.UserRowMapper;
 

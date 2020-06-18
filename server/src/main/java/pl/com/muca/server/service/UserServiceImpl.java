@@ -5,7 +5,7 @@ import java.util.Optional;
 import javax.annotation.Resource;
 import javax.security.auth.login.LoginException;
 import org.springframework.stereotype.Component;
-import pl.com.muca.server.dao.UserDao;
+import pl.com.muca.server.dao.user.UserDao;
 import pl.com.muca.server.entity.User;
 
 @Component

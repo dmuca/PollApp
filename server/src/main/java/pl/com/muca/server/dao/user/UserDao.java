@@ -1,4 +1,4 @@
-package pl.com.muca.server.dao;
+package pl.com.muca.server.dao.user;
 
 import com.google.common.collect.ImmutableList;
 import java.sql.SQLException;

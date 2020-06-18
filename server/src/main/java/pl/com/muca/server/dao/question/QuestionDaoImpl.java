@@ -1,4 +1,4 @@
-package pl.com.muca.server.dao;
+package pl.com.muca.server.dao.question;
 
 import java.sql.SQLException;
 import java.util.Optional;
@@ -6,6 +6,8 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
+import pl.com.muca.server.dao.user.UserDao;
+import pl.com.muca.server.dao.user.UserDaoImpl;
 
 @Repository
 public class QuestionDaoImpl implements QuestionDao {

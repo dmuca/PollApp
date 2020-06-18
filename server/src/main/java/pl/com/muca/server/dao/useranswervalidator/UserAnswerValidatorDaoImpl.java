@@ -1,4 +1,4 @@
-package pl.com.muca.server.dao;
+package pl.com.muca.server.dao.useranswervalidator;
 
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -14,7 +14,8 @@ public class UserAnswerValidatorDaoImpl implements UserAnswerValidatorDao {
   }
 
   @Override
-  public void insertToUserAnswerValidator(int userId, int pollId, int validationHashCode) {
+  public void insertToUserAnswerValidator(int userId, int pollId,
+      int validationHashCode) {
     final String insertToUserAnswerValidatorSql =
         "INSERT INTO useranswervalidator(user_id, poll_id, validation_hash_code) "
             + "VALUES (:UserId, :PollId, :ValidationHashCode)";

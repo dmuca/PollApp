@@ -1,4 +1,4 @@
-package pl.com.muca.server.dao;
+package pl.com.muca.server.dao.useranswervalidator;
 
 public interface UserAnswerValidatorDao {
 
