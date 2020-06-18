@@ -10,9 +10,9 @@ import pl.com.muca.server.dao.poll.PollDao;
 import pl.com.muca.server.dao.poll.PollDaoImpl;
 import pl.com.muca.server.dao.question.QuestionDao;
 import pl.com.muca.server.dao.question.QuestionDaoImpl;
-import pl.com.muca.server.dao.useranswervalidator.UserAnswerValidatorDaoImpl;
 import pl.com.muca.server.dao.user.UserDao;
 import pl.com.muca.server.dao.user.UserDaoImpl;
+import pl.com.muca.server.dao.useranswervalidator.UserAnswerValidatorDaoImpl;
 import pl.com.muca.server.entity.Answer;
 import pl.com.muca.server.entity.UserAnswer;
 

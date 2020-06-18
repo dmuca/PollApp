@@ -2,6 +2,8 @@ package pl.com.muca.server.dao.user;
 
 import com.google.common.collect.ImmutableList;
 import java.sql.SQLException;
+import pl.com.muca.server.entity.Poll;
+import pl.com.muca.server.entity.Question;
 import pl.com.muca.server.entity.User;
 
 public interface UserDao {
@@ -25,4 +27,10 @@ public interface UserDao {
   String getUserHashIdFromToken(String token) throws Exception;
 
   User getUser(int userId);
+
+  Integer getLatestQuestionId();
+
+  void insertQuestionTableData(Poll poll);
+
+  Question[] getQuestions(int pollId);
 }

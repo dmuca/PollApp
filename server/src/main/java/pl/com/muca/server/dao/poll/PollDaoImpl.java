@@ -18,6 +18,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import pl.com.muca.server.dao.question.QuestionRowMapper;
 import pl.com.muca.server.dao.user.UserDao;
 import pl.com.muca.server.dao.user.UserDaoImpl;
 import pl.com.muca.server.dao.useranswer.UserAnswerDao;
@@ -26,7 +27,6 @@ import pl.com.muca.server.entity.Answer;
 import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.PollState;
 import pl.com.muca.server.entity.Question;
-import pl.com.muca.server.dao.question.QuestionRowMapper;
 
 @Repository
 public class PollDaoImpl implements PollDao {
@@ -93,7 +93,7 @@ public class PollDaoImpl implements PollDao {
   @Override
   public void insertPoll(Poll poll, String token) throws SQLException {
     int latestPollId = getLatestPollId();
-    int latestQuestionId = getLatestQuestionId();
+    int latestQuestionId = this.userDao.getLatestQuestionId();
     int latestAnswerId = getLatestAnswerId();
 
     poll.setOwnerUserId(this.userDao.getUserId(token));
@@ -110,7 +110,7 @@ public class PollDaoImpl implements PollDao {
     }
 
     insertPollTableData(poll);
-    insertQuestionTableData(poll);
+    this.userDao.insertQuestionTableData(poll);
     insertAnswerTableData(poll);
   }
 
@@ -123,15 +123,6 @@ public class PollDaoImpl implements PollDao {
                     latestPollIdSql, new MapSqlParameterSource(), Integer.class))
             .orElse(0);
     return latestPollId;
-  }
-
-  // TODO (Damian Muca): 6/18/20 move to QuestionDao.
-  private Integer getLatestQuestionId() {
-    final String latestQuestionIdSql = "SELECT MAX(question.question_id) " + "FROM question;";
-    return Optional.ofNullable(
-            template.queryForObject(
-                latestQuestionIdSql, new MapSqlParameterSource(), Integer.class))
-        .orElse(0);
   }
 
   // TODO (Damian Muca): 6/18/20 move to AnswerDao.
@@ -153,22 +144,6 @@ public class PollDaoImpl implements PollDao {
             .addValue("owner_user_id", poll.getOwnerUserId())
             .addValue("name", poll.getName().trim());
     template.update(sql, param);
-  }
-
-  // TODO (Damian Muca): 6/18/20 make public, put into QuestionDao.
-  private void insertQuestionTableData(Poll poll) {
-    final String sql =
-        "INSERT INTO question(question_id, poll_id, content) "
-            + "VALUES (:question_id, :poll_id, :content)";
-
-    for (Question question : poll.getQuestions()) {
-      SqlParameterSource param =
-          new MapSqlParameterSource()
-              .addValue("question_id", question.getQuestionId())
-              .addValue("poll_id", question.getPollId())
-              .addValue("content", question.getTitle());
-      template.update(sql, param);
-    }
   }
 
   // TODO (Damian Muca): 6/18/20 make public, put into AnswerDao.
@@ -226,7 +201,7 @@ public class PollDaoImpl implements PollDao {
     Poll poll = new Poll();
     poll.setPollId(pollId);
     poll.setName(getPollName(pollId));
-    poll.setQuestions(getQuestions(pollId));
+    poll.setQuestions(this.userDao.getQuestions(pollId));
     for (Question question : poll.getQuestions()) {
       question.setAnswers(this.userAnswerDao.getAnswers(question.getQuestionId(), token));
     }
@@ -238,18 +213,6 @@ public class PollDaoImpl implements PollDao {
     MapSqlParameterSource mapSqlParameterSource =
         new MapSqlParameterSource().addValue("PollId", pollId);
     return template.queryForObject(sql, mapSqlParameterSource, String.class);
-  }
-
-  // TODO (Damian Muca): 6/19/20 move to QuestionDao.
-  private Question[] getQuestions(int pollId) {
-    String sql =
-        "SELECT question.question_id, question.poll_id, question.content "
-            + "FROM question "
-            + "WHERE question.poll_id = :PollId;";
-    SqlParameterSource questionParameters = new MapSqlParameterSource().addValue("PollId", pollId);
-    return template
-        .query(sql, questionParameters, new QuestionRowMapper())
-        .toArray(Question[]::new);
   }
 
   @Override
