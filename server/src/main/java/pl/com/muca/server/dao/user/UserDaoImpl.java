@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 import org.hibernate.SessionException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
+import org.springframework.jdbc.core.namedparam.EmptySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -47,13 +48,21 @@ public class UserDaoImpl implements UserDao {
     KeyHolder holder = new GeneratedKeyHolder();
     SqlParameterSource param =
         new MapSqlParameterSource()
-            // TODO (Damian Muca): 5/28/20 handle hash generating.
-            .addValue("user_id", user.getEmail().trim().hashCode())
+            .addValue("user_id", getLatestUserId() + 1)
             .addValue("name", user.getFirstName().trim())
             .addValue("last_name", user.getLastName().trim())
             .addValue("password", user.getPassword())
             .addValue("email", user.getEmail().trim());
     template.update(sql, param, holder);
+  }
+
+  @Override
+  public int getLatestUserId() {
+    String latestUserId = "SELECT MAX(appuser.user_id) FROM appuser;";
+    Optional<Integer> lastestUserId =
+        Optional.ofNullable(
+            template.queryForObject(latestUserId, EmptySqlParameterSource.INSTANCE, Integer.class));
+    return lastestUserId.orElse(0);
   }
 
   @Override

@@ -16,6 +16,8 @@ public interface UserDao {
 
   String getLatestSessionTokenForUser(int userId);
 
+  int getLatestUserId();
+
   void updateUser(User user);
 
   void executeUpdateUser(User user);
