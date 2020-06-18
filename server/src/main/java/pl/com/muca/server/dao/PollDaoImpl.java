@@ -22,13 +22,13 @@ import pl.com.muca.server.entity.Answer;
 import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.PollState;
 import pl.com.muca.server.entity.Question;
-import pl.com.muca.server.mapper.AnswerRowMapper;
 import pl.com.muca.server.mapper.PollRowMapper;
 import pl.com.muca.server.mapper.QuestionRowMapper;
 
 @Repository
 public class PollDaoImpl implements PollDao {
   private final UserDao userDao;
+  private final UserAnswerDao userAnswerDao;
   private static final String UPDATE_SQL =
       "UPDATE poll " + "SET name=:name, owner_user_id=:owner_user_id " + "WHERE poll_id=:poll_id";
 
@@ -37,6 +37,7 @@ public class PollDaoImpl implements PollDao {
   public PollDaoImpl(NamedParameterJdbcTemplate template) {
     this.template = template;
     this.userDao = new UserDaoImpl(template);
+    this.userAnswerDao = new UserAnswerDaoImpl(template, this);
   }
 
   @Override
@@ -219,7 +220,7 @@ public class PollDaoImpl implements PollDao {
     poll.setName(getPollName(pollId));
     poll.setQuestions(getQuestions(pollId));
     for (Question question : poll.getQuestions()) {
-      question.setAnswers(getAnswers(question.getQuestionId(), token));
+      question.setAnswers(this.userAnswerDao.getAnswers(question.getQuestionId(), token));
     }
     return poll;
   }
@@ -240,67 +241,6 @@ public class PollDaoImpl implements PollDao {
     return template
         .query(sql, questionParameters, new QuestionRowMapper())
         .toArray(Question[]::new);
-  }
-
-  private Answer[] getAnswers(int questionId, String token) throws Exception {
-    String sql =
-        "SELECT answer.answer_id, answer.question_id, answer.content "
-            + "FROM answer "
-            + "WHERE answer.question_id = :QuestionId;";
-    SqlParameterSource answerParameters =
-        new MapSqlParameterSource().addValue("QuestionId", questionId);
-    Answer[] answers =
-        template.query(sql, answerParameters, new AnswerRowMapper()).toArray(Answer[]::new);
-
-    boolean isUserOwnerOfTheQuestion = isUserACreatorOfTheQuestion(questionId, token);
-
-    for (Answer answer : answers) {
-      answer.setMarkedByUser(isMarkedByUser(answer.getAnswerId(), token));
-      if (isUserOwnerOfTheQuestion) {
-        answer.setAnswersCounter(countAnswers(answer.getAnswerId()));
-      }
-    }
-    return answers;
-  }
-
-  private boolean isUserACreatorOfTheQuestion(int questionId, String token) throws SQLException {
-    String sql =
-        "SELECT COUNT(*) FROM question "
-            + "INNER JOIN poll "
-            + "ON poll.poll_id = question.poll_id "
-            + "WHERE question.question_id = :QuestionId AND poll.owner_user_id = :UserId;";
-    SqlParameterSource sqlParameterSource =
-        new MapSqlParameterSource()
-            .addValue("QuestionId", questionId)
-            .addValue("UserId", this.userDao.getUserId(token));
-    return Optional.ofNullable(template.queryForObject(sql, sqlParameterSource, Integer.class))
-            .orElse(0)
-        > 0;
-  }
-
-  private boolean isMarkedByUser(int answerId, String token) throws Exception {
-    String userIdHash = this.userDao.getUserHashIdFromToken(token);
-    String sql =
-        "SELECT COUNT(*) AS markedCounter "
-            + "FROM useranswer "
-            + "INNER JOIN answer "
-            + "ON useranswer.answer_chosen = :AnswerId "
-            + "WHERE useranswer.user_id_hash = :UserIdHash";
-    SqlParameterSource sqlParameterSource =
-        new MapSqlParameterSource()
-            .addValue("AnswerId", answerId)
-            .addValue("UserIdHash", userIdHash);
-    Integer value = template.queryForObject(sql, sqlParameterSource, Integer.class);
-    return Optional.ofNullable(value).orElse(0) > 0;
-  }
-
-  private int countAnswers(int answerId) {
-    String sql = "SELECT COUNT(*) FROM useranswer WHERE answer_chosen = :AnswerId;";
-    SqlParameterSource sqlParameterSource =
-        new MapSqlParameterSource().addValue("AnswerId", answerId);
-    Optional<Integer> howManyCheckedAnswers =
-        Optional.ofNullable(template.queryForObject(sql, sqlParameterSource, Integer.class));
-    return howManyCheckedAnswers.orElse(0);
   }
 
   @Override
