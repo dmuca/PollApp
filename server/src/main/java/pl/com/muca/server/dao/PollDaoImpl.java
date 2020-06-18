@@ -23,7 +23,6 @@ import pl.com.muca.server.entity.Answer;
 import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.PollState;
 import pl.com.muca.server.entity.Question;
-import pl.com.muca.server.entity.User;
 import pl.com.muca.server.entity.UserAnswer;
 import pl.com.muca.server.mapper.AnswerRowMapper;
 import pl.com.muca.server.mapper.PollRowMapper;
@@ -31,6 +30,7 @@ import pl.com.muca.server.mapper.QuestionRowMapper;
 
 @Repository
 public class PollDaoImpl implements PollDao {
+  private final UserDao userDao;
   private static final String UPDATE_SQL =
       "UPDATE poll " + "SET name=:name, owner_user_id=:owner_user_id " + "WHERE poll_id=:poll_id";
 
@@ -38,6 +38,7 @@ public class PollDaoImpl implements PollDao {
 
   public PollDaoImpl(NamedParameterJdbcTemplate template) {
     this.template = template;
+    this.userDao = new UserDaoImpl(template);
   }
 
   @Override
@@ -74,8 +75,8 @@ public class PollDaoImpl implements PollDao {
   }
 
   private String getUserHashIdFromToken(String token) throws Exception {
-    return Cryptographer.encrypt(
-        String.format("dzien dobry %d", getUserId(token)), getUserId(token));
+    int userId = this.userDao.getUserId(token);
+    return Cryptographer.encrypt(String.format("dzien dobry %d", userId), userId);
   }
 
   @Override
@@ -98,7 +99,7 @@ public class PollDaoImpl implements PollDao {
     int latestQuestionId = getLatestQuestionId();
     int latestAnswerId = getLatestAnswerId();
 
-    poll.setOwnerUserId(getUserId(token));
+    poll.setOwnerUserId(this.userDao.getUserId(token));
     poll.setPollId(++latestPollId);
     for (int i = 0; i < poll.getQuestions().length; ++i) {
       Question question = poll.getQuestions()[i];
@@ -140,23 +141,6 @@ public class PollDaoImpl implements PollDao {
     return Optional.ofNullable(
             template.queryForObject(latestAnswerIdSql, new MapSqlParameterSource(), Integer.class))
         .orElse(0);
-  }
-
-  private int getUserId(String token) throws SQLException {
-    final String requestorUserIdSql =
-        "SELECT appuser.user_id FROM appuser "
-            + "INNER JOIN session on appuser.user_id = session.user_id "
-            + "WHERE session.access_token = :SessionToken;";
-    SqlParameterSource sessionTokenParam =
-        new MapSqlParameterSource().addValue("SessionToken", UUID.fromString(token));
-    Optional<Integer> userIdOptional =
-        Optional.ofNullable(
-            template.queryForObject(requestorUserIdSql, sessionTokenParam, Integer.class));
-
-    if (userIdOptional.isEmpty()) {
-      throw new SQLException("Couldn't find user id hash base on its session token");
-    }
-    return userIdOptional.get();
   }
 
   private void insertPollTableData(Poll poll) {
@@ -295,7 +279,7 @@ public class PollDaoImpl implements PollDao {
     SqlParameterSource sqlParameterSource =
         new MapSqlParameterSource()
             .addValue("QuestionId", questionId)
-            .addValue("UserId", getUserId(token));
+            .addValue("UserId", this.userDao.getUserId(token));
     return Optional.ofNullable(template.queryForObject(sql, sqlParameterSource, Integer.class))
             .orElse(0)
         > 0;
@@ -333,7 +317,7 @@ public class PollDaoImpl implements PollDao {
     Arrays.stream(userAnswers).forEach(userAnswer -> insertToUserAnswer(userIdHash, userAnswer));
 
     int pollId = getPollId(userAnswers[0].getQuestionId());
-    int userId = getUserId(token);
+    int userId = this.userDao.getUserId(token);
 
     int userAnswersHashCode = generateUserAnswersHashCode(userAnswers);
     insertToUserAnswerValidator(userId, pollId, userAnswersHashCode);
@@ -371,10 +355,10 @@ public class PollDaoImpl implements PollDao {
   private int generateUserAnswersHashCode(UserAnswer[] userAnswers) {
     return Math.abs(
         Arrays.stream(userAnswers)
-                .map(Object::hashCode)
-                .mapToInt(Integer::intValue)
-                .reduce(Integer::sum)
-                .orElse(0));
+            .map(Object::hashCode)
+            .mapToInt(Integer::intValue)
+            .reduce(Integer::sum)
+            .orElse(0));
   }
 
   private void insertToUserAnswer(String userIdHash, UserAnswer userAnswer) {

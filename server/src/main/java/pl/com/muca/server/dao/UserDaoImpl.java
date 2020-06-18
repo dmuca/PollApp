@@ -2,9 +2,11 @@ package pl.com.muca.server.dao;
 
 import com.google.common.collect.ImmutableList;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import org.hibernate.SessionException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -119,5 +121,23 @@ public class UserDaoImpl implements UserDao {
       throw new SessionException(String.format("Could not find session for specified user with id: %d", userId));
     };
     return sessionToken.orElse("");
+  }
+
+  @Override
+  public int getUserId(String token) throws SQLException {
+    final String requestorUserIdSql =
+        "SELECT appuser.user_id FROM appuser "
+            + "INNER JOIN session on appuser.user_id = session.user_id "
+            + "WHERE session.access_token = :SessionToken;";
+    SqlParameterSource sessionTokenParam =
+        new MapSqlParameterSource().addValue("SessionToken", UUID.fromString(token));
+    Optional<Integer> userIdOptional =
+        Optional.ofNullable(
+            template.queryForObject(requestorUserIdSql, sessionTokenParam, Integer.class));
+
+    if (userIdOptional.isEmpty()) {
+      throw new SQLException("Couldn't find user id hash base on its session token");
+    }
+    return userIdOptional.get();
   }
 }

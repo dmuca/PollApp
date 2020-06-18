@@ -1,6 +1,7 @@
 package pl.com.muca.server.dao;
 
 import com.google.common.collect.ImmutableList;
+import java.sql.SQLException;
 import pl.com.muca.server.entity.User;
 
 public interface UserDao {
@@ -18,4 +19,6 @@ public interface UserDao {
   void executeUpdateUser(User user);
 
   void deleteUser(User user);
+
+  int getUserId(String token) throws SQLException;
 }
