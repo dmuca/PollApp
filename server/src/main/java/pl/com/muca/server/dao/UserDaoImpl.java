@@ -124,6 +124,12 @@ public class UserDaoImpl implements UserDao {
   }
 
   @Override
+  public String getUserHashIdFromToken(String token) throws Exception {
+    int userId = getUserId(token);
+    return Cryptographer.encrypt(String.format("dzien dobry %d", userId), userId);
+  }
+
+  @Override
   public int getUserId(String token) throws SQLException {
     final String requestorUserIdSql =
         "SELECT appuser.user_id FROM appuser "

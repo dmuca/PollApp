@@ -21,4 +21,6 @@ public interface UserDao {
   void deleteUser(User user);
 
   int getUserId(String token) throws SQLException;
+
+  String getUserHashIdFromToken(String token) throws Exception;
 }

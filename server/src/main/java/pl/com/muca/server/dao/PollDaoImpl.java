@@ -6,7 +6,6 @@ import static pl.com.muca.server.entity.PollState.New;
 import com.google.common.collect.ImmutableList;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +22,6 @@ import pl.com.muca.server.entity.Answer;
 import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.PollState;
 import pl.com.muca.server.entity.Question;
-import pl.com.muca.server.entity.UserAnswer;
 import pl.com.muca.server.mapper.AnswerRowMapper;
 import pl.com.muca.server.mapper.PollRowMapper;
 import pl.com.muca.server.mapper.QuestionRowMapper;
@@ -53,7 +51,7 @@ public class PollDaoImpl implements PollDao {
   }
 
   private PollState getPollState(int pollId, String token) throws Exception {
-    String userIdHash = getUserHashIdFromToken(token);
+    String userIdHash = this.userDao.getUserHashIdFromToken(token);
     String countUserAnswersToPollSql =
         "SELECT COUNT(*) AS howManyAnswers "
             + "FROM useranswer "
@@ -72,11 +70,6 @@ public class PollDaoImpl implements PollDao {
         Optional.ofNullable(
             template.queryForObject(countUserAnswersToPollSql, namedParameters, Integer.class));
     return answersToPoll.filter(integer -> integer > 0).map(integer -> Filled).orElse(New);
-  }
-
-  private String getUserHashIdFromToken(String token) throws Exception {
-    int userId = this.userDao.getUserId(token);
-    return Cryptographer.encrypt(String.format("dzien dobry %d", userId), userId);
   }
 
   @Override
@@ -286,7 +279,7 @@ public class PollDaoImpl implements PollDao {
   }
 
   private boolean isMarkedByUser(int answerId, String token) throws Exception {
-    String userIdHash = getUserHashIdFromToken(token);
+    String userIdHash = this.userDao.getUserHashIdFromToken(token);
     String sql =
         "SELECT COUNT(*) AS markedCounter "
             + "FROM useranswer "
@@ -298,11 +291,10 @@ public class PollDaoImpl implements PollDao {
             .addValue("AnswerId", answerId)
             .addValue("UserIdHash", userIdHash);
     Integer value = template.queryForObject(sql, sqlParameterSource, Integer.class);
-    System.out.println(sqlParameterSource.toString());
     return Optional.ofNullable(value).orElse(0) > 0;
   }
 
-  private int countAnswers(int answerId) throws SQLException {
+  private int countAnswers(int answerId) {
     String sql = "SELECT COUNT(*) FROM useranswer WHERE answer_chosen = :AnswerId;";
     SqlParameterSource sqlParameterSource =
         new MapSqlParameterSource().addValue("AnswerId", answerId);
@@ -312,33 +304,7 @@ public class PollDaoImpl implements PollDao {
   }
 
   @Override
-  public int saveUserAnswers(UserAnswer[] userAnswers, String token) throws Exception {
-    String userIdHash = getUserHashIdFromToken(token);
-    Arrays.stream(userAnswers).forEach(userAnswer -> insertToUserAnswer(userIdHash, userAnswer));
-
-    int pollId = getPollId(userAnswers[0].getQuestionId());
-    int userId = this.userDao.getUserId(token);
-
-    int userAnswersHashCode = generateUserAnswersHashCode(userAnswers);
-    insertToUserAnswerValidator(userId, pollId, userAnswersHashCode);
-    System.out.println("1. Poll id: " + pollId);
-    System.out.println("2. userAnswersHashCode: " + userAnswersHashCode);
-    return userAnswersHashCode;
-  }
-
-  private void insertToUserAnswerValidator(int userId, int pollId, int validationHashCode) {
-    final String insertToUserAnswerValidatorSql =
-        "INSERT INTO useranswervalidator(user_id, poll_id, validation_hash_code) "
-            + "VALUES (:UserId, :PollId, :ValidationHashCode)";
-    SqlParameterSource parameterSource =
-        new MapSqlParameterSource()
-            .addValue("UserId", userId)
-            .addValue("PollId", pollId)
-            .addValue("ValidationHashCode", validationHashCode);
-    template.update(insertToUserAnswerValidatorSql, parameterSource);
-  }
-
-  private int getPollId(int questionId) throws SQLException {
+  public int getPollId(int questionId) throws SQLException {
     final String getPollIdSql =
         "SELECT question.poll_id  FROM question  WHERE question_id = :QuestionId";
     SqlParameterSource questionIdParam =
@@ -350,27 +316,5 @@ public class PollDaoImpl implements PollDao {
       throw new SQLException("Couldn't find poll_id for question_id: " + questionId);
     }
     return pollId.get();
-  }
-
-  private int generateUserAnswersHashCode(UserAnswer[] userAnswers) {
-    return Math.abs(
-        Arrays.stream(userAnswers)
-            .map(Object::hashCode)
-            .mapToInt(Integer::intValue)
-            .reduce(Integer::sum)
-            .orElse(0));
-  }
-
-  private void insertToUserAnswer(String userIdHash, UserAnswer userAnswer) {
-    final String sql =
-        "INSERT INTO useranswer(user_id_hash, question_id, answer_chosen) "
-            + "VALUES (:UserIdHash, :QuestionId, :AnswerChosen)";
-    SqlParameterSource param =
-        new MapSqlParameterSource()
-            // TODO (Damian Muca): 6/12/20 inser user hash ID.
-            .addValue("UserIdHash", userIdHash)
-            .addValue("QuestionId", userAnswer.getQuestionId())
-            .addValue("AnswerChosen", userAnswer.getAnswerChosen());
-    template.update(sql, param);
   }
 }

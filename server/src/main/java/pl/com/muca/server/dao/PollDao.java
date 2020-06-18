@@ -3,7 +3,6 @@ package pl.com.muca.server.dao;
 import java.sql.SQLException;
 import java.util.List;
 import pl.com.muca.server.entity.Poll;
-import pl.com.muca.server.entity.UserAnswer;
 
 public interface PollDao {
   List<Poll> findAll(String token) throws Exception;
@@ -20,5 +19,5 @@ public interface PollDao {
 
   void deletePoll(Poll poll);
 
-  int saveUserAnswers(UserAnswer[] answers, String token) throws Exception;
+  int getPollId(int questionId) throws SQLException;
 }

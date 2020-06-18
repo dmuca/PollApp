@@ -5,12 +5,14 @@ import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 import pl.com.muca.server.dao.PollDao;
+import pl.com.muca.server.dao.UserAnswerDao;
 import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.UserAnswer;
 
 @Component
 public class PollServiceImpl implements PollService {
   @Resource PollDao pollDao;
+  @Resource UserAnswerDao userAnswerDao;
 
   @Override
   public List<Poll> findAll(String token) throws Exception {
@@ -28,9 +30,8 @@ public class PollServiceImpl implements PollService {
   }
 
   @Override
-  public int saveUserAnswers(UserAnswer[] answers, String token)
-      throws Exception {
-    return pollDao.saveUserAnswers(answers, token);
+  public int saveUserAnswers(UserAnswer[] answers, String token) throws Exception {
+    return userAnswerDao.saveUserAnswers(answers, token);
   }
 
   @Override

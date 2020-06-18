@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.com.muca.server.dao.UserAnswerDao;
 import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.UserAnswer;
 import pl.com.muca.server.service.PollService;
@@ -24,7 +25,6 @@ import pl.com.muca.server.service.PollService;
 @CrossOrigin
 @RequestMapping("/pollApp")
 public class PollController {
-
   @Resource PollService pollService;
 
   @GetMapping(value = "/listPolls")
