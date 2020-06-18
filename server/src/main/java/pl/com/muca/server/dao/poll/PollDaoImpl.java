@@ -18,6 +18,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import pl.com.muca.server.dao.question.QuestionDaoImpl;
 import pl.com.muca.server.dao.user.UserDao;
 import pl.com.muca.server.dao.user.UserDaoImpl;
 import pl.com.muca.server.dao.useranswer.UserAnswerDao;
@@ -31,6 +32,7 @@ import pl.com.muca.server.entity.Question;
 public class PollDaoImpl implements PollDao {
   private final UserDao userDao;
   private final UserAnswerDao userAnswerDao;
+  private final QuestionDaoImpl questionDao;
   private static final String UPDATE_SQL =
       "UPDATE poll " + "SET name=:name, owner_user_id=:owner_user_id " + "WHERE poll_id=:poll_id";
 
@@ -39,6 +41,7 @@ public class PollDaoImpl implements PollDao {
   public PollDaoImpl(NamedParameterJdbcTemplate template) {
     this.template = template;
     this.userDao = new UserDaoImpl(template);
+    this.questionDao = new QuestionDaoImpl(template);
     this.userAnswerDao = new UserAnswerDaoImpl(template, this);
   }
 
@@ -92,7 +95,7 @@ public class PollDaoImpl implements PollDao {
   @Override
   public void insertPoll(Poll poll, String token) throws SQLException {
     int latestPollId = getLatestPollId();
-    int latestQuestionId = this.userDao.getLatestQuestionId();
+    int latestQuestionId = this.questionDao.getLatestQuestionId();
     int latestAnswerId = this.userAnswerDao.getLatestAnswerId();
 
     poll.setOwnerUserId(this.userDao.getUserId(token));
@@ -109,7 +112,7 @@ public class PollDaoImpl implements PollDao {
     }
 
     insertPollTableData(poll);
-    this.userDao.insertQuestionTableData(poll);
+    this.questionDao.insertQuestionTableData(poll);
     this.userAnswerDao.insertAnswerTableData(poll);
   }
 
@@ -174,7 +177,7 @@ public class PollDaoImpl implements PollDao {
     Poll poll = new Poll();
     poll.setPollId(pollId);
     poll.setName(getPollName(pollId));
-    poll.setQuestions(this.userDao.getQuestions(pollId));
+    poll.setQuestions(this.questionDao.getQuestions(pollId));
     for (Question question : poll.getQuestions()) {
       question.setAnswers(this.userAnswerDao.getAnswers(question.getQuestionId(), token));
     }

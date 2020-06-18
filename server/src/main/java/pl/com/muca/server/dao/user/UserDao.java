@@ -27,10 +27,4 @@ public interface UserDao {
   String getUserHashIdFromToken(String token) throws Exception;
 
   User getUser(int userId);
-
-  Integer getLatestQuestionId();
-
-  void insertQuestionTableData(Poll poll);
-
-  Question[] getQuestions(int pollId);
 }

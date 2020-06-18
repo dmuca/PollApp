@@ -123,7 +123,6 @@ public class UserAnswerDaoImpl implements UserAnswerDao {
 
   @Override
   public void insertAnswerTableData(Poll poll) {
-    int latestAnswerId = getLatestAnswerId();
     final String sql =
         "INSERT INTO answer(answer_id, question_id, content) "
             + "VALUES (:answer_id, :question_id, :content)";

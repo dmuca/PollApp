@@ -15,10 +15,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import pl.com.muca.server.dao.question.QuestionRowMapper;
 import pl.com.muca.server.encryption.Cryptographer;
-import pl.com.muca.server.entity.Poll;
-import pl.com.muca.server.entity.Question;
 import pl.com.muca.server.entity.User;
 
 @Repository
@@ -158,43 +155,5 @@ public class UserDaoImpl implements UserDao {
       throw new SQLException("Couldn't find user id hash base on its session token");
     }
     return userIdOptional.get();
-  }
-
-
-  @Override
-  public Integer getLatestQuestionId() {
-    final String latestQuestionIdSql = "SELECT MAX(question.question_id) " + "FROM question;";
-    return Optional.ofNullable(
-        template.queryForObject(
-            latestQuestionIdSql, new MapSqlParameterSource(), Integer.class))
-        .orElse(0);
-  }
-
-  @Override
-  public void insertQuestionTableData(Poll poll) {
-    final String sql =
-        "INSERT INTO question(question_id, poll_id, content) "
-            + "VALUES (:question_id, :poll_id, :content)";
-
-    for (Question question : poll.getQuestions()) {
-      SqlParameterSource param =
-          new MapSqlParameterSource()
-              .addValue("question_id", question.getQuestionId())
-              .addValue("poll_id", question.getPollId())
-              .addValue("content", question.getTitle());
-      template.update(sql, param);
-    }
-  }
-
-  @Override
-  public Question[] getQuestions(int pollId) {
-    String sql =
-        "SELECT question.question_id, question.poll_id, question.content "
-            + "FROM question "
-            + "WHERE question.poll_id = :PollId;";
-    SqlParameterSource questionParameters = new MapSqlParameterSource().addValue("PollId", pollId);
-    return template
-        .query(sql, questionParameters, new QuestionRowMapper())
-        .toArray(Question[]::new);
   }
 }
