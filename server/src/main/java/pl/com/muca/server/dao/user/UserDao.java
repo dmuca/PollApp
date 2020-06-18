@@ -23,4 +23,6 @@ public interface UserDao {
   int getUserId(String token) throws SQLException;
 
   String getUserHashIdFromToken(String token) throws Exception;
+
+  User getUser(int userId);
 }

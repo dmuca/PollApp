@@ -35,36 +35,38 @@ public class UserDaoImpl implements UserDao {
 
   @Override
   public ImmutableList<User> findAll() {
-    return ImmutableList
-        .copyOf(template.query("SELECT * FROM appuser", new UserRowMapper()));
+    return ImmutableList.copyOf(template.query("SELECT * FROM appuser", new UserRowMapper()));
   }
 
   @Override
   public void insertUser(User user) {
-    final String sql = "INSERT INTO appuser("
-        + "user_id, name, last_name, password, email) "
-        + "VALUES (:user_id, :name, :last_name, :password, :email)";
+    final String sql =
+        "INSERT INTO appuser("
+            + "user_id, name, last_name, password, email) "
+            + "VALUES (:user_id, :name, :last_name, :password, :email)";
 
     KeyHolder holder = new GeneratedKeyHolder();
-    SqlParameterSource param = new MapSqlParameterSource()
-        // TODO (Damian Muca): 5/28/20 handle hash generating.
-        .addValue("user_id", user.getEmail().trim().hashCode())
-        .addValue("name", user.getFirstName().trim())
-        .addValue("last_name", user.getLastName().trim())
-        .addValue("password", user.getPassword())
-        .addValue("email", user.getEmail().trim());
+    SqlParameterSource param =
+        new MapSqlParameterSource()
+            // TODO (Damian Muca): 5/28/20 handle hash generating.
+            .addValue("user_id", user.getEmail().trim().hashCode())
+            .addValue("name", user.getFirstName().trim())
+            .addValue("last_name", user.getLastName().trim())
+            .addValue("password", user.getPassword())
+            .addValue("email", user.getEmail().trim());
     template.update(sql, param, holder);
   }
 
   @Override
   public void updateUser(User user) {
     KeyHolder holder = new GeneratedKeyHolder();
-    SqlParameterSource param = new MapSqlParameterSource()
-        .addValue("user_id", user.getId())
-        .addValue("name", user.getFirstName().trim())
-        .addValue("last_name", user.getLastName().trim())
-        .addValue("password", user.getPassword())
-        .addValue("email", user.getEmail().trim());
+    SqlParameterSource param =
+        new MapSqlParameterSource()
+            .addValue("user_id", user.getId())
+            .addValue("name", user.getFirstName().trim())
+            .addValue("last_name", user.getLastName().trim())
+            .addValue("password", user.getPassword())
+            .addValue("email", user.getEmail().trim());
     template.update(UPDATE_SQL, param, holder);
   }
 
@@ -77,8 +79,8 @@ public class UserDaoImpl implements UserDao {
     map.put("password", user.getPassword());
     map.put("email", user.getEmail().trim());
 
-    template.execute(UPDATE_SQL, map,
-        (PreparedStatementCallback<Object>) PreparedStatement::executeUpdate);
+    template.execute(
+        UPDATE_SQL, map, (PreparedStatementCallback<Object>) PreparedStatement::executeUpdate);
   }
 
   @Override
@@ -86,8 +88,8 @@ public class UserDaoImpl implements UserDao {
     final String sql = "DELETE FROM appuser WHERE user_id=:user_id";
     final Map<String, Object> map = new HashMap<>();
     map.put("user_id", user.getId());
-    template.execute(sql, map,
-        (PreparedStatementCallback<Object>) PreparedStatement::executeUpdate);
+    template.execute(
+        sql, map, (PreparedStatementCallback<Object>) PreparedStatement::executeUpdate);
   }
 
   @Override
@@ -95,32 +97,33 @@ public class UserDaoImpl implements UserDao {
     final String sql = "INSERT INTO session(user_id) VALUES (:user_id)";
 
     KeyHolder holder = new GeneratedKeyHolder();
-    SqlParameterSource namedParameters = new MapSqlParameterSource()
-        .addValue("user_id", user.getId());
+    SqlParameterSource namedParameters =
+        new MapSqlParameterSource().addValue("user_id", user.getId());
     template.update(sql, namedParameters, holder);
   }
 
   @Override
   public String getLastSessionToken(int userId) {
-    final String sql ="SELECT access_token FROM session "
-        + "INNER JOIN  ( "
-        + "             SELECT user_id AS userId, MAX(granted) as grantDate "
-        + "             FROM session "
-        + "             WHERE user_id = :UserId "
-        + "             GROUP BY user_id "
-        + "            ) as newestdate "
-        + "ON session.granted = newestdate.grantDate "
-        + "AND session.user_id = newestdate.userId;";
-    SqlParameterSource namedParameters =
-        new MapSqlParameterSource().addValue("UserId", userId);
+    final String sql =
+        "SELECT access_token FROM session "
+            + "INNER JOIN  ( "
+            + "             SELECT user_id AS userId, MAX(granted) as grantDate "
+            + "             FROM session "
+            + "             WHERE user_id = :UserId "
+            + "             GROUP BY user_id "
+            + "            ) as newestdate "
+            + "ON session.granted = newestdate.grantDate "
+            + "AND session.user_id = newestdate.userId;";
+    SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("UserId", userId);
 
     Optional<String> sessionToken =
-        Optional.ofNullable(
-            template.queryForObject(sql, namedParameters, String.class));
+        Optional.ofNullable(template.queryForObject(sql, namedParameters, String.class));
 
     if (sessionToken.isEmpty()) {
-      throw new SessionException(String.format("Could not find session for specified user with id: %d", userId));
-    };
+      throw new SessionException(
+          String.format("Could not find session for specified user with id: %d", userId));
+    }
+    ;
     return sessionToken.orElse("");
   }
 
@@ -128,6 +131,13 @@ public class UserDaoImpl implements UserDao {
   public String getUserHashIdFromToken(String token) throws Exception {
     int userId = getUserId(token);
     return Cryptographer.encrypt(String.format("dzien dobry %d", userId), userId);
+  }
+
+  @Override
+  public User getUser(int userId) {
+    String getUserSql = "SELECT * FROM appuser WHERE user_id = :UserId";
+    SqlParameterSource parameterSource = new MapSqlParameterSource().addValue("UserId", userId);
+    return template.queryForObject(getUserSql, parameterSource, new UserRowMapper());
   }
 
   @Override

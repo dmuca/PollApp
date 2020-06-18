@@ -14,6 +14,7 @@ import pl.com.muca.server.dao.useranswervalidator.UserAnswerValidatorDaoImpl;
 import pl.com.muca.server.dao.user.UserDao;
 import pl.com.muca.server.dao.user.UserDaoImpl;
 import pl.com.muca.server.entity.Answer;
+import pl.com.muca.server.entity.User;
 import pl.com.muca.server.entity.UserAnswer;
 import pl.com.muca.server.mapper.AnswerRowMapper;
 
@@ -42,9 +43,9 @@ public class UserAnswerDaoImpl implements UserAnswerDao {
     int userId = this.userDao.getUserId(token);
 
     int userAnswersHashCode = Arrays.hashCode(userAnswers);
-    this.userAnswerValidatorDao.insertToUserAnswerValidator(userId, pollId, userAnswersHashCode);
-    System.out.println("1. Poll id: " + pollId);
-    System.out.println("2. userAnswersHashCode: " + userAnswersHashCode);
+    int userHashCode = this.userDao.getUser(userId).hashCode();
+    int validationHashCode = Math.abs(userHashCode + userAnswersHashCode);
+    this.userAnswerValidatorDao.insertToUserAnswerValidator(userId, pollId, validationHashCode);
     return userAnswersHashCode;
   }
 
