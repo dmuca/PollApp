@@ -1,6 +1,5 @@
 package pl.com.muca.server.dao;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Optional;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -13,16 +12,18 @@ import pl.com.muca.server.mapper.AnswerRowMapper;
 
 @Repository
 public class UserAnswerDaoImpl implements UserAnswerDao {
+  private final NamedParameterJdbcTemplate template;
   private final UserDao userDao;
   private final PollDao pollDao;
   private final QuestionDao questionDao;
-  private final NamedParameterJdbcTemplate template;
+  private final UserAnswerValidatorDaoImpl userAnswerValidatorDao;
 
   public UserAnswerDaoImpl(NamedParameterJdbcTemplate template, PollDaoImpl pollDao) {
     this.template = template;
     this.userDao = new UserDaoImpl(template);
-    this.questionDao = new QuestionDaoImpl(template);
     this.pollDao = pollDao;
+    this.questionDao = new QuestionDaoImpl(template);
+    this.userAnswerValidatorDao = new UserAnswerValidatorDaoImpl(template);
   }
 
   @Override
@@ -34,7 +35,7 @@ public class UserAnswerDaoImpl implements UserAnswerDao {
     int userId = this.userDao.getUserId(token);
 
     int userAnswersHashCode = generateUserAnswersHashCode(userAnswers);
-    insertToUserAnswerValidator(userId, pollId, userAnswersHashCode);
+    this.userAnswerValidatorDao.insertToUserAnswerValidator(userId, pollId, userAnswersHashCode);
     System.out.println("1. Poll id: " + pollId);
     System.out.println("2. userAnswersHashCode: " + userAnswersHashCode);
     return userAnswersHashCode;
@@ -110,18 +111,5 @@ public class UserAnswerDaoImpl implements UserAnswerDao {
     Optional<Integer> howManyCheckedAnswers =
         Optional.ofNullable(template.queryForObject(sql, sqlParameterSource, Integer.class));
     return howManyCheckedAnswers.orElse(0);
-  }
-
-  // TODO (Damian Muca): 6/18/20 move to UserAnswerValidatorDao.
-  private void insertToUserAnswerValidator(int userId, int pollId, int validationHashCode) {
-    final String insertToUserAnswerValidatorSql =
-        "INSERT INTO useranswervalidator(user_id, poll_id, validation_hash_code) "
-            + "VALUES (:UserId, :PollId, :ValidationHashCode)";
-    SqlParameterSource parameterSource =
-        new MapSqlParameterSource()
-            .addValue("UserId", userId)
-            .addValue("PollId", pollId)
-            .addValue("ValidationHashCode", validationHashCode);
-    template.update(insertToUserAnswerValidatorSql, parameterSource);
   }
 }
