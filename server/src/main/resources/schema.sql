@@ -42,7 +42,7 @@ CREATE TABLE "useranswer" (
 CREATE TABLE "useranswervalidator" (
   "user_id" int,
   "poll_id" int,
-  "answer_hash" varchar(256),
+  "validation_hash_code" int,
   PRIMARY KEY ("user_id", "poll_id")
 );
 
