@@ -18,7 +18,6 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import pl.com.muca.server.dao.question.QuestionRowMapper;
 import pl.com.muca.server.dao.user.UserDao;
 import pl.com.muca.server.dao.user.UserDaoImpl;
 import pl.com.muca.server.dao.useranswer.UserAnswerDao;
@@ -53,8 +52,8 @@ public class PollDaoImpl implements PollDao {
     return polls;
   }
 
-  // TODO (Damian Muca): 6/18/20 make public, put into PollDao interface.
-  private PollState getPollState(int pollId, String token) throws Exception {
+  @Override
+  public PollState getPollState(int pollId, String token) throws Exception {
     String userIdHash = this.userDao.getUserHashIdFromToken(token);
     String countUserAnswersToPollSql =
         "SELECT COUNT(*) AS howManyAnswers "
@@ -114,7 +113,8 @@ public class PollDaoImpl implements PollDao {
     this.userAnswerDao.insertAnswerTableData(poll);
   }
 
-  private Integer getLatestPollId() {
+  @Override
+  public Integer getLatestPollId() {
     Integer latestPollId;
     final String latestPollIdSql = "SELECT MAX(poll.poll_id) " + "FROM poll;";
     latestPollId =
@@ -125,8 +125,8 @@ public class PollDaoImpl implements PollDao {
     return latestPollId;
   }
 
-  // TODO (Damian Muca): 6/18/20 make public, put into interface.
-  private void insertPollTableData(Poll poll) {
+  @Override
+  public void insertPollTableData(Poll poll) {
     final String sql =
         "INSERT INTO poll(poll_id, owner_user_id, name) "
             + "VALUES (:poll_id,:owner_user_id, :name)";
@@ -181,7 +181,8 @@ public class PollDaoImpl implements PollDao {
     return poll;
   }
 
-  private String getPollName(int pollId) {
+  @Override
+  public String getPollName(int pollId) {
     String sql = "SELECT poll.name FROM poll WHERE poll_id = :PollId;";
     MapSqlParameterSource mapSqlParameterSource =
         new MapSqlParameterSource().addValue("PollId", pollId);
