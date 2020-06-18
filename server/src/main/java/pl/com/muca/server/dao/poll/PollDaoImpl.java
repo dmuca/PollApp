@@ -46,7 +46,7 @@ public class PollDaoImpl implements PollDao {
   }
 
   @Override
-  public List<Poll> findAll(String token) throws Exception {
+  public List<Poll> findAllPolls(String token) throws Exception {
     ImmutableList<Poll> polls =
         ImmutableList.copyOf(template.query("SELECT * FROM poll", new PollRowMapper()));
     for (Poll poll : polls) {

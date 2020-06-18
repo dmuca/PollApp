@@ -6,7 +6,7 @@ import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.PollState;
 
 public interface PollDao {
-  List<Poll> findAll(String token) throws Exception;
+  List<Poll> findAllPolls(String token) throws Exception;
 
   PollState getPollState(int pollId, String token) throws Exception;
 

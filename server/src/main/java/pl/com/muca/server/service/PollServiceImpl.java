@@ -16,7 +16,7 @@ public class PollServiceImpl implements PollService {
 
   @Override
   public List<Poll> findAll(String token) throws Exception {
-    return pollDao.findAll(token);
+    return pollDao.findAllPolls(token);
   }
 
   @Override
