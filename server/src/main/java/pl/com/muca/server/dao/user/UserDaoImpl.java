@@ -17,7 +17,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import pl.com.muca.server.encryption.Cryptographer;
 import pl.com.muca.server.entity.User;
-import pl.com.muca.server.mapper.UserRowMapper;
 
 @Repository
 public class UserDaoImpl implements UserDao {

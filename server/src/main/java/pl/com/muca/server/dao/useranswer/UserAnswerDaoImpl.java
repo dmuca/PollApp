@@ -14,9 +14,7 @@ import pl.com.muca.server.dao.useranswervalidator.UserAnswerValidatorDaoImpl;
 import pl.com.muca.server.dao.user.UserDao;
 import pl.com.muca.server.dao.user.UserDaoImpl;
 import pl.com.muca.server.entity.Answer;
-import pl.com.muca.server.entity.User;
 import pl.com.muca.server.entity.UserAnswer;
-import pl.com.muca.server.mapper.AnswerRowMapper;
 
 @Repository
 public class UserAnswerDaoImpl implements UserAnswerDao {

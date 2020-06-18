@@ -26,8 +26,7 @@ import pl.com.muca.server.entity.Answer;
 import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.PollState;
 import pl.com.muca.server.entity.Question;
-import pl.com.muca.server.mapper.PollRowMapper;
-import pl.com.muca.server.mapper.QuestionRowMapper;
+import pl.com.muca.server.dao.question.QuestionRowMapper;
 
 @Repository
 public class PollDaoImpl implements PollDao {
@@ -241,6 +240,7 @@ public class PollDaoImpl implements PollDao {
     return template.queryForObject(sql, mapSqlParameterSource, String.class);
   }
 
+  // TODO (Damian Muca): 6/19/20 move to QuestionDao.
   private Question[] getQuestions(int pollId) {
     String sql =
         "SELECT question.question_id, question.poll_id, question.content "
