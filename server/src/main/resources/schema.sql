@@ -40,9 +40,10 @@ CREATE TABLE "useranswer" (
 );
 
 CREATE TABLE "useranswervalidator" (
-  "user_id" int PRIMARY KEY,
-  "poll_id" int PRIMARY KEY,
-  "answer_hash" varchar(256)
+  "user_id" int,
+  "poll_id" int,
+  "answer_hash" varchar(256),
+  PRIMARY KEY ("user_id", "poll_id")
 );
 
 ALTER TABLE "poll" ADD FOREIGN KEY ("owner_user_id") REFERENCES "appuser" ("user_id");
