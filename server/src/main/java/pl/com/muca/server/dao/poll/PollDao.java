@@ -10,7 +10,7 @@ public interface PollDao {
 
   PollState getPollState(int pollId, String token) throws Exception;
 
-  List<Poll> findAllMine(String token);
+  List<Poll> findAllMyPolls(String token);
 
   Poll getPollDetails(int pollId, String token) throws Exception;
 

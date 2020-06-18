@@ -79,7 +79,7 @@ public class PollDaoImpl implements PollDao {
   }
 
   @Override
-  public ImmutableList<Poll> findAllMine(String token) {
+  public ImmutableList<Poll> findAllMyPolls(String token) {
     SqlParameterSource namedParameters =
         new MapSqlParameterSource().addValue("SessionToken", UUID.fromString(token));
     return ImmutableList.copyOf(
