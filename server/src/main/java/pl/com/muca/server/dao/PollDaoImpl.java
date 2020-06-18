@@ -4,18 +4,14 @@ import static pl.com.muca.server.entity.PollState.Filled;
 import static pl.com.muca.server.entity.PollState.New;
 
 import com.google.common.collect.ImmutableList;
-import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -27,6 +23,7 @@ import pl.com.muca.server.entity.Answer;
 import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.PollState;
 import pl.com.muca.server.entity.Question;
+import pl.com.muca.server.entity.User;
 import pl.com.muca.server.entity.UserAnswer;
 import pl.com.muca.server.mapper.AnswerRowMapper;
 import pl.com.muca.server.mapper.PollRowMapper;
@@ -124,8 +121,8 @@ public class PollDaoImpl implements PollDao {
     final String latestPollIdSql = "SELECT MAX(poll.poll_id) " + "FROM poll;";
     latestPollId =
         Optional.ofNullable(
-            template.queryForObject(
-                latestPollIdSql, new MapSqlParameterSource(), Integer.class))
+                template.queryForObject(
+                    latestPollIdSql, new MapSqlParameterSource(), Integer.class))
             .orElse(0);
     return latestPollId;
   }
@@ -133,15 +130,15 @@ public class PollDaoImpl implements PollDao {
   private Integer getLatestQuestionId() {
     final String latestQuestionIdSql = "SELECT MAX(question.question_id) " + "FROM question;";
     return Optional.ofNullable(
-        template.queryForObject(
-            latestQuestionIdSql, new MapSqlParameterSource(), Integer.class))
+            template.queryForObject(
+                latestQuestionIdSql, new MapSqlParameterSource(), Integer.class))
         .orElse(0);
   }
 
   private Integer getLatestAnswerId() {
     final String latestAnswerIdSql = "SELECT MAX(answer.answer_id) " + "FROM answer;";
     return Optional.ofNullable(
-        template.queryForObject(latestAnswerIdSql, new MapSqlParameterSource(), Integer.class))
+            template.queryForObject(latestAnswerIdSql, new MapSqlParameterSource(), Integer.class))
         .orElse(0);
   }
 
@@ -300,7 +297,7 @@ public class PollDaoImpl implements PollDao {
             .addValue("QuestionId", questionId)
             .addValue("UserId", getUserId(token));
     return Optional.ofNullable(template.queryForObject(sql, sqlParameterSource, Integer.class))
-        .orElse(0)
+            .orElse(0)
         > 0;
   }
 
@@ -331,20 +328,65 @@ public class PollDaoImpl implements PollDao {
   }
 
   @Override
-  public void saveUserAnswers(UserAnswer[] userAnswers, String token) throws Exception {
+  public int saveUserAnswers(UserAnswer[] userAnswers, String token) throws Exception {
     String userIdHash = getUserHashIdFromToken(token);
+    Arrays.stream(userAnswers).forEach(userAnswer -> insertToUserAnswer(userIdHash, userAnswer));
 
-    for (UserAnswer userAnswer : userAnswers) {
-      final String sql =
-          "INSERT INTO useranswer(user_id_hash, question_id, answer_chosen) "
-              + "VALUES (:UserIdHash, :QuestionId, :AnswerChosen)";
-      SqlParameterSource param =
-          new MapSqlParameterSource()
-              // TODO (Damian Muca): 6/12/20 inser user hash ID.
-              .addValue("UserIdHash", userIdHash)
-              .addValue("QuestionId", userAnswer.getQuestionId())
-              .addValue("AnswerChosen", userAnswer.getAnswerChosen());
-      template.update(sql, param);
+    int pollId = getPollId(userAnswers[0].getQuestionId());
+    int userId = getUserId(token);
+
+    int userAnswersHashCode = generateUserAnswersHashCode(userAnswers);
+    insertToUserAnswerValidator(userId, pollId, userAnswersHashCode);
+    System.out.println("1. Poll id: " + pollId);
+    System.out.println("2. userAnswersHashCode: " + userAnswersHashCode);
+    return userAnswersHashCode;
+  }
+
+  private void insertToUserAnswerValidator(int userId, int pollId, int validationHashCode) {
+    final String insertToUserAnswerValidatorSql =
+        "INSERT INTO useranswervalidator(user_id, poll_id, validation_hash_code) "
+            + "VALUES (:UserId, :PollId, :ValidationHashCode)";
+    SqlParameterSource parameterSource =
+        new MapSqlParameterSource()
+            .addValue("UserId", userId)
+            .addValue("PollId", pollId)
+            .addValue("ValidationHashCode", validationHashCode);
+    template.update(insertToUserAnswerValidatorSql, parameterSource);
+  }
+
+  private int getPollId(int questionId) throws SQLException {
+    final String getPollIdSql =
+        "SELECT question.poll_id  FROM question  WHERE question_id = :QuestionId";
+    SqlParameterSource questionIdParam =
+        new MapSqlParameterSource().addValue("QuestionId", questionId);
+    Optional<Integer> pollId =
+        Optional.ofNullable(template.queryForObject(getPollIdSql, questionIdParam, Integer.class));
+
+    if (pollId.isEmpty()) {
+      throw new SQLException("Couldn't find poll_id for question_id: " + questionId);
     }
+    return pollId.get();
+  }
+
+  private int generateUserAnswersHashCode(UserAnswer[] userAnswers) {
+    return Math.abs(
+        Arrays.stream(userAnswers)
+                .map(Object::hashCode)
+                .mapToInt(Integer::intValue)
+                .reduce(Integer::sum)
+                .orElse(0));
+  }
+
+  private void insertToUserAnswer(String userIdHash, UserAnswer userAnswer) {
+    final String sql =
+        "INSERT INTO useranswer(user_id_hash, question_id, answer_chosen) "
+            + "VALUES (:UserIdHash, :QuestionId, :AnswerChosen)";
+    SqlParameterSource param =
+        new MapSqlParameterSource()
+            // TODO (Damian Muca): 6/12/20 inser user hash ID.
+            .addValue("UserIdHash", userIdHash)
+            .addValue("QuestionId", userAnswer.getQuestionId())
+            .addValue("AnswerChosen", userAnswer.getAnswerChosen());
+    template.update(sql, param);
   }
 }

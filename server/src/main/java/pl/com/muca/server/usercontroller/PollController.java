@@ -52,10 +52,10 @@ public class PollController {
   }
 
   @PostMapping(value = "/saveUserAnswers")
-  public void createPoll(@RequestHeader("Authorization") String token, @RequestBody UserAnswer [] answers)
+  public int createPoll(@RequestHeader("Authorization") String userAuthorizationToken, @RequestBody UserAnswer [] answers)
       throws Exception {
     logAction(Arrays.toString(answers));
-    pollService.saveUserAnswers(answers, token);
+    return pollService.saveUserAnswers(answers, userAuthorizationToken);
   }
 
   @PutMapping(value = "/updatePoll")

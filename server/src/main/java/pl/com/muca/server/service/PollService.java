@@ -21,5 +21,5 @@ public interface PollService {
 
   Poll getPollDetails(int pollId, String token) throws Exception;
 
-  void saveUserAnswers(UserAnswer[] answers, String token) throws Exception;
+  int saveUserAnswers(UserAnswer[] answers, String token) throws Exception;
 }

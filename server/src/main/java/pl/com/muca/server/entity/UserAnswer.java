@@ -1,5 +1,7 @@
 package pl.com.muca.server.entity;
 
+import java.util.Objects;
+
 public class UserAnswer {
   private int userIdHash;
   private int questionId;
@@ -32,5 +34,24 @@ public class UserAnswer {
   @Override
   public String toString() {
     return String.format("UserAnswer{quesionId=%d, answerChosen=%d}", questionId, answerChosen);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof UserAnswer)) {
+      return false;
+    }
+    UserAnswer that = (UserAnswer) o;
+    return getUserIdHash() == that.getUserIdHash() &&
+        getQuestionId() == that.getQuestionId() &&
+        getAnswerChosen() == that.getAnswerChosen();
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getUserIdHash(), getQuestionId(), getAnswerChosen());
   }
 }

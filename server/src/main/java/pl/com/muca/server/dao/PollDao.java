@@ -20,5 +20,5 @@ public interface PollDao {
 
   void deletePoll(Poll poll);
 
-  void saveUserAnswers(UserAnswer[] answers, String token) throws Exception;
+  int saveUserAnswers(UserAnswer[] answers, String token) throws Exception;
 }

@@ -28,9 +28,9 @@ public class PollServiceImpl implements PollService {
   }
 
   @Override
-  public void saveUserAnswers(UserAnswer[] answers, String token)
+  public int saveUserAnswers(UserAnswer[] answers, String token)
       throws Exception {
-    pollDao.saveUserAnswers(answers, token);
+    return pollDao.saveUserAnswers(answers, token);
   }
 
   @Override
