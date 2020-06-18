@@ -41,20 +41,11 @@ public class UserAnswerDaoImpl implements UserAnswerDao {
     int pollId = this.pollDao.getPollId(userAnswers[0].getQuestionId());
     int userId = this.userDao.getUserId(token);
 
-    int userAnswersHashCode = generateUserAnswersHashCode(userAnswers);
+    int userAnswersHashCode = Arrays.hashCode(userAnswers);
     this.userAnswerValidatorDao.insertToUserAnswerValidator(userId, pollId, userAnswersHashCode);
     System.out.println("1. Poll id: " + pollId);
     System.out.println("2. userAnswersHashCode: " + userAnswersHashCode);
     return userAnswersHashCode;
-  }
-
-  private int generateUserAnswersHashCode(UserAnswer[] userAnswers) {
-    return Math.abs(
-        Arrays.stream(userAnswers)
-            .map(Object::hashCode)
-            .mapToInt(Integer::intValue)
-            .reduce(Integer::sum)
-            .orElse(0));
   }
 
   @Override
