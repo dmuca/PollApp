@@ -39,9 +39,17 @@ CREATE TABLE "useranswer" (
   PRIMARY KEY ("user_id_hash", "question_id")
 );
 
+CREATE TABLE "useranswervalidator" (
+  "user_id" int PRIMARY KEY,
+  "poll_id" int PRIMARY KEY,
+  "answer_hash" varchar(256)
+);
+
 ALTER TABLE "poll" ADD FOREIGN KEY ("owner_user_id") REFERENCES "appuser" ("user_id");
 ALTER TABLE "question" ADD FOREIGN KEY ("poll_id") REFERENCES "poll" ("poll_id");
 ALTER TABLE "answer" ADD FOREIGN KEY ("question_id") REFERENCES "question" ("question_id");
 ALTER TABLE "useranswer" ADD FOREIGN KEY ("question_id") REFERENCES "question" ("question_id");
 ALTER TABLE "useranswer" ADD FOREIGN KEY ("answer_chosen") REFERENCES "answer" ("answer_id");
 ALTER TABLE "session" ADD FOREIGN KEY ("user_id") REFERENCES "appuser" ("user_id");
+ALTER TABLE "useranswervalidator" ADD FOREIGN KEY ("user_id") REFERENCES "appuser" ("user_id");
+ALTER TABLE "useranswervalidator" ADD FOREIGN KEY ("poll_id") REFERENCES "poll" ("poll_id");
