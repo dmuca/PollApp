@@ -11,7 +11,7 @@ public interface UserDao {
 
   void createSession(User user);
 
-  String getLastSessionToken(User user);
+  String getLastSessionToken(int userId);
 
   void updateUser(User user);
 

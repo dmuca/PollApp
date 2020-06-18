@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
     else{
       User user = optionalUser.get();
       userDao.createSession(user);
-      String sessionToken = userDao.getLastSessionToken(user);
+      String sessionToken = userDao.getLastSessionToken(user.getId());
       user.setToken(sessionToken);
       System.out.printf("New session token %s\n", sessionToken);
       user.setPassword("not-visible");

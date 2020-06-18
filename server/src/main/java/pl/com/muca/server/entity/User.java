@@ -10,7 +10,7 @@ public class User {
   private String email;
   private String token;
 
-  public long getId() {
+  public int getId() {
     return id;
   }
 

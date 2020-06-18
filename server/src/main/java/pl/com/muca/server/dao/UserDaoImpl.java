@@ -98,7 +98,7 @@ public class UserDaoImpl implements UserDao {
   }
 
   @Override
-  public String getLastSessionToken(User user) {
+  public String getLastSessionToken(int userId) {
     final String sql ="SELECT access_token FROM session "
         + "INNER JOIN  ( "
         + "             SELECT user_id AS userId, MAX(granted) as grantDate "
@@ -109,14 +109,14 @@ public class UserDaoImpl implements UserDao {
         + "ON session.granted = newestdate.grantDate "
         + "AND session.user_id = newestdate.userId;";
     SqlParameterSource namedParameters =
-        new MapSqlParameterSource().addValue("UserId", user.getId());
+        new MapSqlParameterSource().addValue("UserId", userId);
 
     Optional<String> sessionToken =
         Optional.ofNullable(
             template.queryForObject(sql, namedParameters, String.class));
 
     if (sessionToken.isEmpty()) {
-      throw new SessionException(String.format("Could not find session for specified user %s", user.toString()));
+      throw new SessionException(String.format("Could not find session for specified user with id: %d", userId));
     };
     return sessionToken.orElse("");
   }
