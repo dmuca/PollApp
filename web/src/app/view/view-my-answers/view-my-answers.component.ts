@@ -3,7 +3,6 @@ import {Poll} from '../../model/poll/poll';
 import {UserAnswer} from '../../model/poll/user.answer';
 import {ActivatedRoute} from '@angular/router';
 import {PollService} from '../../model/poll/poll.service';
-import {AlertService} from '../../model/alert/alert.service';
 import {map} from 'rxjs/operators';
 
 @Component({

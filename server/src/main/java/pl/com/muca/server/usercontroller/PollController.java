@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.UserAnswer;
+import pl.com.muca.server.entity.UserAnswerValidator;
 import pl.com.muca.server.service.PollService;
 
 @RestController
@@ -58,6 +59,15 @@ public class PollController {
       throws Exception {
     logAction(Arrays.toString(answers));
     return pollService.saveUserAnswers(answers, userAuthorizationToken);
+  }
+
+  @PostMapping(value = "/verifyPollAnswers")
+  public boolean verifyPollAnswers(
+      @RequestHeader("Authorization") String userAuthorizationToken,
+      @RequestBody UserAnswerValidator userAnswerValidator) {
+    logAction(userAnswerValidator.toString());
+    // TODO (Damian Muca): 6/19/20 add implementation.
+    return userAnswerValidator.getValidationHashCode() == 0;
   }
 
   @PutMapping(value = "/updatePoll")

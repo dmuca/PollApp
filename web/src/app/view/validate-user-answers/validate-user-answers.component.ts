@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {PollService} from '../../model/poll/poll.service';
 import {AlertService} from '../../model/alert/alert.service';
+import {UserAnswerValidator} from '../../model/poll/user.answer.validator';
 
 @Component({
   selector: 'app-validate-user-answers',
@@ -9,26 +10,29 @@ import {AlertService} from '../../model/alert/alert.service';
 })
 export class ValidateUserAnswersComponent implements OnInit {
   isLoading: boolean;
-  userAnswersValidationHashCode: number;
+  userAnswerValidator = new UserAnswerValidator();
 
-  constructor(private pollService: PollService, private alertService: AlertService) { }
+  constructor(private pollService: PollService, private alertService: AlertService) {
+  }
 
   ngOnInit(): void {
   }
 
   validateUserAnswersHashCode() {
     this.isLoading = true;
-    if (!this.userAnswersValidationHashCode){
+    if (!this.userAnswerValidator.validationHashCode) {
       this.alertService.error('Wprowadź kod hash');
       this.isLoading = false;
       return;
     }
-    else if (this.userAnswersValidationHashCode <= 0) {
-      this.alertService.error('Kod hash nie pasuje do odpowiedzi');
-    }
-    else{
-      this.alertService.success('Kod hash został zweryfikowany pomyślnie');
-    }
-    this.isLoading = false;
+
+    this.pollService.verifyPollAnswers(this.userAnswerValidator).subscribe((isHashCodeCorrect) => {
+      if (isHashCodeCorrect) {
+        this.alertService.success('Kod hash został zweryfikowany pomyślnie');
+      } else {
+        this.alertService.error('Kod hash nie pasuje do odpowiedzi');
+      }
+      this.isLoading = false;
+    });
   }
 }
