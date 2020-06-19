@@ -179,7 +179,7 @@ public class PollDaoImpl implements PollDao {
     poll.setName(getPollName(pollId));
     poll.setQuestions(this.questionDao.getQuestions(pollId));
     for (Question question : poll.getQuestions()) {
-      question.setAnswers(this.userAnswerDao.getAnswers(question.getQuestionId(), token));
+      question.setAnswers(this.userAnswerDao.getAnswersCounterForPollOwner(question.getQuestionId(), token));
     }
     return poll;
   }

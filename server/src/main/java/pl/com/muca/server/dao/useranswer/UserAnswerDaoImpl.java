@@ -1,14 +1,12 @@
 package pl.com.muca.server.dao.useranswer;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import com.google.common.collect.ImmutableList;
 import java.util.Arrays;
 import java.util.Optional;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
-import pl.com.muca.server.dao.poll.PollDao;
 import pl.com.muca.server.dao.poll.PollDaoImpl;
 import pl.com.muca.server.dao.question.QuestionDao;
 import pl.com.muca.server.dao.question.QuestionDaoImpl;
@@ -24,40 +22,28 @@ import pl.com.muca.server.entity.UserAnswer;
 public class UserAnswerDaoImpl implements UserAnswerDao {
   private final NamedParameterJdbcTemplate template;
   private final UserDao userDao;
-  private final PollDao pollDao;
   private final QuestionDao questionDao;
   private final UserAnswerValidatorDaoImpl userAnswerValidatorDao;
 
   public UserAnswerDaoImpl(NamedParameterJdbcTemplate template, PollDaoImpl pollDao) {
     this.template = template;
     this.userDao = new UserDaoImpl(template);
-    this.pollDao = pollDao;
     this.questionDao = new QuestionDaoImpl(template);
-    this.userAnswerValidatorDao = new UserAnswerValidatorDaoImpl(template);
+    this.userAnswerValidatorDao =
+        new UserAnswerValidatorDaoImpl(template, pollDao, userDao, this);
   }
 
   @Override
   public int saveUserAnswers(UserAnswer[] userAnswers, String token) throws Exception {
-    String userIdHash = this.userDao.getUserHashIdFromToken(token);
-    Arrays.stream(userAnswers).forEach(userAnswer -> insertToUserAnswer(userIdHash, userAnswer));
-
-    int pollId = this.pollDao.getPollId(userAnswers[0].getQuestionId());
-    int userId = this.userDao.getUserId(token);
-
-    int userAnswersHashCode = Arrays.hashCode(userAnswers);
-    int userHashCode = this.userDao.getUser(userId).hashCode();
-    int validationHashCode = Math.abs(userHashCode + userAnswersHashCode);
-    String time = DateTimeFormatter
-        .ofPattern("yyyy/MM/dd HH:mm:ss").format(LocalDateTime.now());
-    System.out.printf(
-        "%s User with id: %d, answered on poll id: %d, generated validation hash code: %d\n",
-        time, userId, pollId, validationHashCode);
-    this.userAnswerValidatorDao.insertToUserAnswerValidator(userId, pollId, validationHashCode);
-    return validationHashCode;
+    for (UserAnswer userAnswer : userAnswers) {
+      saveUserAnswer(userAnswer, token);
+    }
+    return this.userAnswerValidatorDao.insertToUserAnswerValidator(userAnswers, token);
   }
 
   @Override
-  public void insertToUserAnswer(String userIdHash, UserAnswer userAnswer) {
+  public void saveUserAnswer(UserAnswer userAnswer, String token) throws Exception {
+    String userIdHash = this.userDao.getUserHashIdFromToken(token);
     final String sql =
         "INSERT INTO useranswer(user_id_hash, question_id, answer_chosen) "
             + "VALUES (:UserIdHash, :QuestionId, :AnswerChosen)";
@@ -70,7 +56,7 @@ public class UserAnswerDaoImpl implements UserAnswerDao {
   }
 
   @Override
-  public Answer[] getAnswers(int questionId, String token) throws Exception {
+  public Answer[] getAnswersCounterForPollOwner(int questionId, String token) throws Exception {
     String sql =
         "SELECT answer.answer_id, answer.question_id, answer.content "
             + "FROM answer "
@@ -119,12 +105,11 @@ public class UserAnswerDaoImpl implements UserAnswerDao {
     return howManyCheckedAnswers.orElse(0);
   }
 
-
   @Override
   public Integer getLatestAnswerId() {
     final String latestAnswerIdSql = "SELECT MAX(answer.answer_id) " + "FROM answer;";
     return Optional.ofNullable(
-        template.queryForObject(latestAnswerIdSql, new MapSqlParameterSource(), Integer.class))
+            template.queryForObject(latestAnswerIdSql, new MapSqlParameterSource(), Integer.class))
         .orElse(0);
   }
 
@@ -144,5 +129,20 @@ public class UserAnswerDaoImpl implements UserAnswerDao {
         template.update(sql, param);
       }
     }
+  }
+
+  @Override
+  public UserAnswer[] getUserAnswersForPoll(String userToken, int pollId) throws Exception {
+    final String sql =
+        "SELECT * FROM useranswer "
+            + "INNER JOIN question "
+            + "ON question.question_id = useranswer.question_id "
+            + "WHERE useranswer.user_id_hash = :UserIdHash "
+            + "AND question.poll_id = :PollId";
+    SqlParameterSource parameters =
+        new MapSqlParameterSource()
+            .addValue("UserIdHash", this.userDao.getUserHashIdFromToken(userToken))
+            .addValue("PollId", pollId);
+    return template.query(sql, parameters, new UserANswerMapper()).toArray(UserAnswer[]::new);
   }
 }

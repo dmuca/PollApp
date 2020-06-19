@@ -27,7 +27,8 @@ export class FillPollComponent implements OnInit {
     this.activatedRoute.paramMap
     .pipe(map(() => window.history.state))
     .subscribe(state => {
-      this.pollService.getPollDetails(state.poll.pollId).subscribe((poll) => {
+      this.pollService.getPollDetails(state.poll.pollId);
+      this.pollService.pollDetails$.subscribe((poll) => {
         this.poll = poll;
         this.userAnswers = new Array(this.poll.questions.length);
         for (let i = 0; i < this.poll.questions.length; ++i) {

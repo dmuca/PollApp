@@ -21,7 +21,8 @@ export class ViewAnswersToMyPollComponent implements OnInit {
     this.activatedRoute.paramMap
     .pipe(map(() => window.history.state))
     .subscribe(state => {
-      this.pollService.getPollDetails(state.poll.pollId).subscribe((poll: Poll) => {
+      this.pollService.getPollDetails(state.poll.pollId);
+      this.pollService.pollDetails$.subscribe((poll: Poll) => {
         this.poll = poll;
       });
     });

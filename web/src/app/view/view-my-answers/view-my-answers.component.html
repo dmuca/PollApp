@@ -1,12 +1,13 @@
 <div class="card my-5">
   <div class="card-body">
+    <app-validate-user-answers></app-validate-user-answers>
+    <hr/>
     <p>Podgląd udzielonych odpowiedzi</p>
     <hr/>
     <h1>{{poll.name}}</h1>
 
     <div *ngFor="let question of poll.questions; let i = index"
          [attr.data-index]="i">
-
       <label class="question" id="example-radio-group-label">Pytanie {{i + 1}}
         : {{question.title}}</label>
       <mat-radio-group
@@ -21,6 +22,5 @@
       </mat-radio-group>
       <hr/>
     </div>
-    <app-alert></app-alert>
   </div>
 </div>

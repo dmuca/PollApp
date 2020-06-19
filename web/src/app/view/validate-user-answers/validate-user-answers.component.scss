@@ -1,0 +1,35 @@
+.content{
+  margin: 0 0 32px 0;
+}
+
+p {
+  text-align: center;
+  font-size: 20px;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+div.validation-sector {
+  width: 424px;
+  text-align: center;
+  margin: auto;
+  padding: 8px 0 4px 0;
+}
+
+input.user-answers-validation-hash-code {
+  font-size: 18px;
+  padding: 8px;
+  width: 300px;
+  height: 40px;
+  float: left;
+  margin: 0 4px 0 0;
+}
+
+button.check-hash-code {
+  width: 120px;
+  height: 40px;
+}
+
+.app-alert{
+  width: 424px;
+  margin: 0 auto;
+}

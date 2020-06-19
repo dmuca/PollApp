@@ -7,9 +7,10 @@ import pl.com.muca.server.entity.UserAnswer;
 public interface UserAnswerDao {
   int saveUserAnswers(UserAnswer[] answers, String token) throws Exception;
 
-  void insertToUserAnswer(String userIdHash, UserAnswer userAnswer);
+  void saveUserAnswer(UserAnswer userAnswer, String token)
+      throws Exception;
 
-  Answer[] getAnswers(int questionId, String token) throws Exception;
+  Answer[] getAnswersCounterForPollOwner(int questionId, String token) throws Exception;
 
   boolean isAnswerMarkedByUser(int answerId, String token) throws Exception;
 
@@ -18,4 +19,7 @@ public interface UserAnswerDao {
   Integer getLatestAnswerId();
 
   void insertAnswerTableData(Poll poll);
+
+  UserAnswer[] getUserAnswersForPoll(String userToken, int pollId)
+      throws Exception;
 }

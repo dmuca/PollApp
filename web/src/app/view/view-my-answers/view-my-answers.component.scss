@@ -6,7 +6,7 @@ h1 {
 p {
   text-align: center;
   font-size: 20px;
-  color: rgba(0, 0, 0, 0.51);
+  color: rgba(0, 0, 0, 0.75);
 }
 
 label.question {
@@ -21,4 +21,8 @@ label.question {
 
 .example-radio-button {
   margin: 5px;
+}
+
+.card{
+  padding: 0 0 16px 0;
 }

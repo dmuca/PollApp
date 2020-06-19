@@ -1,7 +1,15 @@
 package pl.com.muca.server.dao.useranswersvalidator;
 
+import java.sql.SQLException;
+import pl.com.muca.server.entity.UserAnswer;
+import pl.com.muca.server.entity.UserAnswersValidator;
+
 public interface UserAnswerValidatorDao {
 
-  void insertToUserAnswerValidator(int userId, int pollId,
-      int validationHashCode);
+  int insertToUserAnswerValidator(UserAnswer[] userAnswers, String token)
+      throws Exception;
+
+  boolean validateAnswers(UserAnswersValidator userAnswersValidator,
+      String userToken)
+      throws Exception;
 }

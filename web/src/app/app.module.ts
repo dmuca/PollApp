@@ -65,6 +65,7 @@ import { InsertAnswerComponent } from './view/create-poll/insert-answer/insert-a
 import { FillPollComponent } from './view/fill-poll/fill-poll.component';
 import { ViewMyAnswersComponent } from './view/view-my-answers/view-my-answers.component';
 import { ViewAnswersToMyPollComponent } from './view/view-answers-to-my-poll/view-answers-to-my-poll.component';
+import { ValidateUserAnswersComponent } from './view/validate-user-answers/validate-user-answers.component';
 
 @NgModule({
   declarations: [
@@ -82,6 +83,7 @@ import { ViewAnswersToMyPollComponent } from './view/view-answers-to-my-poll/vie
     FillPollComponent,
     ViewMyAnswersComponent,
     ViewAnswersToMyPollComponent,
+    ValidateUserAnswersComponent,
   ],
   imports: [
     BrowserModule,

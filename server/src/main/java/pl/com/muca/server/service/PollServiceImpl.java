@@ -3,16 +3,21 @@ package pl.com.muca.server.service;
 import java.sql.SQLException;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.validation.ValidationException;
 import org.springframework.stereotype.Component;
 import pl.com.muca.server.dao.poll.PollDao;
+import pl.com.muca.server.dao.user.UserDao;
 import pl.com.muca.server.dao.useranswer.UserAnswerDao;
+import pl.com.muca.server.dao.useranswersvalidator.UserAnswerValidatorDao;
 import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.UserAnswer;
+import pl.com.muca.server.entity.UserAnswersValidator;
 
 @Component
 public class PollServiceImpl implements PollService {
   @Resource PollDao pollDao;
   @Resource UserAnswerDao userAnswerDao;
+  @Resource UserAnswerValidatorDao userAnswerValidatorDao;
 
   @Override
   public List<Poll> findAll(String token) throws Exception {
@@ -52,5 +57,12 @@ public class PollServiceImpl implements PollService {
   @Override
   public Poll getPollDetails(int pollId, String token) throws Exception {
     return pollDao.getPollDetails(pollId, token);
+  }
+
+  @Override
+  public boolean verifyPollAnswers(
+      UserAnswersValidator userAnswersValidator, String userAuthorizationToken)
+      throws Exception {
+    return userAnswerValidatorDao.validateAnswers(userAnswersValidator, userAuthorizationToken);
   }
 }
