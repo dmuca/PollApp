@@ -1,0 +1,16 @@
+<hr/>
+<p>Walidacja odpowiedzi, wprowadź kod hash</p>
+<hr/>
+<div class="validation-sector">
+  <input type="text" class="user-answers-validation-hash-code form-control"
+         placeholder="Kod hash"
+         [(ngModel)]="userAnswersValidationHashCode"/>
+  <button [disabled]="isLoading"
+          (click)="validateUserAnswersHashCode()"
+          class="check-hash-code btn btn-primary">
+    Sprawdź
+  </button>
+</div>
+<div class="app-alert">
+  <app-alert></app-alert>
+</div>
