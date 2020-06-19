@@ -79,10 +79,6 @@ public class UserAnswerValidatorDaoImpl implements UserAnswerValidatorDao {
         this.userAnswerDao.getUserAnswersForPoll(userToken, userAnswersValidator.getPollId());
     User user = userDao.getUser(userDao.getUserId(userToken));
     int generate = UserAnswersHashCodeGenerator.generate(userAnswers, user);
-
-
-    System.out.println("GENERATED HASH CODE: " + generate);
-    System.out.println("PASSED HASH CODE: " + userAnswersValidator.getValidationHashCode());
     return generate
         == userAnswersValidator.getValidationHashCode();
   }
