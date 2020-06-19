@@ -1,6 +1,6 @@
 package pl.com.muca.server.entity;
 
-public class UserAnswerValidator {
+public class UserAnswersValidator {
   private int userId;
   private int pollId;
   private int validationHashCode;

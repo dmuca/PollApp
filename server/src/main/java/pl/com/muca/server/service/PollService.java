@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.UserAnswer;
+import pl.com.muca.server.entity.UserAnswersValidator;
 
 public interface PollService {
 
@@ -22,5 +23,8 @@ public interface PollService {
   Poll getPollDetails(int pollId, String token) throws Exception;
 
   int saveUserAnswers(UserAnswer[] answers, String userAuthorizationToken)
+      throws Exception;
+
+  boolean verifyPollAnswers(UserAnswersValidator answers, String userAuthorizationToken)
       throws Exception;
 }

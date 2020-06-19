@@ -3,15 +3,15 @@ package pl.com.muca.server.entity;
 import java.util.Objects;
 
 public class UserAnswer {
-  private int userIdHash;
+  private String userIdHash;
   private int questionId;
   private int answerChosen;
 
-  public int getUserIdHash() {
+  public String getUserIdHash() {
     return userIdHash;
   }
 
-  public void setUserIdHash(int userIdHash) {
+  public void setUserIdHash(String userIdHash) {
     this.userIdHash = userIdHash;
   }
 
@@ -33,7 +33,9 @@ public class UserAnswer {
 
   @Override
   public String toString() {
-    return String.format("UserAnswer{quesionId=%d, answerChosen=%d}", questionId, answerChosen);
+    return String
+        .format("UserAnswer{userIdHash='%s', questionId=%d, answerChosen=%d}",
+            userIdHash, questionId, answerChosen);
   }
 
   @Override

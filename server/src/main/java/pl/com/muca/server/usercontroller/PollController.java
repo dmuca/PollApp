@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.validation.ValidationException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.com.muca.server.dao.user.UserDao;
 import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.UserAnswer;
-import pl.com.muca.server.entity.UserAnswerValidator;
+import pl.com.muca.server.entity.UserAnswersValidator;
 import pl.com.muca.server.service.PollService;
 
 @RestController
@@ -26,6 +28,7 @@ import pl.com.muca.server.service.PollService;
 @RequestMapping("/pollApp")
 public class PollController {
   @Resource PollService pollService;
+  @Resource UserDao userDao;
 
   @GetMapping(value = "/listPolls")
   public List<Poll> getPolls(@RequestHeader("Authorization") String token) throws Exception {
@@ -64,10 +67,11 @@ public class PollController {
   @PostMapping(value = "/verifyPollAnswers")
   public boolean verifyPollAnswers(
       @RequestHeader("Authorization") String userAuthorizationToken,
-      @RequestBody UserAnswerValidator userAnswerValidator) {
-    logAction(userAnswerValidator.toString());
-    // TODO (Damian Muca): 6/19/20 add implementation.
-    return userAnswerValidator.getValidationHashCode() == 0;
+      @RequestBody UserAnswersValidator userAnswersValidator)
+      throws Exception {
+    userAnswersValidator.setUserId(this.userDao.getUserId(userAuthorizationToken));
+    logAction(userAnswersValidator.toString());
+    return pollService.verifyPollAnswers(userAnswersValidator, userAuthorizationToken);
   }
 
   @PutMapping(value = "/updatePoll")
