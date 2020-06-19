@@ -29,5 +29,27 @@
       <hr/>
     </div>
     <app-alert></app-alert>
+
+    <hr/>
+    <h2 class="users-answered-poll">
+      Użytkownicy, którzy odpowiedzieli na ankiete:
+    </h2>
+    <ol>
+      <li class="user"
+          *ngFor="let userWhoAnswered of this.usersWhoAnsweredPoll">
+        {{userWhoAnswered.firstName}} {{userWhoAnswered.lastName}} {{userWhoAnswered.email}}
+      </li>
+    </ol>
+
+    <hr/>
+    <h2 class="users-did-not-answer-poll">
+      Użytkownicy, którzy nie odpowiedzieli na ankiete:
+    </h2>
+    <ol>
+      <li class="user"
+          *ngFor="let userWhoDidNotAnswer of this.usersWhoDidNotAnswerPoll">
+        {{userWhoDidNotAnswer.firstName}} {{userWhoDidNotAnswer.lastName}} {{userWhoDidNotAnswer.email}}
+      </li>
+    </ol>
   </div>
 </div>
