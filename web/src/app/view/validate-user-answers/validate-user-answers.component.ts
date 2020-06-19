@@ -25,6 +25,11 @@ export class ValidateUserAnswersComponent implements OnInit {
       this.isLoading = false;
       return;
     }
+    else if (isNaN(this.userAnswerValidator.validationHashCode)){
+      this.alertService.error('Wprowadzony hash kod nie jest numerem');
+      this.isLoading = false;
+      return;
+    }
 
     this.pollService.verifyPollAnswers(this.userAnswerValidator).subscribe((isHashCodeCorrect) => {
       if (isHashCodeCorrect) {
