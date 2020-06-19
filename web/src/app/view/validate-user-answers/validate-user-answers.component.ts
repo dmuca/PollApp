@@ -1,10 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {PollService} from '../../model/poll/poll.service';
 import {AlertService} from '../../model/alert/alert.service';
 import {UserAnswerValidator} from '../../model/poll/user.answer.validator';
-import {map} from 'rxjs/operators';
 import {Poll} from '../../model/poll/poll';
-import {Subject} from 'rxjs';
+import {isFiniteInteger} from 'smart-buffer/typings/utils';
 
 @Component({
   selector: 'app-validate-user-answers',
@@ -33,6 +32,11 @@ export class ValidateUserAnswersComponent implements OnInit {
     }
     else if (isNaN(this.userAnswerValidator.validationHashCode)){
       this.alertService.error('Wprowadzony hash kod nie jest numerem');
+      this.isLoading = false;
+      return;
+    }
+    else if (this.userAnswerValidator.validationHashCode > 2147483647){
+      this.alertService.error('Wprowadzony numer jest zbyt duży');
       this.isLoading = false;
       return;
     }
