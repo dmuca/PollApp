@@ -53,7 +53,7 @@ public class UserAnswerDaoImpl implements UserAnswerDao {
         "%s User with id: %d, answered on poll id: %d, generated validation hash code: %d\n",
         time, userId, pollId, validationHashCode);
     this.userAnswerValidatorDao.insertToUserAnswerValidator(userId, pollId, validationHashCode);
-    return userAnswersHashCode;
+    return validationHashCode;
   }
 
   @Override

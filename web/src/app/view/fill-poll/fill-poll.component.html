@@ -1,25 +1,38 @@
 <div class="card my-5">
-  <div class="card-body">
+  <div class="card-body" *ngIf="!answersValidationHashCode">
     <h1>{{poll.name}}</h1>
 
-    <div *ngFor="let question of poll.questions; let i = index"
-         [attr.data-index]="i">
+    <div>
+      <div *ngFor="let question of poll.questions; let i = index"
+           [attr.data-index]="i">
 
-      <label class="question" id="example-radio-group-label">Pytanie {{i + 1}}: {{question.title}}</label>
-      <mat-radio-group
-        aria-labelledby="example-radio-group-label"
-        class="example-radio-group"
-        [(ngModel)]="userAnswers[i].answerChosen">
-        <mat-radio-button class="example-radio-button" *ngFor="let answer of question.answers" [value]="answer.answerId">
-          {{answer.content}}
-        </mat-radio-button>
-      </mat-radio-group>
-      <hr/>
+        <label class="question" id="example-radio-group-label">Pytanie {{i + 1}}
+          : {{question.title}}</label>
+        <mat-radio-group
+          aria-labelledby="example-radio-group-label"
+          class="example-radio-group"
+          [(ngModel)]="userAnswers[i].answerChosen">
+          <mat-radio-button class="example-radio-button"
+                            *ngFor="let answer of question.answers"
+                            [value]="answer.answerId">
+            {{answer.content}}
+          </mat-radio-button>
+        </mat-radio-group>
+        <hr/>
+      </div>
     </div>
     <app-alert></app-alert>
-    <button [disabled]="loading" (click)="answerOnPoll()"
+    <button [disabled]="loading"
+            (click)="answerOnPoll()"
             class="create-poll btn btn-primary">
       Wyślij odpowiedź
     </button>
+  </div>
+
+  <div class="card-body answers-saved" *ngIf="answersValidationHashCode">
+    <h1>{{poll.name}}</h1>
+    <h2 class="answers-saved">Twoje odpowiedzi zostały zapisane</h2>
+    <h1 class="answers-validator-hash-code">{{this.answersValidationHashCode}}</h1>
+    <p>Powyżej znajduje się unikatowy kod, który pozwoli Ci zweryfikować swoje odpowiedzi</p>
   </div>
 </div>

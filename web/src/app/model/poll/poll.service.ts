@@ -35,7 +35,7 @@ export class PollService {
     return this.http.get<Poll>(`${REST_API_URL}getPollDetails/${pollId}`);
   }
 
-  public saveAnswers(userAnswers: UserAnswer[]): Observable<any> {
-    return this.http.post<any>(`${REST_API_URL}saveUserAnswers`, userAnswers);
+  public saveAnswers(userAnswers: UserAnswer[]): Observable<number> {
+    return this.http.post<number>(`${REST_API_URL}saveUserAnswers`, userAnswers);
   }
 }
