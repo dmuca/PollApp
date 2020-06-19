@@ -1,7 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {PollService} from '../../model/poll/poll.service';
 import {AlertService} from '../../model/alert/alert.service';
 import {UserAnswerValidator} from '../../model/poll/user.answer.validator';
+import {map} from 'rxjs/operators';
+import {Poll} from '../../model/poll/poll';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-validate-user-answers',
@@ -16,6 +19,9 @@ export class ValidateUserAnswersComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.pollService.pollDetails$.subscribe((pollDetails: Poll) => {
+      this.userAnswerValidator.pollId = pollDetails.pollId;
+    });
   }
 
   validateUserAnswersHashCode() {

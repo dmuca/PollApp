@@ -12,6 +12,7 @@ import {UserAnswerValidator} from './user.answer.validator';
 export class PollService {
   public pollsList$: Subject<Poll[]> = new Subject<Poll[]>();
   public myPollsList$: Subject<Poll[]> = new Subject<Poll[]>();
+  public pollDetails$: Subject<Poll> = new Subject<Poll>();
 
   constructor(private http: HttpClient) {
   }
@@ -32,8 +33,10 @@ export class PollService {
     return this.http.post<boolean>(`${REST_API_URL}createPoll`, poll);
   }
 
-  public getPollDetails(pollId: number): Observable<Poll>{
-    return this.http.get<Poll>(`${REST_API_URL}getPollDetails/${pollId}`);
+  public getPollDetails(pollId: number) {
+    return this.http.get<Poll>(`${REST_API_URL}getPollDetails/${pollId}`).subscribe((pollDetails: Poll) => {
+      this.pollDetails$.next(pollDetails);
+    });
   }
 
   public saveAnswers(userAnswers: UserAnswer[]): Observable<number> {

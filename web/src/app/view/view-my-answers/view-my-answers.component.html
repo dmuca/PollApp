@@ -8,7 +8,6 @@
 
     <div *ngFor="let question of poll.questions; let i = index"
          [attr.data-index]="i">
-
       <label class="question" id="example-radio-group-label">Pytanie {{i + 1}}
         : {{question.title}}</label>
       <mat-radio-group
