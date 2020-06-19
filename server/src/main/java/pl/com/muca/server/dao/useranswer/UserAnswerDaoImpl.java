@@ -1,5 +1,7 @@
 package pl.com.muca.server.dao.useranswer;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Optional;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -45,6 +47,11 @@ public class UserAnswerDaoImpl implements UserAnswerDao {
     int userAnswersHashCode = Arrays.hashCode(userAnswers);
     int userHashCode = this.userDao.getUser(userId).hashCode();
     int validationHashCode = Math.abs(userHashCode + userAnswersHashCode);
+    String time = DateTimeFormatter
+        .ofPattern("yyyy/MM/dd HH:mm:ss").format(LocalDateTime.now());
+    System.out.printf(
+        "%s User with id: %d, answered on poll id: %d, generated validation hash code: %d\n",
+        time, userId, pollId, validationHashCode);
     this.userAnswerValidatorDao.insertToUserAnswerValidator(userId, pollId, validationHashCode);
     return userAnswersHashCode;
   }
