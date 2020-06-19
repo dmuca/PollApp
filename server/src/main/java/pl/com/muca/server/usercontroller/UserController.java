@@ -1,5 +1,7 @@
 package pl.com.muca.server.usercontroller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.security.auth.login.LoginException;
@@ -69,6 +71,7 @@ public class UserController {
   }
 
   private void logAction(String info, String methodName) {
-    System.out.printf("API Method (%s), Data %s\n", methodName, info);
+    String time = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss").format(LocalDateTime.now());
+    System.out.printf("%s API Method (%s), Data %s\n", time, methodName, info);
   }
 }

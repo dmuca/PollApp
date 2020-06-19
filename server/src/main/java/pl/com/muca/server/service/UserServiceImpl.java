@@ -5,7 +5,7 @@ import java.util.Optional;
 import javax.annotation.Resource;
 import javax.security.auth.login.LoginException;
 import org.springframework.stereotype.Component;
-import pl.com.muca.server.dao.UserDao;
+import pl.com.muca.server.dao.user.UserDao;
 import pl.com.muca.server.entity.User;
 
 @Component
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
     else{
       User user = optionalUser.get();
       userDao.createSession(user);
-      String sessionToken = userDao.getLastSessionToken(user);
+      String sessionToken = userDao.getLatestSessionTokenForUser(user.getId());
       user.setToken(sessionToken);
       System.out.printf("New session token %s\n", sessionToken);
       user.setPassword("not-visible");

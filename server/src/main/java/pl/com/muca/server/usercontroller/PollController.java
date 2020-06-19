@@ -1,6 +1,8 @@
 package pl.com.muca.server.usercontroller;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Resource;
@@ -22,12 +24,10 @@ import pl.com.muca.server.service.PollService;
 @CrossOrigin
 @RequestMapping("/pollApp")
 public class PollController {
-
   @Resource PollService pollService;
 
   @GetMapping(value = "/listPolls")
-  public List<Poll> getPolls(@RequestHeader("Authorization") String token)
-      throws Exception {
+  public List<Poll> getPolls(@RequestHeader("Authorization") String token) throws Exception {
     logAction();
     return pollService.findAll(token);
   }
@@ -39,8 +39,8 @@ public class PollController {
   }
 
   @GetMapping(value = "/getPollDetails/{pollId}")
-  public Poll getPollDetails(@PathVariable Integer pollId, @RequestHeader("Authorization") String token)
-      throws Exception {
+  public Poll getPollDetails(
+      @PathVariable Integer pollId, @RequestHeader("Authorization") String token) throws Exception {
     return pollService.getPollDetails(pollId, token);
   }
 
@@ -52,10 +52,12 @@ public class PollController {
   }
 
   @PostMapping(value = "/saveUserAnswers")
-  public void createPoll(@RequestHeader("Authorization") String token, @RequestBody UserAnswer [] answers)
+  public int createPoll(
+      @RequestHeader("Authorization") String userAuthorizationToken,
+      @RequestBody UserAnswer[] answers)
       throws Exception {
     logAction(Arrays.toString(answers));
-    pollService.saveUserAnswers(answers, token);
+    return pollService.saveUserAnswers(answers, userAuthorizationToken);
   }
 
   @PutMapping(value = "/updatePoll")
@@ -88,6 +90,7 @@ public class PollController {
   }
 
   private void logAction(String info, String methodName) {
-    System.out.printf("API Method (%s), Data %s\n", methodName, info);
+    String time = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss").format(LocalDateTime.now());
+    System.out.printf("%s API Method (%s), Data %s\n", time, methodName, info);
   }
 }

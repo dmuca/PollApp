@@ -1,4 +1,4 @@
-package pl.com.muca.server.mapper;
+package pl.com.muca.server.dao.question;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

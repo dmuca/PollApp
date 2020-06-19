@@ -16,6 +16,7 @@ export class FillPollComponent implements OnInit {
   public poll: Poll = new Poll();
   userAnswers: UserAnswer[] = [];
   loading: boolean;
+  answersValidationHashCode: number;
 
   constructor(private activatedRoute: ActivatedRoute,
               private pollService: PollService,
@@ -48,8 +49,8 @@ export class FillPollComponent implements OnInit {
         return;
       }
     }
-    this.pollService.saveAnswers(this.userAnswers).subscribe(() => {
-      this.alertService.success('Odpowiedzi zostały zapisane.');
+    this.pollService.saveAnswers(this.userAnswers).subscribe((answersValidationHashCode) => {
+      this.answersValidationHashCode = answersValidationHashCode;
     });
   }
 }

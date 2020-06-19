@@ -1,9 +1,9 @@
-h1{
+h1 {
   font-size: 28px;
   text-align: center;
 }
 
-label.question{
+label.question {
   font-size: 20px;
 }
 
@@ -15,4 +15,24 @@ label.question{
 
 .example-radio-button {
   margin: 5px;
+}
+
+div.answers-saved {
+  text-align: center;
+}
+
+p {
+  color: #7b7878;
+  text-align: center;
+}
+
+h2.answers-saved {
+  padding: 0px;
+  color: #56c653;
+}
+
+h1.answers-validator-hash-code {
+  background-color: #e4e4e4;
+  padding: 12px;
+  display: inline-block;
 }

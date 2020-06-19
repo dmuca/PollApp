@@ -4,22 +4,24 @@ import java.sql.SQLException;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
-import pl.com.muca.server.dao.PollDao;
+import pl.com.muca.server.dao.poll.PollDao;
+import pl.com.muca.server.dao.useranswer.UserAnswerDao;
 import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.UserAnswer;
 
 @Component
 public class PollServiceImpl implements PollService {
   @Resource PollDao pollDao;
+  @Resource UserAnswerDao userAnswerDao;
 
   @Override
   public List<Poll> findAll(String token) throws Exception {
-    return pollDao.findAll(token);
+    return pollDao.findAllPolls(token);
   }
 
   @Override
   public List<Poll> findAllMine(String token) {
-    return pollDao.findAllMine(token);
+    return pollDao.findAllMyPolls(token);
   }
 
   @Override
@@ -28,9 +30,8 @@ public class PollServiceImpl implements PollService {
   }
 
   @Override
-  public void saveUserAnswers(UserAnswer[] answers, String token)
-      throws Exception {
-    pollDao.saveUserAnswers(answers, token);
+  public int saveUserAnswers(UserAnswer[] answers, String token) throws Exception {
+    return userAnswerDao.saveUserAnswers(answers, token);
   }
 
   @Override

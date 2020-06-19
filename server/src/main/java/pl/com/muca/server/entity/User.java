@@ -10,7 +10,7 @@ public class User {
   private String email;
   private String token;
 
-  public long getId() {
+  public int getId() {
     return id;
   }
 
@@ -77,15 +77,22 @@ public class User {
     if (this == o) {
       return true;
     }
-    if (o == null || getClass() != o.getClass()) {
+    if (!(o instanceof User)) {
       return false;
     }
     User user = (User) o;
-    return email.equals(user.email);
+    return getId() == user.getId() &&
+        Objects.equals(getFirstName(), user.getFirstName()) &&
+        Objects.equals(getLastName(), user.getLastName()) &&
+        Objects.equals(getPassword(), user.getPassword()) &&
+        Objects.equals(getEmail(), user.getEmail()) &&
+        Objects.equals(getToken(), user.getToken());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(email);
+    return Objects
+        .hash(getId(), getFirstName(), getLastName(), getPassword(), getEmail(),
+            getToken());
   }
 }
