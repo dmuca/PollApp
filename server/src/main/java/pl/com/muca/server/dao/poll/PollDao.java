@@ -23,12 +23,6 @@ public interface PollDao {
 
   void insertPollTableData(Poll poll);
 
-  void updatePoll(Poll poll);
-
-  void executeUpdatePoll(Poll poll);
-
-  void deletePoll(Poll poll);
-
   String getPollName(int pollId);
 
   int getPollId(int questionId) throws SQLException;

@@ -15,12 +15,6 @@ public interface PollService {
 
   void insertPoll(Poll poll, String token) throws SQLException;
 
-  void updatePoll(Poll poll);
-
-  void executeUpdatePoll(Poll poll);
-
-  void deletePoll(Poll poll);
-
   Poll getPollDetails(int pollId, String token) throws Exception;
 
   int saveUserAnswers(UserAnswer[] answers, String userAuthorizationToken)

@@ -40,21 +40,6 @@ public class PollServiceImpl implements PollService {
   }
 
   @Override
-  public void updatePoll(Poll poll) {
-    pollDao.updatePoll(poll);
-  }
-
-  @Override
-  public void executeUpdatePoll(Poll poll) {
-    pollDao.executeUpdatePoll(poll);
-  }
-
-  @Override
-  public void deletePoll(Poll poll) {
-    pollDao.deletePoll(poll);
-  }
-
-  @Override
   public Poll getPollDetails(int pollId, String token) throws Exception {
     return pollDao.getPollDetails(pollId, token);
   }

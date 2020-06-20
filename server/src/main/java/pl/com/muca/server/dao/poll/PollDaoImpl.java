@@ -4,19 +4,13 @@ import static pl.com.muca.server.entity.PollState.Filled;
 import static pl.com.muca.server.entity.PollState.New;
 
 import com.google.common.collect.ImmutableList;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import pl.com.muca.server.dao.question.QuestionDaoImpl;
 import pl.com.muca.server.dao.user.UserDao;
@@ -142,37 +136,6 @@ public class PollDaoImpl implements PollDao {
             .addValue("owner_user_id", poll.getOwnerUserId())
             .addValue("name", poll.getName().trim());
     template.update(sql, param);
-  }
-
-  @Override
-  public void updatePoll(Poll poll) {
-    KeyHolder holder = new GeneratedKeyHolder();
-    SqlParameterSource param =
-        new MapSqlParameterSource()
-            .addValue("poll_id", poll.getPollId())
-            .addValue("owner_user_id", poll.getOwnerUserId())
-            .addValue("name", poll.getName().trim());
-    template.update(UPDATE_SQL, param, holder);
-  }
-
-  @Override
-  public void executeUpdatePoll(Poll poll) {
-    Map<String, Object> map = new HashMap<>();
-    map.put("poll_id", poll.getPollId());
-    map.put("owner_user_id", poll.getOwnerUserId());
-    map.put("name", poll.getName().trim());
-
-    template.execute(
-        UPDATE_SQL, map, (PreparedStatementCallback<Object>) PreparedStatement::executeUpdate);
-  }
-
-  @Override
-  public void deletePoll(Poll poll) {
-    final String sql = "DELETE FROM poll WHERE poll_id=:poll_id";
-    final Map<String, Object> map = new HashMap<>();
-    map.put("poll_id", poll.getPollId());
-    template.execute(
-        sql, map, (PreparedStatementCallback<Object>) PreparedStatement::executeUpdate);
   }
 
   @Override
