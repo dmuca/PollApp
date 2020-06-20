@@ -2,12 +2,15 @@ package pl.com.muca.server.dao.userswhoansweredpoll;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 import pl.com.muca.server.dao.poll.PollDaoImpl;
 import pl.com.muca.server.dao.user.UserDao;
+import pl.com.muca.server.dao.user.UserRowMapper;
+import pl.com.muca.server.entity.User;
 import pl.com.muca.server.entity.UserAnswer;
 import pl.com.muca.server.pollanswersvalidator.UserAnswersHashCodeValidator;
 
@@ -60,5 +63,16 @@ public class UserWhoAnsweredPollDaoImpl implements UserWhoAnsweredPollDao {
     System.out.printf(
         "%s User with id: %d, answered on poll id: %d, generated validation hash code: %d\n",
         time, userId, pollId, validationHashCode);
+  }
+
+  @Override
+  public List<User> getUsersWhoAnsweredPoll(int pollId) {
+    String sql = "SELECT appuser.user_id, appuser.name, appuser.last_name, 'uknown' as password, appuser.email "
+        + "FROM appuser "
+        + "INNER JOIN userswhoansweredpoll "
+        + "ON userswhoansweredpoll.user_id = appuser.user_id "
+        + "WHERE userswhoansweredpoll.poll_id = :PollId";
+    SqlParameterSource parameterSource = new MapSqlParameterSource().addValue("PollId", pollId);
+    return template.query(sql, parameterSource, new UserRowMapper());
   }
 }

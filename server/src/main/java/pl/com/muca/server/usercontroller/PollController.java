@@ -1,10 +1,12 @@
 package pl.com.muca.server.usercontroller;
 
+import com.google.common.collect.ImmutableList;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -81,13 +83,16 @@ public class PollController {
   }
 
   @PostMapping(value = ("/getUsersWhoAnsweredToPoll"))
-  public User[] getUsersAnsweredPoll(@RequestBody int pollId) {
+  public List<User> getUsersAnsweredPoll(@RequestBody int pollId) {
     return pollService.getUsersAnsweredPoll(pollId);
   }
 
   @PostMapping(value = ("/getUsersWhoDidNotAnswerToPoll"))
-  public User[] getUsersDidNotAnswerPoll(@RequestBody int pollId) {
-    return pollService.getUsersDidNotAnswerPoll(pollId);
+  public List<User> getUsersDidNotAnswerPoll(@RequestBody int pollId) {
+    List<User> usersAnsweredPoll = pollService.getUsersAnsweredPoll(pollId);
+    return userDao.findAll().stream()
+        .filter(user -> !usersAnsweredPoll.contains(user))
+        .collect(Collectors.toList());
   }
 
   @PutMapping(value = "/updatePoll")

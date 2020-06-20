@@ -31,7 +31,5 @@ public interface PollService {
       User user, String userAuthorizationToken)
       throws Exception;
 
-  User[] getUsersAnsweredPoll(int pollId);
-
-  User[] getUsersDidNotAnswerPoll(int pollId);
+  List<User> getUsersAnsweredPoll(int pollId);
 }

@@ -68,22 +68,7 @@ public class PollServiceImpl implements PollService {
   }
 
   @Override
-  public User[] getUsersAnsweredPoll(int pollId) {
-    System.out.println("POLL ID: " + pollId);
-    User user = new User();
-    user.setFirstName("Kasia");
-    user.setLastName("Barbara");
-    user.setEmail("KB@wp.pl");
-    return new User[] {user};
-  }
-
-  @Override
-  public User[] getUsersDidNotAnswerPoll(int pollId) {
-    System.out.println("POLL ID: " + pollId);
-    User user = new User();
-    user.setFirstName("Bartosz ");
-    user.setLastName("Niedobry");
-    user.setEmail("Zły@wp.pl");
-    return new User[] {user};
+  public List<User> getUsersAnsweredPoll(int pollId) {
+    return this.userWhoAnsweredPollDao.getUsersWhoAnsweredPoll(pollId);
   }
 }

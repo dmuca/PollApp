@@ -143,6 +143,6 @@ public class UserAnswerDaoImpl implements UserAnswerDao {
         new MapSqlParameterSource()
             .addValue("UserIdHash", this.userDao.getUserHashIdFromToken(userToken))
             .addValue("PollId", pollId);
-    return template.query(sql, parameters, new UserANswerMapper()).toArray(UserAnswer[]::new);
+    return template.query(sql, parameters, new UserAnswerMapper()).toArray(UserAnswer[]::new);
   }
 }

@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import pl.com.muca.server.entity.UserAnswer;
 
-public class UserANswerMapper implements RowMapper<UserAnswer> {
+public class UserAnswerMapper implements RowMapper<UserAnswer> {
 
   @Override
   public UserAnswer mapRow(ResultSet resultSet, int i) throws SQLException {
