@@ -19,6 +19,9 @@ import org.springframework.stereotype.Repository;
 import pl.com.muca.server.encryption.Cryptographer;
 import pl.com.muca.server.entity.User;
 
+/**
+ * Implementation of {@link pl.com.muca.server.dao.user.UserDao}.
+ */
 @Repository
 public class UserDaoImpl implements UserDao {
 

@@ -5,6 +5,9 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import pl.com.muca.server.entity.Poll;
 
+/**
+ * Mapper responsible for mapping row data from table 'poll' table to {@link pl.com.muca.server.entity.Poll} object.
+ */
 public class PollRowMapper implements RowMapper<Poll> {
 
   @Override

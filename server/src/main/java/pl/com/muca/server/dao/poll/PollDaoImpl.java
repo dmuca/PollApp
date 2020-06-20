@@ -28,6 +28,9 @@ import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.PollState;
 import pl.com.muca.server.entity.Question;
 
+/**
+ * Implementation of {@link pl.com.muca.server.dao.poll.PollDao}.
+ */
 @Repository
 public class PollDaoImpl implements PollDao {
   private final UserDao userDao;

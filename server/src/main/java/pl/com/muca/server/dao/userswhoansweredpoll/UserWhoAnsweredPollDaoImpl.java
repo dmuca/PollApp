@@ -14,6 +14,9 @@ import pl.com.muca.server.entity.User;
 import pl.com.muca.server.entity.UserAnswer;
 import pl.com.muca.server.pollanswersvalidator.UserAnswersHashCodeValidator;
 
+/**
+ * Implementation of {@link pl.com.muca.server.dao.userswhoansweredpoll.UserWhoAnsweredPollDao}.
+ */
 @Repository
 public class UserWhoAnsweredPollDaoImpl implements UserWhoAnsweredPollDao {
   private final UserDao userDao;

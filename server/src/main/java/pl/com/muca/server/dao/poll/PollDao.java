@@ -5,6 +5,9 @@ import java.util.List;
 import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.PollState;
 
+/**
+ * API methods for modifying and reading from the 'poll' table.
+ */
 public interface PollDao {
   List<Poll> findAllPolls(String token) throws Exception;
 
