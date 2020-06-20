@@ -4,6 +4,9 @@ import java.sql.SQLException;
 import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.Question;
 
+/**
+ * API methods for modifying and reading from the 'question' table.
+ */
 public interface QuestionDao {
 
   boolean isUserACreatorOfTheQuestion(String token, int questionId)

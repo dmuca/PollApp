@@ -6,6 +6,9 @@ import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.Question;
 import pl.com.muca.server.entity.User;
 
+/**
+ * API methods for modifying and reading from the 'appuser' table.
+ */
 public interface UserDao {
 
   ImmutableList<User> findAll();
@@ -17,12 +20,6 @@ public interface UserDao {
   String getLatestSessionTokenForUser(int userId);
 
   int getLatestUserId();
-
-  void updateUser(User user);
-
-  void executeUpdateUser(User user);
-
-  void deleteUser(User user);
 
   int getUserId(String token) throws SQLException;
 

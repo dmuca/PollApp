@@ -12,8 +12,11 @@ import pl.com.muca.server.dao.user.UserDao;
 import pl.com.muca.server.dao.user.UserRowMapper;
 import pl.com.muca.server.entity.User;
 import pl.com.muca.server.entity.UserAnswer;
-import pl.com.muca.server.pollanswersvalidator.UserAnswersHashCodeValidator;
+import pl.com.muca.server.useranswershashcodegenerator.UserAnswersHashCodeGenerator;
 
+/**
+ * Implementation of {@link pl.com.muca.server.dao.userswhoansweredpoll.UserWhoAnsweredPollDao}.
+ */
 @Repository
 public class UserWhoAnsweredPollDaoImpl implements UserWhoAnsweredPollDao {
   private final UserDao userDao;
@@ -40,7 +43,7 @@ public class UserWhoAnsweredPollDaoImpl implements UserWhoAnsweredPollDao {
       userAnswer.setUserIdHash(userHashId);
     }
     int validationHashCode =
-        UserAnswersHashCodeValidator.generateHashCode(userAnswers, this.userDao.getUser(userId));
+        UserAnswersHashCodeGenerator.generateHashCode(userAnswers, this.userDao.getUser(userId));
 
     insertToUserWhoAnsweredPoll(pollId, userId);
     logInfo(pollId, userId, validationHashCode);

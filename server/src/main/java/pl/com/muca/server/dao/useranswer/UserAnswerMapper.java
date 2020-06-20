@@ -5,6 +5,9 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import pl.com.muca.server.entity.UserAnswer;
 
+/**
+ * Mapper responsible for mapping row data from table 'useranswer' table to {@link pl.com.muca.server.entity.UserAnswer} object.
+ */
 public class UserAnswerMapper implements RowMapper<UserAnswer> {
 
   @Override

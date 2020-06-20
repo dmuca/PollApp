@@ -1,5 +1,8 @@
 package pl.com.muca.server.entity;
 
+/**
+ * POJO representation of 'userwhoansweredpoll' table.
+ */
 public class UserWhoAnsweredPoll {
   private int userId;
   private int pollId;

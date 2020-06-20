@@ -11,8 +11,11 @@ import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.User;
 import pl.com.muca.server.entity.UserAnswer;
 import pl.com.muca.server.entity.UserWhoAnsweredPoll;
-import pl.com.muca.server.pollanswersvalidator.UserAnswersHashCodeValidator;
+import pl.com.muca.server.useranswershashcodegenerator.UserAnswersHashCodeGenerator;
 
+/**
+ * Implementation of {@link PollService} interface.
+ */
 @Component
 public class PollServiceImpl implements PollService {
   @Resource PollDao pollDao;
@@ -40,21 +43,6 @@ public class PollServiceImpl implements PollService {
   }
 
   @Override
-  public void updatePoll(Poll poll) {
-    pollDao.updatePoll(poll);
-  }
-
-  @Override
-  public void executeUpdatePoll(Poll poll) {
-    pollDao.executeUpdatePoll(poll);
-  }
-
-  @Override
-  public void deletePoll(Poll poll) {
-    pollDao.deletePoll(poll);
-  }
-
-  @Override
   public Poll getPollDetails(int pollId, String token) throws Exception {
     return pollDao.getPollDetails(pollId, token);
   }
@@ -64,7 +52,7 @@ public class PollServiceImpl implements PollService {
       UserWhoAnsweredPoll userWhoAnsweredPoll, User user, String userToken) throws Exception {
     UserAnswer[] userAnswers =
         this.userAnswerDao.getUserAnswersForPoll(userToken, userWhoAnsweredPoll.getPollId());
-    return UserAnswersHashCodeValidator.generateHashCode(userAnswers, user);
+    return UserAnswersHashCodeGenerator.generateHashCode(userAnswers, user);
   }
 
   @Override

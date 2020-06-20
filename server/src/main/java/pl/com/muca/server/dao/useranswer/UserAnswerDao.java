@@ -4,6 +4,9 @@ import pl.com.muca.server.entity.Answer;
 import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.UserAnswer;
 
+/**
+ * API methods for modifying and reading from the 'useranswer' table.
+ */
 public interface UserAnswerDao {
   int saveUserAnswers(UserAnswer[] answers, String token) throws Exception;
 

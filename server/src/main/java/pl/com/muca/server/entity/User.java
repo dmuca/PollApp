@@ -2,6 +2,9 @@ package pl.com.muca.server.entity;
 
 import java.util.Objects;
 
+/**
+ * POJO representation of 'user' table.
+ */
 public class User {
   private int id;
   private String firstName;

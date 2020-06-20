@@ -2,6 +2,9 @@ package pl.com.muca.server.entity;
 
 import java.util.Objects;
 
+/**
+ * POJO representation of 'useranswer' table.
+ */
 public class UserAnswer {
   private String userIdHash;
   private int questionId;

@@ -17,6 +17,9 @@ import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.Question;
 import pl.com.muca.server.entity.UserAnswer;
 
+/**
+ * Implementation of {@link pl.com.muca.server.dao.useranswer.UserAnswerDao}.
+ */
 @Repository
 public class UserAnswerDaoImpl implements UserAnswerDao {
   private final NamedParameterJdbcTemplate template;
