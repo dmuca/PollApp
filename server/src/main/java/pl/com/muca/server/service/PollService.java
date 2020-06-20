@@ -7,6 +7,12 @@ import pl.com.muca.server.entity.User;
 import pl.com.muca.server.entity.UserAnswer;
 import pl.com.muca.server.entity.UserWhoAnsweredPoll;
 
+/**
+ * API with higher level of abstraction for performing polls' related operations on DAO classes.
+ * Acts like an adapter (@see <a href="https://en.wikipedia.org/wiki/Adapter_pattern">Adapter
+ * Pattern</a>) of DAO classes for the purposes of {@link
+ * pl.com.muca.server.usercontroller.PollController}.
+ */
 public interface PollService {
 
   List<Poll> findAllMine(String token);
@@ -17,12 +23,10 @@ public interface PollService {
 
   Poll getPollDetails(int pollId, String token) throws Exception;
 
-  int saveUserAnswers(UserAnswer[] answers, String userAuthorizationToken)
-      throws Exception;
+  int saveUserAnswers(UserAnswer[] answers, String userAuthorizationToken) throws Exception;
 
   int generateUserAnswersValidationHashCode(
-      UserWhoAnsweredPoll userWhoAnsweredPoll,
-      User user, String userAuthorizationToken)
+      UserWhoAnsweredPoll userWhoAnsweredPoll, User user, String userAuthorizationToken)
       throws Exception;
 
   List<User> getUsersAnsweredPoll(int pollId);

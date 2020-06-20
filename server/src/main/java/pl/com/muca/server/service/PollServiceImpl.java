@@ -13,6 +13,9 @@ import pl.com.muca.server.entity.UserAnswer;
 import pl.com.muca.server.entity.UserWhoAnsweredPoll;
 import pl.com.muca.server.useranswershashcodegenerator.UserAnswersHashCodeGenerator;
 
+/**
+ * Implementation of {@link PollService} interface.
+ */
 @Component
 public class PollServiceImpl implements PollService {
   @Resource PollDao pollDao;

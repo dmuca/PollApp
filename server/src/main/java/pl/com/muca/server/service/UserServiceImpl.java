@@ -8,13 +8,16 @@ import org.springframework.stereotype.Component;
 import pl.com.muca.server.dao.user.UserDao;
 import pl.com.muca.server.entity.User;
 
+/**
+ * Implementation of {@link UserService} interface.
+ */
 @Component
 public class UserServiceImpl implements UserService {
 
   @Resource UserDao userDao;
 
   @Override
-  public void insertUser(User user) {
+  public void registerUser(User user) {
     userDao.insertUser(user);
   }
 
