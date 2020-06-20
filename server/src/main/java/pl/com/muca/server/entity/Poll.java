@@ -2,6 +2,9 @@ package pl.com.muca.server.entity;
 
 import java.util.Arrays;
 
+/**
+ * POJO representation of 'poll' table.
+ */
 public class Poll {
 
   private int pollId;

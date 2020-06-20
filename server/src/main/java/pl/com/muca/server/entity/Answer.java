@@ -1,5 +1,8 @@
 package pl.com.muca.server.entity;
 
+/**
+ * POJO representation of 'answer' table.
+ */
 public class Answer {
   private int answerId;
   private int questionId;
