@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.com.muca.server.dao.user.UserDao;
 import pl.com.muca.server.entity.Poll;
+import pl.com.muca.server.entity.User;
 import pl.com.muca.server.entity.UserAnswer;
 import pl.com.muca.server.entity.UserAnswersValidator;
 import pl.com.muca.server.service.PollService;
@@ -72,6 +73,16 @@ public class PollController {
     userAnswersValidator.setUserId(this.userDao.getUserId(userAuthorizationToken));
     logAction(userAnswersValidator.toString());
     return pollService.verifyPollAnswers(userAnswersValidator, userAuthorizationToken);
+  }
+
+  @PostMapping(value = ("/getUsersWhoAnsweredToPoll"))
+  public User[] getUsersAnsweredPoll(@RequestBody int pollId){
+    return pollService.getUsersAnsweredPoll(pollId);
+  }
+
+  @PostMapping(value = ("/getUsersWhoDidNotAnswerToPoll"))
+  public User[] getUsersDidNotAnswerPoll(@RequestBody int pollId){
+    return pollService.getUsersDidNotAnswerPoll(pollId);
   }
 
   @PutMapping(value = "/updatePoll")

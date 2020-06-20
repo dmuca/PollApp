@@ -10,6 +10,7 @@ import pl.com.muca.server.dao.user.UserDao;
 import pl.com.muca.server.dao.useranswer.UserAnswerDao;
 import pl.com.muca.server.dao.useranswersvalidator.UserAnswerValidatorDao;
 import pl.com.muca.server.entity.Poll;
+import pl.com.muca.server.entity.User;
 import pl.com.muca.server.entity.UserAnswer;
 import pl.com.muca.server.entity.UserAnswersValidator;
 
@@ -64,5 +65,25 @@ public class PollServiceImpl implements PollService {
       UserAnswersValidator userAnswersValidator, String userAuthorizationToken)
       throws Exception {
     return userAnswerValidatorDao.validateAnswers(userAnswersValidator, userAuthorizationToken);
+  }
+
+  @Override
+  public User[] getUsersAnsweredPoll(int pollId) {
+    System.out.println("POLL ID: " + pollId);
+    User user = new User();
+    user.setFirstName("Kasia");
+    user.setLastName("Barbara");
+    user.setEmail("KB@wp.pl");
+    return new User[]{user};
+  }
+
+  @Override
+  public User[] getUsersDidNotAnswerPoll(int pollId) {
+    System.out.println("POLL ID: " + pollId);
+    User user = new User();
+    user.setFirstName("Bartosz ");
+    user.setLastName("Niedobry");
+    user.setEmail("Zły@wp.pl");
+    return new User[]{user};
   }
 }

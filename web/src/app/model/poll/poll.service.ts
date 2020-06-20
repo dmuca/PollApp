@@ -51,44 +51,14 @@ export class PollService {
   }
 
   getUsersWhoAnsweredToPoll(pollId: number) {
-    const users: User[] = [{
-      id: 0,
-      firstName: 'Kasia',
-      lastName: 'Kowalska',
-      password: 'unknown',
-      email: 'Kasia@wp.pl',
-      token: 'unknown',
-    }, {
-      id: 1,
-      firstName: 'Bartosz',
-      lastName: 'Pliżga',
-      password: 'unknown',
-      email: 'BP@wp.pl',
-      token: 'unknown',
-    }
-    ];
-    console.log(users);
-    this.usersWhoAnsweredPoll$.next(users);
+    return this.http.post<User[]>(`${REST_API_URL}getUsersWhoAnsweredToPoll`, pollId).subscribe((usersAnsweredPoll) => {
+      this.usersWhoAnsweredPoll$.next(usersAnsweredPoll);
+    });
   }
 
   getUsersWhoDidNotAnswerToPoll(pollId: number) {
-    const users: User[] = [{
-      id: 2,
-      firstName: 'Aleks',
-      lastName: 'Maslana',
-      password: 'unknown',
-      email: 'AKKKK@wp.pl',
-      token: 'unknown',
-    }, {
-      id: 3,
-      firstName: 'Konieczko',
-      lastName: 'Konieczny',
-      password: 'unknown',
-      email: 'koniecznie@wp.pl',
-      token: 'unknown',
-    }
-    ];
-    console.log(users);
-    this.usersWhoDidNotAnswerPoll$.next(users);
+    return this.http.post<User[]>(`${REST_API_URL}getUsersWhoDidNotAnswerToPoll`, pollId).subscribe((usersDidNotAnswerPoll) => {
+      this.usersWhoDidNotAnswerPoll$.next(usersDidNotAnswerPoll);
+    });
   }
 }

@@ -1,6 +1,5 @@
 package pl.com.muca.server.dao.useranswersvalidator;
 
-import java.sql.SQLException;
 import pl.com.muca.server.entity.UserAnswer;
 import pl.com.muca.server.entity.UserAnswersValidator;
 
