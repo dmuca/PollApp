@@ -21,12 +21,6 @@ public interface UserDao {
 
   int getLatestUserId();
 
-  void updateUser(User user);
-
-  void executeUpdateUser(User user);
-
-  void deleteUser(User user);
-
   int getUserId(String token) throws SQLException;
 
   String getUserHashIdFromToken(String token) throws Exception;
