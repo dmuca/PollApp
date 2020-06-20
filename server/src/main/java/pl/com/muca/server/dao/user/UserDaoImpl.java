@@ -69,41 +69,6 @@ public class UserDaoImpl implements UserDao {
   }
 
   @Override
-  public void updateUser(User user) {
-    KeyHolder holder = new GeneratedKeyHolder();
-    SqlParameterSource param =
-        new MapSqlParameterSource()
-            .addValue("user_id", user.getId())
-            .addValue("name", user.getFirstName().trim())
-            .addValue("last_name", user.getLastName().trim())
-            .addValue("password", user.getPassword())
-            .addValue("email", user.getEmail().trim());
-    template.update(UPDATE_SQL, param, holder);
-  }
-
-  @Override
-  public void executeUpdateUser(User user) {
-    Map<String, Object> map = new HashMap<>();
-    map.put("user_id", user.getId());
-    map.put("name", user.getFirstName().trim());
-    map.put("last_name", user.getLastName().trim());
-    map.put("password", user.getPassword());
-    map.put("email", user.getEmail().trim());
-
-    template.execute(
-        UPDATE_SQL, map, (PreparedStatementCallback<Object>) PreparedStatement::executeUpdate);
-  }
-
-  @Override
-  public void deleteUser(User user) {
-    final String sql = "DELETE FROM appuser WHERE user_id=:user_id";
-    final Map<String, Object> map = new HashMap<>();
-    map.put("user_id", user.getId());
-    template.execute(
-        sql, map, (PreparedStatementCallback<Object>) PreparedStatement::executeUpdate);
-  }
-
-  @Override
   public void createSession(User user) {
     final String sql = "INSERT INTO session(user_id) VALUES (:user_id)";
 
