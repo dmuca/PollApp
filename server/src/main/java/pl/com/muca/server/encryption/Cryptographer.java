@@ -26,7 +26,7 @@ public class Cryptographer {
   }
 
   /**
-   * Encrypts a given {@link String} according to the given key.
+   * Encrypts a given {@link String} according to the given encryption key.
    * The method uses symmetric key for encryption algorithm available as
    * part of the Sun's JCE(Java Cryptography Extension).
    * @param key encryption key
