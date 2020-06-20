@@ -16,7 +16,7 @@
         <div *ngFor="let answer of question.answers">
           <table>
             <tr>
-              <td>
+              <td class="counter-content">
                 {{answer.content}}
               </td>
               <td class="counter">
@@ -29,5 +29,55 @@
       <hr/>
     </div>
     <app-alert></app-alert>
+    <div class="card-body">
+      <h2 class="users-answered-poll">
+        Użytkownicy, którzy odpowiedzieli na ankiete:
+      </h2>
+      <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+          <th scope="col">Identyfikator</th>
+          <th scope="col">Imie</th>
+          <th scope="col">Nazwisko</th>
+          <th scope="col">Email</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let userWhoAnswered of this.usersWhoAnsweredPoll">
+          <td>{{ userWhoAnswered.id }}</td>
+          <td>{{ userWhoAnswered.firstName }}</td>
+          <td>{{ userWhoAnswered.lastName }}</td>
+          <td><a
+            href="mailto:{{ userWhoAnswered.email }}">{{ userWhoAnswered.email }}</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card-body">
+      <h2 class="users-did-not-answer-poll">
+        Użytkownicy, którzy nie odpowiedzieli na ankiete:
+      </h2>
+      <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+          <th scope="col">Identyfikator</th>
+          <th scope="col">Imie</th>
+          <th scope="col">Nazwisko</th>
+          <th scope="col">Email</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let userWhoDidNotAnswer of this.usersWhoDidNotAnswerPoll">
+          <td>{{ userWhoDidNotAnswer.id }}</td>
+          <td>{{ userWhoDidNotAnswer.firstName }}</td>
+          <td>{{ userWhoDidNotAnswer.lastName }}</td>
+          <td><a
+            href="mailto:{{ userWhoDidNotAnswer.email }}">{{ userWhoDidNotAnswer.email }}</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>

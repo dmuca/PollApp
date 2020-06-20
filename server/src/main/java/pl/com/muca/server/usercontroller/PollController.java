@@ -1,12 +1,13 @@
 package pl.com.muca.server.usercontroller;
 
+import com.google.common.collect.ImmutableList;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
-import javax.validation.ValidationException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.com.muca.server.dao.user.UserDao;
 import pl.com.muca.server.entity.Poll;
+import pl.com.muca.server.entity.User;
 import pl.com.muca.server.entity.UserAnswer;
-import pl.com.muca.server.entity.UserAnswersValidator;
+import pl.com.muca.server.entity.UserWhoAnsweredPoll;
 import pl.com.muca.server.service.PollService;
 
 @RestController
@@ -67,11 +69,30 @@ public class PollController {
   @PostMapping(value = "/verifyPollAnswers")
   public boolean verifyPollAnswers(
       @RequestHeader("Authorization") String userAuthorizationToken,
-      @RequestBody UserAnswersValidator userAnswersValidator)
+      @RequestBody UserWhoAnsweredPoll userWhoAnsweredPoll)
       throws Exception {
-    userAnswersValidator.setUserId(this.userDao.getUserId(userAuthorizationToken));
-    logAction(userAnswersValidator.toString());
-    return pollService.verifyPollAnswers(userAnswersValidator, userAuthorizationToken);
+    int userId = this.userDao.getUserId(userAuthorizationToken);
+    userWhoAnsweredPoll.setUserId(userId);
+    logAction(userWhoAnsweredPoll.toString());
+
+    // TODO (Damian Muca): 6/20/20 remove passing this.userDao.getUser(...)
+    int userAnswersValidationHashCode =
+        pollService.generateUserAnswersValidationHashCode(
+            userWhoAnsweredPoll, this.userDao.getUser(userId), userAuthorizationToken);
+    return userAnswersValidationHashCode == userWhoAnsweredPoll.getValidationHashCode();
+  }
+
+  @PostMapping(value = ("/getUsersWhoAnsweredToPoll"))
+  public List<User> getUsersAnsweredPoll(@RequestBody int pollId) {
+    return pollService.getUsersAnsweredPoll(pollId);
+  }
+
+  @PostMapping(value = ("/getUsersWhoDidNotAnswerToPoll"))
+  public List<User> getUsersDidNotAnswerPoll(@RequestBody int pollId) {
+    List<User> usersAnsweredPoll = pollService.getUsersAnsweredPoll(pollId);
+    return userDao.findAll().stream()
+        .filter(user -> !usersAnsweredPoll.contains(user))
+        .collect(Collectors.toList());
   }
 
   @PutMapping(value = "/updatePoll")

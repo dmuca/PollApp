@@ -1,7 +1,5 @@
 package pl.com.muca.server.dao.useranswer;
 
-import com.google.common.collect.ImmutableList;
-import java.util.Arrays;
 import java.util.Optional;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -12,7 +10,8 @@ import pl.com.muca.server.dao.question.QuestionDao;
 import pl.com.muca.server.dao.question.QuestionDaoImpl;
 import pl.com.muca.server.dao.user.UserDao;
 import pl.com.muca.server.dao.user.UserDaoImpl;
-import pl.com.muca.server.dao.useranswersvalidator.UserAnswerValidatorDaoImpl;
+import pl.com.muca.server.dao.userswhoansweredpoll.UserWhoAnsweredPollDao;
+import pl.com.muca.server.dao.userswhoansweredpoll.UserWhoAnsweredPollDaoImpl;
 import pl.com.muca.server.entity.Answer;
 import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.Question;
@@ -23,14 +22,14 @@ public class UserAnswerDaoImpl implements UserAnswerDao {
   private final NamedParameterJdbcTemplate template;
   private final UserDao userDao;
   private final QuestionDao questionDao;
-  private final UserAnswerValidatorDaoImpl userAnswerValidatorDao;
+  private final UserWhoAnsweredPollDao userWhoAnsweredPollDao;
 
   public UserAnswerDaoImpl(NamedParameterJdbcTemplate template, PollDaoImpl pollDao) {
     this.template = template;
     this.userDao = new UserDaoImpl(template);
     this.questionDao = new QuestionDaoImpl(template);
-    this.userAnswerValidatorDao =
-        new UserAnswerValidatorDaoImpl(template, pollDao, userDao, this);
+    this.userWhoAnsweredPollDao =
+        new UserWhoAnsweredPollDaoImpl(template, pollDao, userDao);
   }
 
   @Override
@@ -38,7 +37,8 @@ public class UserAnswerDaoImpl implements UserAnswerDao {
     for (UserAnswer userAnswer : userAnswers) {
       saveUserAnswer(userAnswer, token);
     }
-    return this.userAnswerValidatorDao.insertToUserAnswerValidator(userAnswers, token);
+    return this.userWhoAnsweredPollDao
+        .insertUserWhoAnsweredPoll(userAnswers, token);
   }
 
   @Override
@@ -143,6 +143,6 @@ public class UserAnswerDaoImpl implements UserAnswerDao {
         new MapSqlParameterSource()
             .addValue("UserIdHash", this.userDao.getUserHashIdFromToken(userToken))
             .addValue("PollId", pollId);
-    return template.query(sql, parameters, new UserANswerMapper()).toArray(UserAnswer[]::new);
+    return template.query(sql, parameters, new UserAnswerMapper()).toArray(UserAnswer[]::new);
   }
 }

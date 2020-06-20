@@ -5,7 +5,7 @@
   <div class="validation-sector">
     <input type="text" class="user-answers-validation-hash-code form-control"
            placeholder="Kod hash"
-           [(ngModel)]="userAnswerValidator.validationHashCode"/>
+           [(ngModel)]="userWhoAnsweredPoll.validationHashCode"/>
     <button [disabled]="isLoading"
             (click)="validateUserAnswersHashCode()"
             class="check-hash-code btn btn-primary">

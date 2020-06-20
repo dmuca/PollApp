@@ -3,8 +3,9 @@ package pl.com.muca.server.service;
 import java.sql.SQLException;
 import java.util.List;
 import pl.com.muca.server.entity.Poll;
+import pl.com.muca.server.entity.User;
 import pl.com.muca.server.entity.UserAnswer;
-import pl.com.muca.server.entity.UserAnswersValidator;
+import pl.com.muca.server.entity.UserWhoAnsweredPoll;
 
 public interface PollService {
 
@@ -25,6 +26,10 @@ public interface PollService {
   int saveUserAnswers(UserAnswer[] answers, String userAuthorizationToken)
       throws Exception;
 
-  boolean verifyPollAnswers(UserAnswersValidator answers, String userAuthorizationToken)
+  int generateUserAnswersValidationHashCode(
+      UserWhoAnsweredPoll userWhoAnsweredPoll,
+      User user, String userAuthorizationToken)
       throws Exception;
+
+  List<User> getUsersAnsweredPoll(int pollId);
 }

@@ -84,9 +84,7 @@ public class User {
     return getId() == user.getId() &&
         Objects.equals(getFirstName(), user.getFirstName()) &&
         Objects.equals(getLastName(), user.getLastName()) &&
-        Objects.equals(getPassword(), user.getPassword()) &&
-        Objects.equals(getEmail(), user.getEmail()) &&
-        Objects.equals(getToken(), user.getToken());
+        Objects.equals(getEmail(), user.getEmail());
   }
 
   @Override
