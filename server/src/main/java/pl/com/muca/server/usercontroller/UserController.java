@@ -23,11 +23,11 @@ public class UserController {
 
   @Resource UserService userService;
 
-  @GetMapping(value = "/listUsers")
-  public List<User> getUsers() {
-    logAction();
-    return userService.findAll();
-  }
+//  @GetMapping(value = "/listUsers")
+//  public List<User> getUsers() {
+//    logAction();
+//    return userService.findAll();
+//  }
 
   @PostMapping(value = "/registerUser")
   public void registerUser(@RequestBody User user) {
