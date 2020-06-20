@@ -1,6 +1,5 @@
 package pl.com.muca.server.usercontroller;
 
-import com.google.common.collect.ImmutableList;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
