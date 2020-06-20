@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.com.muca.server.entity.User;
 import pl.com.muca.server.service.UserService;
 
+/** REST API controller for User related operations like Login or Register. */
 @RestController
 @CrossOrigin
 @RequestMapping("/pollApp")
@@ -23,12 +24,22 @@ public class UserController {
 
   @Resource UserService userService;
 
+  /**
+   * Registers user by inserting its data to the 'appuser' database table.
+   *
+   * @param user {@link User} object with user data
+   */
   @PostMapping(value = "/registerUser")
   public void registerUser(@RequestBody User user) {
     logAction(user.toString());
     userService.insertUser(user);
   }
 
+  /**
+   * Login user by verifying password and generating a session token in 'session' database table.
+   *
+   * @param user {@link User} object with generated {@link User#token} session token
+   */
   @PostMapping(value = "/login")
   public User login(@RequestBody User user) throws LoginException {
     logAction(user.toString());
