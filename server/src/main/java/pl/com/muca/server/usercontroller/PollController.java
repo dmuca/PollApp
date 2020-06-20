@@ -23,7 +23,7 @@ import pl.com.muca.server.entity.UserWhoAnsweredPoll;
 import pl.com.muca.server.service.PollService;
 
 /**
- * REST API controller for Polls' related operations.
+ * REST API controller for polls' related operations.
  */
 @RestController
 @CrossOrigin

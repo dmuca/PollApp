@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.com.muca.server.entity.User;
 import pl.com.muca.server.service.UserService;
 
-/** REST API controller for User related operations like Login or Register. */
+/** REST API controller for users' related operations like Login or Register. */
 @RestController
 @CrossOrigin
 @RequestMapping("/pollApp")
