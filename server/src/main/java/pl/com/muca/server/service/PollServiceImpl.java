@@ -11,7 +11,7 @@ import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.User;
 import pl.com.muca.server.entity.UserAnswer;
 import pl.com.muca.server.entity.UserWhoAnsweredPoll;
-import pl.com.muca.server.pollanswersvalidator.UserAnswersHashCodeValidator;
+import pl.com.muca.server.useranswershashcodegenerator.UserAnswersHashCodeGenerator;
 
 @Component
 public class PollServiceImpl implements PollService {
@@ -64,7 +64,7 @@ public class PollServiceImpl implements PollService {
       UserWhoAnsweredPoll userWhoAnsweredPoll, User user, String userToken) throws Exception {
     UserAnswer[] userAnswers =
         this.userAnswerDao.getUserAnswersForPoll(userToken, userWhoAnsweredPoll.getPollId());
-    return UserAnswersHashCodeValidator.generateHashCode(userAnswers, user);
+    return UserAnswersHashCodeGenerator.generateHashCode(userAnswers, user);
   }
 
   @Override
