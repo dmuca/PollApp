@@ -28,13 +28,15 @@ public class UserController {
   @PostMapping(value = "/registerUser")
   public void registerUser(@RequestBody User user) {
     logAction(user.toString());
-    userService.insertUser(user);
+    userService.registerUser(user);
   }
 
   /**
    * Login user by verifying password and generating a session token in 'session' database table.
    *
-   * @param user {@link User} object with generated {@link User#token} session token
+   * @param user {@link User} object with user email and password
+   * @return {@link User} object with generated {@link User#token} session token
+   * @throws LoginException when credentials are incorrect
    */
   @PostMapping(value = "/login")
   public User login(@RequestBody User user) throws LoginException {

@@ -16,10 +16,10 @@ import javax.crypto.spec.SecretKeySpec;
 public class Cryptographer {
   /**
    * Overloaded method of {@link pl.com.muca.server.encryption.Cryptographer#encrypt(String, String)}.
-   * @param key
-   * @param userId
-   * @return
-   * @throws Exception
+   * @param key encryption key
+   * @param userId ID of the user for which encryption is performed
+   * @return encrypted text
+   * @throws Exception if encryption failed
    */
   public static String encrypt(String key, int userId) throws Exception {
     return encrypt(key, String.valueOf(userId));
@@ -29,10 +29,10 @@ public class Cryptographer {
    * Encrypts a given {@link String} according to the given key.
    * The method uses symmetric key for encryption algorithm available as
    * part of the Sun's JCE(Java Cryptography Extension).
-   * @param key
-   * @param textToEncrypt
-   * @return encryptedText
-   * @throws Exception
+   * @param key encryption key
+   * @param textToEncrypt text to be encrypted
+   * @return encrypted text
+   * @throws Exception if encryption failed
    */
   public static String encrypt(String key, String textToEncrypt) throws Exception {
     try {

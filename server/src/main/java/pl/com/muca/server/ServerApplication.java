@@ -9,6 +9,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ServerApplication {
 
+  /**
+   * Starting place of the program
+   * @param args startup parameters
+   */
   public static void main(String[] args) {
     SpringApplication.run(ServerApplication.class, args);
   }

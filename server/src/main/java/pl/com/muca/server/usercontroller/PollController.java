@@ -35,7 +35,7 @@ public class PollController {
   /**
    * Lists all polls available in the system.
    * @param token User session token
-   * @return {@link List<Poll>}
+   * @return {@link List} of {@link Poll} objects
    * @throws Exception if could not read polls from database
    */
   @GetMapping(value = "/listPolls")
@@ -48,7 +48,7 @@ public class PollController {
    * Lists all polls created by the user.
    * User is determined base on the session token.
    * @param token User session token
-   * @return {@link List<Poll>}
+   * @return {@link List} of {@link Poll} objects
    */
   @GetMapping(value = "/listMyPolls")
   public List<Poll> getMyPolls(@RequestHeader("Authorization") String token) {
