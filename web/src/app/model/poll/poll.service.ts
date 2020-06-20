@@ -4,7 +4,7 @@ import {Observable, Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {REST_API_URL} from '../../../common';
 import {UserAnswer} from './user.answer';
-import {UserAnswerValidator} from './user.answer.validator';
+import {UserWhoAnsweredPoll} from './userWhoAnsweredPoll';
 import {User} from '../user/user';
 
 @Injectable({
@@ -46,8 +46,8 @@ export class PollService {
     return this.http.post<number>(`${REST_API_URL}saveUserAnswers`, userAnswers);
   }
 
-  public verifyPollAnswers(userAnswerValidator: UserAnswerValidator): Observable<boolean> {
-    return this.http.post<boolean>(`${REST_API_URL}verifyPollAnswers`, userAnswerValidator);
+  public verifyPollAnswers(userWhoAnsweredPoll: UserWhoAnsweredPoll): Observable<boolean> {
+    return this.http.post<boolean>(`${REST_API_URL}verifyPollAnswers`, userWhoAnsweredPoll);
   }
 
   getUsersWhoAnsweredToPoll(pollId: number) {

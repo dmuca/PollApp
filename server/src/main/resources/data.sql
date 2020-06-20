@@ -5,7 +5,7 @@
 -- DELETE FROM answer WHERE TRUE=TRUE;
 -- DELETE FROM question WHERE TRUE=TRUE;
 -- DELETE FROM poll WHERE TRUE=TRUE;
--- DELETE FROM useranswersvalidator WHERE TRUE=TRUE;
+-- DELETE FROM userswhoansweredpoll WHERE TRUE=TRUE;
 
 -- Fill users table.
 INSERT INTO appuser(user_id, name, last_name, password, email) VALUES (1, 'Karol', 'Wojciechowski', 'karol', 'KarolW@gmail.com');
@@ -51,10 +51,10 @@ INSERT INTO answer(answer_id, question_id, content) VALUES (20, 5, 'Owszem');
 INSERT INTO answer(answer_id, question_id, content) VALUES (21, 5, 'Polecę');
 
 -- -- DROP ALL TABLES
+-- DROP TABLE userswhoansweredpoll;
 -- DROP TABLE useranswer;
 -- DROP TABLE answer;
 -- DROP TABLE question;
 -- DROP TABLE poll;
 -- DROP TABLE appuser;
 -- DROP TABLE session;
--- DROP TABLE useranswersvalidator;

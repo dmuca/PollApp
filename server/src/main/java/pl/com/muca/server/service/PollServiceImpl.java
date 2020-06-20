@@ -3,22 +3,21 @@ package pl.com.muca.server.service;
 import java.sql.SQLException;
 import java.util.List;
 import javax.annotation.Resource;
-import javax.validation.ValidationException;
 import org.springframework.stereotype.Component;
 import pl.com.muca.server.dao.poll.PollDao;
-import pl.com.muca.server.dao.user.UserDao;
 import pl.com.muca.server.dao.useranswer.UserAnswerDao;
-import pl.com.muca.server.dao.useranswersvalidator.UserAnswerValidatorDao;
+import pl.com.muca.server.dao.userswhoansweredpoll.UserWhoAnsweredPollDao;
 import pl.com.muca.server.entity.Poll;
 import pl.com.muca.server.entity.User;
 import pl.com.muca.server.entity.UserAnswer;
-import pl.com.muca.server.entity.UserAnswersValidator;
+import pl.com.muca.server.entity.UserWhoAnsweredPoll;
+import pl.com.muca.server.pollanswersvalidator.UserAnswersHashCodeValidator;
 
 @Component
 public class PollServiceImpl implements PollService {
   @Resource PollDao pollDao;
   @Resource UserAnswerDao userAnswerDao;
-  @Resource UserAnswerValidatorDao userAnswerValidatorDao;
+  @Resource UserWhoAnsweredPollDao userWhoAnsweredPollDao;
 
   @Override
   public List<Poll> findAll(String token) throws Exception {
@@ -61,10 +60,11 @@ public class PollServiceImpl implements PollService {
   }
 
   @Override
-  public boolean verifyPollAnswers(
-      UserAnswersValidator userAnswersValidator, String userAuthorizationToken)
-      throws Exception {
-    return userAnswerValidatorDao.validateAnswers(userAnswersValidator, userAuthorizationToken);
+  public int generateUserAnswersValidationHashCode(
+      UserWhoAnsweredPoll userWhoAnsweredPoll, User user, String userToken) throws Exception {
+    UserAnswer[] userAnswers =
+        this.userAnswerDao.getUserAnswersForPoll(userToken, userWhoAnsweredPoll.getPollId());
+    return UserAnswersHashCodeValidator.generateHashCode(userAnswers, user);
   }
 
   @Override
@@ -74,7 +74,7 @@ public class PollServiceImpl implements PollService {
     user.setFirstName("Kasia");
     user.setLastName("Barbara");
     user.setEmail("KB@wp.pl");
-    return new User[]{user};
+    return new User[] {user};
   }
 
   @Override
@@ -84,6 +84,6 @@ public class PollServiceImpl implements PollService {
     user.setFirstName("Bartosz ");
     user.setLastName("Niedobry");
     user.setEmail("Zły@wp.pl");
-    return new User[]{user};
+    return new User[] {user};
   }
 }

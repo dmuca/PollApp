@@ -1,6 +1,6 @@
 package pl.com.muca.server.entity;
 
-public class UserAnswersValidator {
+public class UserWhoAnsweredPoll {
   private int userId;
   private int pollId;
   private int validationHashCode;
@@ -31,8 +31,10 @@ public class UserAnswersValidator {
 
   @Override
   public String toString() {
-    return String.format(
-        "UserAnswerValidator{userId=%d, pollId=%d, validationHashCode=%d}",
-        userId, pollId, validationHashCode);
+    return "UserWhoAnsweredPoll{" +
+        "userId=" + userId +
+        ", pollId=" + pollId +
+        ", validationHashCode=" + validationHashCode +
+        '}';
   }
 }
